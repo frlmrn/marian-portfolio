@@ -1,0 +1,106 @@
+/* Hoja impresa: papel algo más claro que la mesa, borde irregular y sombra corta */
+.sheet {
+  position: absolute;
+  pointer-events: none;
+}
+
+.paper {
+  width: 100%;
+  height: 100%;
+  background:
+    url('../assets/textures/fibres.svg'),
+    url('../assets/textures/grain.svg'),
+    linear-gradient(170deg, #f8f4ec, #efe9de);
+  background-size: 900px 900px, 320px 320px, auto;
+  clip-path: polygon(0.6% 1.2%, 18% 0.4%, 34% 1.4%, 52% 0.2%, 71% 1%, 88% 0.3%, 99.4% 1.1%, 100% 34%, 99.3% 62%,
+      100% 98.8%, 76% 99.6%, 55% 98.9%, 33% 99.8%, 12% 99%, 0.4% 99.6%, 0 70%, 0.7% 38%);
+  filter: drop-shadow(0 calc(var(--u) * 3) calc(var(--u) * 4) rgb(60 40 20 / 0.22));
+}
+
+.ink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--texto);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.78;
+  /* tinta impresa: se funde con el papel */
+  mix-blend-mode: multiply;
+}
+
+.label {
+  fill: var(--texto);
+  stroke: none;
+  font-family: var(--sans);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.thin {
+  stroke-width: 0.5;
+}
+
+.dashed {
+  stroke-width: 0.7;
+  stroke-dasharray: 3 2.5;
+}
+
+.grid rect,
+.columns rect {
+  fill: rgb(94 14 22 / 0.06);
+  stroke: rgb(94 14 22 / 0.4);
+  stroke-width: 0.5;
+}
+
+.columns rect {
+  fill: rgb(94 14 22 / 0.04);
+  stroke-dasharray: 2 2;
+}
+
+.specimen {
+  fill: var(--texto);
+  stroke: none;
+  font-family: var(--sans);
+  font-weight: 700;
+}
+
+.arrows path {
+  stroke-width: 0.9;
+}
+
+.fill {
+  fill: var(--texto);
+  stroke: none;
+}
+
+.focus {
+  stroke: var(--granate);
+  stroke-width: 1.1;
+}
+
+.dot {
+  fill: var(--granate);
+  stroke: none;
+}
+
+/* Post-its dibujados: azul pálido, como los de verdad */
+.postit {
+  fill: rgb(200 214 228 / 0.7);
+  stroke-width: 0.6;
+}
+
+.marker circle {
+  fill: none;
+  stroke: var(--granate);
+  stroke-width: 0.9;
+}
+
+.marker text {
+  fill: var(--granate);
+  stroke: none;
+  font-family: var(--sans);
+  font-weight: 650;
+}

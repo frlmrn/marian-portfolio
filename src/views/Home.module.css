@@ -1,0 +1,257 @@
+/* Portada de escritorio: bloques del tamaño de la imagen (1536 × 1024
+   unidades) anclados a la izquierda, al centro y a la derecha. Sin z-index ni
+   transformaciones en los bloques, para que sus piezas se ordenen entre sí. */
+
+.stage {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.left,
+.center,
+.right {
+  position: absolute;
+  top: calc((100% - var(--u) * 1024) / 2);
+  width: calc(var(--u) * 1536);
+  height: calc(var(--u) * 1024);
+  pointer-events: none;
+}
+
+.left {
+  left: 0;
+}
+
+.center {
+  left: calc(50% - var(--u) * 768);
+}
+
+.right {
+  right: 0;
+}
+
+.left > *,
+.center > *,
+.right > * {
+  pointer-events: auto;
+}
+
+/* Sellos: tinta sobre el papel */
+.ink {
+  mix-blend-mode: multiply;
+  opacity: 0.92;
+}
+
+.cinta {
+  composes: cinta from global;
+  z-index: 45;
+}
+
+.anchor {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Frase editorial secundaria, en la nota rasgada */
+.cita {
+  position: absolute;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transform-origin: 50% 50%;
+}
+
+.cita blockquote {
+  margin: 0;
+}
+
+.cita p {
+  margin: 0;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 600;
+  font-size: calc(var(--u) * 18.5);
+  line-height: 1.18;
+  color: var(--granate);
+  text-wrap: balance;
+}
+
+.cita figcaption {
+  margin-top: calc(var(--u) * 10);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: max(11px, calc(var(--u) * 11.5));
+  letter-spacing: 0.06em;
+  color: var(--tinta);
+}
+
+.cita cite {
+  font-style: normal;
+}
+
+/* ——— Hero ——— */
+.hero {
+  position: absolute;
+  z-index: 30;
+}
+
+.etiqueta {
+  composes: rotulo from global;
+  margin: 0 0 calc(var(--u) * 18);
+  font-size: max(11px, calc(var(--u) * 13));
+}
+
+.titulo {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 780;
+  font-variation-settings: 'opsz' 96;
+  font-size: calc(var(--u) * 66);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--texto);
+  text-wrap: balance;
+}
+
+.titulo span,
+.titulo em {
+  display: block;
+}
+
+.titulo em {
+  font-style: normal;
+  color: var(--granate);
+}
+
+.texto {
+  max-width: calc(var(--u) * 470);
+  margin: calc(var(--u) * 22) 0 0;
+  font-family: var(--sans);
+  font-size: max(15px, calc(var(--u) * 19));
+  line-height: 1.55;
+  color: var(--texto);
+  text-wrap: pretty;
+}
+
+/* Botón: etiqueta de tela burdeos, presente pero por debajo del titular */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  min-height: max(44px, calc(var(--u) * 50));
+  margin-top: calc(var(--u) * 28);
+  padding: 0 1.4em;
+  color: var(--texto-claro);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: max(14px, calc(var(--u) * 16.5));
+  letter-spacing: 0.01em;
+  border: 0;
+  cursor: pointer;
+  background: url('../assets/textures/grain.svg'), linear-gradient(175deg, #7a2227, var(--granate-boton) 55%, #5b1418);
+  box-shadow:
+    0 calc(var(--u) * 2) calc(var(--u) * 3) rgb(40 10 5 / 0.22),
+    0 calc(var(--u) * 8) calc(var(--u) * 16) rgb(40 10 5 / 0.16);
+  transition: transform var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out);
+}
+
+.boton svg {
+  width: 1.1em;
+  height: 1.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .boton:hover {
+    transform: translateY(calc(var(--u) * -2));
+    box-shadow:
+      0 calc(var(--u) * 3) calc(var(--u) * 4) rgb(40 10 5 / 0.22),
+      0 calc(var(--u) * 14) calc(var(--u) * 22) rgb(40 10 5 / 0.18);
+  }
+  .boton:hover svg {
+    transform: translateX(calc(var(--u) * 3));
+  }
+}
+
+.boton:active {
+  transform: scale(0.97);
+}
+
+.boton:focus-visible {
+  outline: 2px solid var(--granate);
+  outline-offset: 4px;
+}
+
+/* ——— Anotaciones de archivo junto a las fotos ——— */
+.cardNote {
+  position: absolute;
+  z-index: 35;
+  font-size: max(14px, calc(var(--u) * 18));
+}
+
+.leader {
+  z-index: 35;
+}
+
+.pagina {
+  position: absolute;
+  z-index: 30;
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: max(11px, calc(var(--u) * 13));
+  letter-spacing: 0.12em;
+  color: var(--texto);
+}
+
+.paw {
+  z-index: 24;
+}
+
+/* Taza entera apoyada en la mesa: sombra de contacto */
+.taza img {
+  filter: drop-shadow(calc(var(--u) * 4) calc(var(--u) * 8) calc(var(--u) * 6) rgb(30 15 5 / 0.4));
+}
+
+/* Plantas apoyadas en la mesa: sombra corta de contacto */
+.plant img {
+  filter: drop-shadow(calc(var(--u) * 2) calc(var(--u) * 4) calc(var(--u) * 3) rgb(50 30 10 / 0.3));
+}
+
+/* Romero tumbado en la mesa: entra desde el borde izquierdo (el tallo queda
+   fuera de la pantalla) y se mete un poco bajo la polaroid de «Sobre mí».
+   El giro va en el hijo para que la sombra siga cayendo hacia abajo. */
+.romero {
+  filter: drop-shadow(calc(var(--u) * 2) calc(var(--u) * 5) calc(var(--u) * 3) rgb(50 30 10 / 0.32));
+}
+
+.romero > div:first-child {
+  rotate: 74deg;
+}
+
+/* Placa de linterna de cristal: objeto propio, sin marco de papel */
+.slide img {
+  transform: rotate(-7deg);
+  box-shadow:
+    0 calc(var(--u) * 2) calc(var(--u) * 3) rgb(30 20 10 / 0.3),
+    0 calc(var(--u) * 8) calc(var(--u) * 14) rgb(30 20 10 / 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton,
+  .boton svg {
+    transition: none;
+  }
+}

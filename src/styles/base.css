@@ -1,0 +1,227 @@
+/* Archivo Abierto · base: tokens, papel cuadriculado y utilidades */
+
+:root {
+  /* Colores medidos en la imagen 1 */
+  --papel: #e7dfd3;
+  --papel-claro: #efe9df;
+  --cuadricula: rgb(112 136 178 / 0.34);
+  --granate: #5e0e16;
+  --granate-boton: #6b1a1f;
+  --granate-pestana: #5a1b1c;
+  --pestana: #d9c8b0;
+  --tira: #e8decf;
+  --marino: #1f2e4d; /* azul marino: segundo acento de la paleta */
+  --tinta: #24365a; /* tinta de las anotaciones: azul marino */
+  --texto: #33291f;
+  --hilo: #b3141c;
+  --polaroid: #f7f5f0;
+  --negro: #1b1a19;
+
+  /* Dos familias: una grotesca con carácter para todo (titulares, marca,
+     textos) y Ibarra Real Nova en cursiva solo para las notas de archivo */
+  --sans: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
+  --notas: 'Ibarra Real Nova', Georgia, serif;
+
+  --u: 1px; /* lo fija la portada según el tamaño de la ventana */
+
+  /* ——— Design system (ver DESIGN.md) ——— */
+
+  /* Papel suelto (hojas, recortes, fichas) y cartulina */
+  --hoja-1: #fbf8f2;
+  --hoja-2: #f3eee4;
+  --cartulina-1: #e9dcc3;
+  --cartulina-2: #dccaa9;
+  /* cartulina clara: fichas que tienen que distinguirse del kraft */
+  --cartulina-clara-1: #f6eedf;
+  --cartulina-clara-2: #ece0c9;
+
+  /* Texto, de más a menos fuerte (--texto está arriba) */
+  --texto-2: #5a4c41; /* secundario: subtítulos, descripciones, «antes» */
+  --texto-3: #6f6155; /* terciario: metadatos y pies pequeños (AA sobre papel) */
+  --texto-claro: #f7efe6; /* sobre granate o marino */
+  --marino-claro: #e6ebf3; /* texto sobre etiquetas azul marino */
+  --error: #9a1f17;
+
+  /* Bordes rasgados: el papel suelto nunca es un rectángulo perfecto.
+     «ancho» para hojas apaisadas; «ficha» para piezas pequeñas o altas */
+  --rasgado-ancho: polygon(0 3%, 6% 0, 18% 2.5%, 31% 0.5%, 46% 2.5%, 60% 0, 74% 2%, 88% 0.4%, 100% 2.5%, 99% 30%, 100% 62%,
+      98.6% 100%, 84% 97.6%, 70% 100%, 55% 97.8%, 40% 99.6%, 24% 97.4%, 10% 99.8%, 0 97%, 1% 60%);
+  --rasgado-ficha: polygon(0.6% 2.2%, 12% 0.4%, 27% 1.8%, 44% 0, 61% 1.6%, 78% 0.2%, 99% 1.4%, 98.2% 22%, 100% 47%,
+      98.6% 73%, 99.6% 98.4%, 82% 99.6%, 63% 98%, 45% 100%, 26% 98.4%, 9% 99.8%, 0 98.6%, 1.4% 76%, 0 51%, 1.2% 25%);
+
+  /* Sombra de papel apoyado en la mesa (filter: funciona con los rasgados) */
+  --sombra-papel:
+    drop-shadow(0 1px 1.5px rgb(60 40 20 / 0.2)) drop-shadow(0 calc(var(--u) * 10) calc(var(--u) * 14) rgb(60 40 20 / 0.16));
+
+  /* Sombras de objetos con borde limpio: siempre dos capas (contacto + caída),
+     luz desde arriba a la izquierda y el mismo marrón cálido de la mesa */
+  --sombra-1: 0 1px 2px rgb(60 40 20 / 0.16), 0 6px 12px rgb(60 40 20 / 0.1); /* fichas pequeñas */
+  --sombra-2: 0 2px 3px rgb(60 40 20 / 0.16), 0 12px 24px rgb(60 40 20 / 0.13); /* hojas y tarjetas */
+  --sombra-3: 0 3px 5px rgb(60 40 20 / 0.18), 0 20px 36px rgb(60 40 20 / 0.16); /* levantado al pasar */
+  --sombra-boton: 0 2px 3px rgb(40 10 5 / 0.22), 0 8px 16px rgb(40 10 5 / 0.16);
+  --sombra-boton-alta: 0 4px 6px rgb(40 10 5 / 0.22), 0 14px 24px rgb(40 10 5 / 0.18);
+  --sombra-boton-baja: 0 1px 1px rgb(40 10 5 / 0.3), 0 3px 6px rgb(40 10 5 / 0.16);
+
+  /* Rótulos (etiquetas pequeñas en mayúsculas) */
+  --rotulo-peso: 650;
+  --rotulo-tracking: 0.14em;
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-asiento: cubic-bezier(0.2, 0.9, 0.3, 1.15); /* cae y se asienta */
+  --ease-rebote: cubic-bezier(0.3, 1.4, 0.5, 1); /* golpe de sello y pulsaciones */
+  --dur-pulsar: 80ms; /* al apretar un botón */
+  --dur-hover: 200ms; /* al pasar el ratón o enfocar */
+  --dur-media: 320ms; /* piezas que cambian de sitio (fichas, pestañas) */
+  --dur-entrada: 480ms; /* objetos que llegan a la mesa */
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Las imágenes no se arrastran ni se seleccionan */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--papel);
+  color: var(--texto);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Mesa de trabajo de madera con una gran hoja cuadriculada encima. Los
+   textos van siempre sobre la hoja (contraste); la madera asoma por los
+   bordes, bajo los objetos que se quedaron en la mesa. */
+.papel {
+  --celda: calc(var(--u) * 38.7);
+  --linea: max(1px, calc(var(--u) * 1.15));
+  --margen-x: clamp(10px, 3.4vw, 72px);
+  --margen-y: clamp(8px, 1.8vh, 22px);
+  position: relative;
+  background-color: #8a5f3e;
+  background-image: url('../assets/textures/mesa.webp');
+  /* textura continua: se repite sin costuras en las páginas largas */
+  background-size: 1500px auto;
+  background-position: center top;
+  background-repeat: repeat;
+}
+
+.papel::before {
+  content: '';
+  position: absolute;
+  inset: var(--margen-y) var(--margen-x) calc(var(--margen-y) * 1.4);
+  background-color: var(--papel);
+  background-image:
+    url('../assets/textures/fibres.svg'),
+    url('../assets/textures/grain.svg'),
+    linear-gradient(to right, var(--cuadricula) var(--linea), transparent var(--linea)),
+    linear-gradient(to bottom, var(--cuadricula) var(--linea), transparent var(--linea));
+  background-size:
+    900px 900px,
+    320px 320px,
+    var(--celda) var(--celda),
+    var(--celda) var(--celda);
+  background-position:
+    0 0,
+    0 0,
+    calc(50% + var(--u) * 27.5) calc(var(--u) * 30.7),
+    calc(50% + var(--u) * 27.5) calc(var(--u) * 30.7);
+  box-shadow:
+    0 1px 2px rgb(30 15 5 / 0.35),
+    0 10px 30px rgb(30 15 5 / 0.35);
+  rotate: -0.25deg;
+}
+
+/* Viñeteado suave de los bordes */
+.papel::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 75% at 50% 48%, transparent 60%, rgb(40 20 8 / 0.22) 100%);
+  z-index: 1;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--granate);
+  outline-offset: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ——— Piezas comunes del design system ———
+   Se usan desde los módulos con «composes: … from global». */
+
+/* Papel suelto rasgado: el papel va en ::before (con su rasgado) y la sombra
+   en el propio elemento, así lo que lleve encima (cinta, chinchetas) no se
+   recorta. Variables: --rasgado, --papel-1 y --papel-2. */
+.hoja-rasgada {
+  position: relative;
+  isolation: isolate;
+  filter: var(--sombra-papel);
+}
+
+.hoja-rasgada::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    url('../assets/textures/fibres.svg'),
+    url('../assets/textures/grain.svg'),
+    linear-gradient(170deg, var(--papel-1, var(--hoja-1)), var(--papel-2, var(--hoja-2)));
+  background-size:
+    900px 900px,
+    320px 320px,
+    auto;
+  clip-path: var(--rasgado, var(--rasgado-ancho));
+}
+
+/* Rótulo: etiqueta pequeña en mayúsculas, en granate */
+.rotulo {
+  font-family: var(--sans);
+  font-weight: var(--rotulo-peso);
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--granate);
+}
+
+/* Cinta adhesiva translúcida */
+.cinta {
+  position: absolute;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.18), transparent 40%),
+    url('../assets/textures/grain.svg'),
+    rgb(214 196 152 / 0.72);
+  box-shadow: 0 1px 2px rgb(60 40 20 / 0.12);
+  clip-path: polygon(0 6%, 4% 0, 9% 7%, 15% 1%, 22% 6%, 30% 0, 100% 3%, 97% 30%, 100% 55%, 96% 80%, 100% 100%, 70% 96%, 60% 100%, 45% 95%, 30% 100%, 12% 96%, 0 100%, 3% 70%, 0 45%, 4% 22%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}

@@ -1,0 +1,57 @@
+/* Polaroid en miniatura: marco de papel, foto y el nombre de la sección */
+.mini {
+  position: absolute;
+  z-index: 30;
+  display: grid;
+  gap: 0.35em;
+  padding: 0.45em 0.45em 0.55em;
+  font-size: max(11px, calc(var(--u) * 13));
+  text-decoration: none;
+  color: var(--texto);
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(170deg, var(--hoja-1), var(--polaroid) 60%, var(--hoja-2));
+  box-shadow: var(--sombra-2);
+  transition:
+    translate var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.foto {
+  display: block;
+  aspect-ratio: 1.15;
+  overflow: hidden;
+  background: var(--cartulina-clara-2);
+}
+
+.foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nombre {
+  font-weight: 650;
+  font-size: 1em;
+  line-height: 1.1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mini:hover {
+    translate: 0 calc(var(--u) * -4);
+    box-shadow: var(--sombra-3);
+  }
+}
+
+.mini:focus-visible {
+  outline: 2px solid var(--marino);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini {
+    transition: none;
+  }
+}

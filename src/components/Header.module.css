@@ -1,0 +1,346 @@
+/* Cabecera transparente con índice tipo fichero de biblioteca */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1.6em;
+  z-index: 70;
+}
+
+.stage {
+  position: absolute;
+  font-size: max(12.5px, calc(var(--u) * 15));
+}
+
+/* ——— Marca ——— */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 44px;
+  text-decoration: none;
+  color: var(--granate);
+}
+
+.logo {
+  display: block;
+  width: 1.75em;
+  flex: none;
+}
+
+.logo :global(svg) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.name {
+  font-family: var(--sans);
+  font-variation-settings: 'opsz' 48;
+  font-weight: 760;
+  font-size: 1.7em;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* ——— Índice ——— */
+.nav {
+  position: relative;
+}
+
+.trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  min-height: 44px;
+  padding: 0 0.45em;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--texto);
+  font-family: var(--sans);
+  font-weight: var(--rotulo-peso);
+  font-size: 0.82em;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+}
+
+/* Índice e idioma van juntos sobre un recorte de papel rasgado */
+.derecha {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 0.6em 0 0.5em;
+  isolation: isolate;
+  rotate: -1.4deg;
+}
+
+.recorte {
+  position: absolute;
+  inset: 0.3em 0;
+  z-index: -1;
+  filter: drop-shadow(0 1px 1px rgb(60 40 20 / 0.22)) drop-shadow(0 4px 6px rgb(60 40 20 / 0.14));
+}
+
+.recorte::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(172deg, var(--hoja-1), #f2ece1);
+  clip-path: polygon(0.8% 8%, 14% 0, 31% 6%, 48% 1%, 66% 7%, 83% 0, 99% 5%, 97.6% 32%, 100% 58%, 98% 82%, 99.4% 100%,
+      82% 95%, 64% 100%, 46% 94%, 29% 99%, 12% 93%, 0 100%, 1.6% 72%, 0 46%, 1.8% 24%);
+}
+
+/* Trocito de cinta que lo sujeta */
+.derecha::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0.05em;
+  left: 50%;
+  width: 2.8em;
+  height: 0.95em;
+  translate: -50% 0;
+  rotate: 5deg;
+  background: rgb(221 208 180 / 0.82);
+  clip-path: polygon(0 10%, 6% 0, 12% 12%, 88% 0, 94% 12%, 100% 2%, 100% 90%, 94% 100%, 88% 88%, 12% 100%, 6% 88%, 0 96%);
+}
+
+.trigger::after {
+  content: '';
+  position: absolute;
+  left: 0.45em;
+  right: 0.45em;
+  bottom: 0.7em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.open .trigger,
+.trigger:hover {
+  color: var(--granate);
+}
+
+.open .trigger::after {
+  transform: scaleX(1);
+}
+
+.icon {
+  width: 1.45em;
+  height: 1.15em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* ——— Idioma: ES / EN, separado del índice por una línea fina ——— */
+.idioma {
+  display: flex;
+  align-items: center;
+  margin-left: 0.2em;
+}
+
+.idioma::before {
+  content: '';
+  width: 1px;
+  height: 1.1em;
+  margin-right: 0.25em;
+  background: rgb(58 45 36 / 0.25);
+}
+
+.lang {
+  min-width: 2.5em;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--texto-2);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.78em;
+  letter-spacing: 0.12em;
+  text-underline-offset: 0.35em;
+  text-decoration-thickness: 1.5px;
+}
+
+.lang[aria-pressed='true'] {
+  color: var(--granate);
+  text-decoration-line: underline;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lang:hover {
+    color: var(--granate);
+  }
+}
+
+/* Fichas: salen del fichero una tras otra */
+.cards {
+  position: absolute;
+  top: calc(100% - 0.2em);
+  left: -0.4em;
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.open .cards {
+  pointer-events: auto;
+}
+
+.cards li {
+  margin-top: -0.3em;
+  opacity: 0;
+  transform: translateY(-1.4em) rotate(calc((var(--i) - 1.5) * 0.7deg));
+  visibility: hidden;
+  transition:
+    opacity var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out),
+    visibility 0s var(--dur-hover);
+}
+
+.open .cards li {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) rotate(calc((var(--i) - 1.5) * 0.7deg));
+  transition:
+    opacity var(--dur-hover) calc(var(--i) * 45ms) var(--ease-out),
+    transform var(--dur-media) calc(var(--i) * 45ms) var(--ease-out),
+    visibility 0s;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  width: 13.5em;
+  min-height: 44px;
+  padding: 0.55em 1em;
+  text-decoration: none;
+  color: var(--texto);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.05em;
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(176deg, #faf6ef, #e9e0d0);
+  border: 1px solid rgb(120 95 70 / 0.22);
+  box-shadow: var(--sombra-1);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.num {
+  width: 1.5em;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.72em;
+  letter-spacing: 0.1em;
+  color: var(--granate);
+}
+
+.card.active {
+  color: var(--granate);
+  font-weight: 700;
+}
+
+.card.active::after {
+  content: '';
+  position: absolute;
+  right: 1em;
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: var(--granate);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateX(0.5em);
+  }
+}
+
+.card:focus-visible {
+  transform: translateX(0.5em);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tira,
+  .trigger::after,
+  .cards li,
+  .open .cards li,
+  .card {
+    transition: none;
+  }
+}
+
+/* En flujo: móvil, tableta y páginas interiores. Fija arriba al hacer scroll */
+.flow {
+  position: sticky;
+  top: 0;
+  justify-content: space-between;
+  padding: 12px 16px 0;
+  font-size: 15px;
+}
+
+@media (min-width: 900px) {
+  .flow {
+    justify-content: flex-start;
+    padding: 22px 40px 0;
+  }
+}
+
+/* Tira de papel rasgada (solo por abajo) que aparece detrás al bajar, para
+   que la cabecera se lea sobre lo que pasa por debajo */
+.tira {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 -10px;
+  opacity: 0;
+  translate: 0 -8px;
+  filter: var(--sombra-papel);
+  pointer-events: none;
+  transition:
+    opacity var(--dur-hover) var(--ease-out),
+    translate var(--dur-hover) var(--ease-out);
+}
+
+.tira::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(176deg, var(--hoja-1), var(--hoja-2));
+  clip-path: polygon(0 0, 100% 0, 100% 86%, 93% 92%, 85% 86%, 76% 93%, 66% 87%, 55% 94%, 44% 88%, 33% 95%, 22% 88%,
+      12% 94%, 4% 88%, 0 93%);
+}
+
+.pegada .tira {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.flow .cards {
+  left: auto;
+  right: -0.4em;
+}
+
+@media (min-width: 900px) {
+  .flow .cards {
+    left: -0.4em;
+    right: auto;
+  }
+}

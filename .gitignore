@@ -1,0 +1,26 @@
+# Dependencias y compilados (Vercel los genera solo)
+node_modules
+dist
+dist-autonomo
+*.tsbuildinfo
+
+# Versión de doble clic: se genera con npm run build:autonomo
+Marian Portfolio.html
+
+# Material de trabajo privado
+source
+.impeccable
+
+# Sistema y variables locales
+.DS_Store
+Thumbs.db
+desktop.ini
+.env*
+.vercel
+
+# Cachés de Python
+__pycache__
+*.pyc
+
+# Scripts de capturas con rutas locales
+scripts/capturas*.mjs

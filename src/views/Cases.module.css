@@ -1,0 +1,550 @@
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px 28px;
+  margin-bottom: clamp(24px, 4vh, 44px);
+  text-align: center;
+}
+
+.sub {
+  rotate: -2deg;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+
+/* ——— Índice ——— */
+.index {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  padding: 24px 18px 20px;
+  rotate: -1deg;
+}
+
+/* Rótulo de ficha: en granate, con una raya fina debajo */
+.indexTitle {
+  composes: rotulo from global;
+  margin: 0 0 6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgb(60 40 20 / 0.3);
+  font-size: 12px;
+}
+
+.index ol {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.index li + li {
+  border-top: 1px solid rgb(60 40 20 / 0.18);
+}
+
+.indexItem {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 6px;
+  text-decoration: none;
+  color: var(--texto);
+}
+
+.indexName {
+  display: block;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.indexCat {
+  display: block;
+  font-size: 13.5px;
+  color: var(--texto-2);
+}
+
+.indexItem.active .indexName {
+  color: var(--granate);
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+  .indexItem:not(.active):hover .indexName {
+    color: var(--granate);
+  }
+}
+
+/* Números de caso: azul marino (son números de archivo) */
+.num {
+  font-weight: 650;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--marino);
+}
+
+/* ——— Carpeta ——— */
+.folder {
+  min-width: 0;
+}
+
+.carpeta {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Tapa trasera de la carpeta, azul marino, asomando por detrás de la hoja */
+.tapa {
+  position: absolute;
+  z-index: -1;
+  top: 26px;
+  left: -10px;
+  right: 8px;
+  bottom: -12px;
+  border-radius: 5px;
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(160deg, #2c3e63, var(--marino) 55%, #182540);
+  box-shadow:
+    0 3px 4px rgb(20 25 40 / 0.3),
+    0 16px 30px rgb(20 25 40 / 0.2);
+  rotate: -0.8deg;
+}
+
+/* Pestañas de cartulina azul marino; la abierta es la hoja */
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding-left: 22px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 20px 0 16px;
+  text-decoration: none;
+  font-weight: 650;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--marino-claro);
+  background: url('../assets/textures/grain.svg'), linear-gradient(180deg, #3a4f78, #2a3b5f);
+  clip-path: polygon(0 100%, 0 14%, 4% 0, 88% 0, 100% 100%);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.tab .num {
+  color: #b9c6dd;
+}
+
+.tabActive {
+  color: var(--granate);
+  background: url('../assets/textures/grain.svg'), linear-gradient(180deg, #faf6ef, #f9f5ee);
+}
+
+.tabActive .num {
+  color: var(--marino);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tab:not(.tabActive):hover {
+    transform: translateY(-3px);
+  }
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(20px, 3vw, 44px);
+  padding: clamp(26px, 3.5vw, 48px);
+  background:
+    url('../assets/textures/fibres.svg'),
+    url('../assets/textures/grain.svg'),
+    linear-gradient(176deg, #f9f5ee, #efe8dc);
+  background-size: 900px 900px, 320px 320px, auto;
+  box-shadow: var(--sombra-2);
+  animation: hoja 480ms var(--ease-out) both;
+}
+
+.bigNum {
+  margin: 0;
+  font-weight: 760;
+  font-size: clamp(30px, 3.2vw, 44px);
+  letter-spacing: -0.03em;
+  color: var(--marino);
+}
+
+.caseTitle {
+  margin: 0;
+  font-weight: 780;
+  font-variation-settings: 'opsz' 96;
+  font-size: clamp(40px, 5vw, 70px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--granate);
+  outline: none;
+}
+
+/* Categoría en azul marino, con una raya delante */
+.cat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 0;
+  font-weight: var(--rotulo-peso);
+  font-size: 12.5px;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--marino);
+}
+
+.cat::before {
+  content: '';
+  flex: none;
+  width: 20px;
+  height: 2px;
+  background: var(--marino);
+}
+
+.desc {
+  margin: 16px 0 0;
+  max-width: 30em;
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--texto);
+}
+
+.claves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 10px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.claves li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Cada clave, una tira de rotuladora (tipo Dymo) azul marino con las letras en relieve */
+.claves span {
+  display: block;
+  padding: 0.38em 0.8em 0.32em;
+  font-weight: var(--rotulo-peso);
+  font-size: 11.5px;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--marino-claro);
+  text-shadow:
+    0 -1px 0 rgb(0 0 0 / 0.45),
+    0 1px 0 rgb(255 255 255 / 0.16);
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(180deg, #34497a, var(--marino) 55%, #19253f);
+  box-shadow:
+    0 1px 1px rgb(20 25 40 / 0.35),
+    0 3px 5px rgb(20 25 40 / 0.18);
+  clip-path: polygon(1.5% 0, 100% 0, 98.5% 100%, 0 100%);
+}
+
+.claves li:nth-child(odd) {
+  rotate: -1.2deg;
+}
+
+.claves li:nth-child(even) {
+  rotate: 1deg;
+}
+
+
+/* Sello de tampón azul marino */
+.pending {
+  display: inline-block;
+  margin: 28px 0 0;
+  padding: 8px 14px;
+  font-weight: var(--rotulo-peso);
+  font-size: 12px;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--marino);
+  border: 3.5px double rgb(31 46 77 / 0.8);
+  border-radius: 4px;
+  opacity: 0.85;
+  rotate: -4deg;
+}
+
+/* Abrir el expediente completo: botón granate, como el resto de llamadas */
+.abrir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  min-height: 44px;
+  margin-top: 28px;
+  padding: 0 1.3em;
+  color: var(--texto-claro);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  background: url('../assets/textures/grain.svg'), linear-gradient(175deg, #7a2227, var(--granate-boton) 55%, #5b1418);
+  box-shadow: var(--sombra-boton);
+  rotate: -1.5deg;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.abrir svg {
+  width: 1.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .abrir:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* ——— Fotos vacías ——— */
+.visual {
+  position: relative;
+  min-height: 340px;
+}
+
+.photo {
+  position: relative;
+  padding: 12px 12px 34px;
+  background: url('../assets/textures/grain.svg'), linear-gradient(170deg, #fbfaf7, var(--polaroid) 60%, #f0ede7);
+  box-shadow: var(--sombra-2);
+  rotate: 2deg;
+  animation: cae 640ms 220ms var(--ease-asiento) both;
+}
+
+.photoArea {
+  aspect-ratio: 4 / 3;
+  background:
+    url('../assets/textures/grain.svg'),
+    radial-gradient(ellipse 90% 80% at 40% 35%, #d8cfc1, #cbc0af 75%, #c2b6a4);
+  box-shadow: inset 0 0 12px rgb(60 40 20 / 0.18);
+}
+
+/* Con foto del caso (dispositivos sin fondo), el papel de la polaroid queda limpio */
+.photoArea:has(img) {
+  background: none;
+  box-shadow: none;
+}
+
+.photoArea img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoSmall {
+  position: absolute;
+  width: 46%;
+  right: -4%;
+  bottom: -10%;
+  padding-bottom: 22px;
+  rotate: -5deg;
+  animation-delay: 420ms;
+}
+
+/* Clip azul marino sobre el borde de la foto pequeña */
+.clip {
+  position: absolute;
+  top: -20px;
+  left: 18%;
+  width: 15px;
+  fill: none;
+  stroke: var(--marino);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  rotate: 8deg;
+  filter: drop-shadow(1px 2px 1px rgb(20 25 40 / 0.3));
+}
+
+.caseNote {
+  position: absolute;
+  left: 0;
+  bottom: -6%;
+  rotate: -3deg;
+}
+
+/* ——— Paginador ——— */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.arrow {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1.2px solid var(--marino);
+  border-radius: 50%;
+  color: var(--marino);
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+/* El círculo es pequeño, pero la zona que se puede pulsar sigue midiendo 44 px */
+.arrow::before {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 44px;
+  height: 44px;
+  translate: -50% -50%;
+}
+
+.arrow svg {
+  width: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .arrow:hover {
+    color: var(--texto-claro);
+    background-color: var(--marino);
+  }
+}
+
+.count {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  color: var(--marino);
+}
+
+@media (max-width: 480px) {
+  .tabs {
+    gap: 4px;
+    padding-left: 8px;
+  }
+  .tab {
+    gap: 6px;
+    height: 38px;
+    padding: 0 14px 0 10px;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (max-width: 899px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  /* En columna las pestañas de la carpeta hacen de índice */
+  .index {
+    display: none;
+  }
+  .tabs {
+    padding-left: 14px;
+  }
+  .body {
+    grid-template-columns: 1fr;
+  }
+  .visual {
+    min-height: 0;
+    max-width: 460px;
+    margin: 10px 8% 0 0;
+  }
+  .caseNote {
+    position: static;
+    margin-top: 64px;
+  }
+}
+
+/* ——— Entrada de cada caso (igual que en escritorio) ——— */
+@keyframes hoja {
+  from {
+    opacity: 0;
+    transform: translate(18px, -4px) rotate(0.8deg);
+  }
+}
+
+.info > * {
+  animation: aparece 460ms var(--ease-out) both;
+}
+
+.info > :nth-child(2) {
+  animation-delay: 60ms;
+}
+.info > :nth-child(3) {
+  animation-delay: 120ms;
+}
+.info > :nth-child(4) {
+  animation-delay: 180ms;
+}
+.info > :nth-child(5) {
+  animation-delay: 240ms;
+}
+
+.info > .pending {
+  animation: sello 420ms 800ms var(--ease-rebote) both;
+}
+
+@keyframes aparece {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@keyframes cae {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) rotate(7deg) scale(1.06);
+  }
+  55% {
+    opacity: 1;
+  }
+}
+
+@keyframes sello {
+  from {
+    opacity: 0;
+    scale: 1.9;
+  }
+  to {
+    opacity: 0.85;
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab,
+  .arrow {
+    transition: none;
+  }
+
+  .body,
+  .info > *,
+  .info > .pending,
+  .photo {
+    animation: none;
+  }
+}

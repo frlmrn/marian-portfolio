@@ -1,0 +1,68 @@
+.target {
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+/* Con la ficha abierta, el objeto sube por encima de tarjetas y cabecera */
+:global(*):has(> .open) {
+  z-index: 85 !important;
+}
+
+/* Ficha de papel con la frase */
+.tip {
+  position: absolute;
+  z-index: 80;
+  display: grid;
+  gap: 0.15em;
+  width: max-content;
+  max-width: 21em;
+  padding: 0.45em 0.7em 0.5em;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: max(12.5px, calc(var(--u) * 13.5));
+  line-height: 1.22;
+  color: var(--texto);
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(176deg, #fcf9f4, var(--hoja-2));
+  border: 1px solid rgb(120 95 70 / 0.16);
+  box-shadow: var(--sombra-1);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(0.4em) rotate(-1deg);
+  transition:
+    opacity 140ms var(--ease-out),
+    transform var(--dur-hover) var(--ease-out);
+}
+
+.end {
+  translate: -100% 0;
+}
+
+.open {
+  opacity: 1;
+  transform: translateY(0) rotate(-1deg);
+}
+
+.line {
+  display: block;
+}
+
+.autor {
+  margin-top: 0.2em;
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.7em;
+  letter-spacing: 0.04em;
+  color: var(--granate);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip {
+    transition: none;
+    transform: rotate(-1deg);
+  }
+}

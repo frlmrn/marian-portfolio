@@ -1,0 +1,176 @@
+/* «Sobre mí» en escritorio, en unidades de la imagen (--u). Los objetos
+   (fichero, caja, diplomas) van en em, escalados con el font-size. */
+
+.intro {
+  composes: hoja-rasgada from global;
+  position: absolute;
+  z-index: 30;
+  padding: calc(var(--u) * 40) calc(var(--u) * 40) calc(var(--u) * 44) calc(var(--u) * 76);
+  rotate: -2.2deg;
+  font-size: max(11.5px, calc(var(--u) * 15));
+}
+
+.title {
+  margin: 0;
+  font-weight: 780;
+  font-variation-settings: 'opsz' 96;
+  font-size: calc(var(--u) * 46);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--texto);
+}
+
+.rol {
+  margin: 0.45em 0 0;
+  font-weight: 650;
+  font-size: 1.05em;
+  color: var(--marino);
+}
+
+/* La frase con gancho, en la cursiva de las notas; la segunda parte en granate */
+.gancho {
+  /* igual que el texto de presentación: misma letra, tamaño y peso */
+  margin-bottom: 0.6em;
+}
+
+.gancho strong {
+  display: block;
+  font-weight: inherit;
+}
+
+.lead {
+  margin: 0.9em 0 0;
+  font-size: 1.05em;
+  line-height: 1.55;
+  color: var(--texto);
+}
+
+.objeto {
+  position: absolute;
+  z-index: 30;
+  font-size: max(11.5px, calc(var(--u) * 15.5));
+}
+
+/* Disposición imperfecta: cada objeto algo girado */
+.cajon {
+  rotate: 1.8deg;
+}
+
+.carpeta {
+  rotate: -2.6deg;
+}
+
+.formacion {
+  rotate: 1deg;
+}
+
+
+/* Retrato: recorte de papel en blanco y negro, bordes de tijera */
+.retrato {
+  position: absolute;
+  z-index: 33;
+  margin: 0;
+  filter: drop-shadow(calc(var(--u) * 3) calc(var(--u) * 7) calc(var(--u) * 6) rgb(40 25 10 / 0.3));
+  rotate: -5deg;
+}
+
+.retrato img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: polygon(1% 2%, 22% 0.5%, 47% 1.8%, 71% 0, 98.5% 1.5%, 99.5% 24%, 98% 52%, 100% 78%, 98.8% 99%,
+      74% 98%, 51% 100%, 27% 98.4%, 2% 99.6%, 0 74%, 1.6% 49%, 0.2% 25%);
+}
+
+/* Post-its pegados en una esquina de cada objeto */
+.postitCajon,
+.postitCarpeta,
+.postitDiplomas {
+  position: absolute;
+  font-size: 0.92em;
+}
+
+.postitCajon {
+  left: -4.2em;
+  bottom: -1.4em;
+  rotate: -5deg;
+}
+
+.postitCarpeta {
+  left: -3.6em;
+  bottom: -1.6em;
+  rotate: -6deg;
+}
+
+.postitDiplomas {
+  /* pegado a la esquina del primer diploma */
+  left: -5.5em;
+  top: 1em;
+  rotate: -6deg;
+}
+
+.cta {
+  position: relative;
+  z-index: 30;
+  display: inline-flex;
+  margin-top: calc(var(--u) * 26);
+  align-items: center;
+  gap: 0.6em;
+  min-height: max(44px, calc(var(--u) * 50));
+  padding: 0 1.4em;
+  color: var(--texto-claro);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: max(14px, calc(var(--u) * 16.5));
+  background: url('../assets/textures/grain.svg'), linear-gradient(175deg, #7a2227, var(--granate-boton) 55%, #5b1418);
+  box-shadow:
+    0 calc(var(--u) * 2) calc(var(--u) * 3) rgb(40 10 5 / 0.22),
+    0 calc(var(--u) * 8) calc(var(--u) * 16) rgb(40 10 5 / 0.16);
+  transition: transform var(--dur-hover) var(--ease-out);
+  rotate: -1.5deg;
+}
+
+.cta svg {
+  width: 1.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cta:hover {
+    transform: translateY(calc(var(--u) * -2));
+  }
+}
+
+.nota {
+  position: absolute;
+  z-index: 35;
+  margin: 0;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: max(14px, calc(var(--u) * 19));
+  line-height: 1.25;
+  color: var(--tinta);
+  rotate: 6deg;
+}
+
+.nota span {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta {
+    transition: none;
+  }
+}
+
+.anchor {
+  position: absolute;
+  width: 0;
+  height: 0;
+}

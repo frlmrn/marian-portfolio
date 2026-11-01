@@ -1,0 +1,44 @@
+.threads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.thread,
+.shadow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  animation: draw var(--d) var(--t) cubic-bezier(0.55, 0, 0.35, 1) both;
+}
+
+.thread {
+  stroke: var(--hilo);
+}
+
+.shadow {
+  stroke: rgb(50 15 5 / 0.18);
+  stroke-width: 2.5px;
+  transform: translate(1px, 2.5px);
+  filter: blur(1px);
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thread,
+  .shadow {
+    animation: none;
+  }
+}

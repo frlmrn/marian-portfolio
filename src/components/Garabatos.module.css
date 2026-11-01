@@ -1,0 +1,79 @@
+/* Trozos de papel roto con bocetos a tinta, entrando por los bordes */
+.garabatos {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.papel {
+  composes: hoja-rasgada from global;
+  --rasgado: polygon(3% 4%, 18% 0, 36% 5%, 55% 1%, 72% 6%, 90% 0, 100% 9%, 96% 30%, 100% 52%, 95% 74%, 99% 96%, 78% 100%, 60% 94%,
+      40% 100%, 22% 95%, 6% 100%, 0 82%, 4% 60%, 0 38%, 3% 18%);
+  --papel-1: var(--hoja-1);
+  --papel-2: var(--hoja-2);
+  position: absolute;
+  padding: 16px 16px 12px;
+}
+
+/* Entran desde el borde de la pantalla, cortados por él, como la pata de gato */
+.izq {
+  left: calc((100% - 100vw) / 2 - 40px);
+}
+
+.der {
+  right: calc((100% - 100vw) / 2 - 40px);
+}
+
+.tinta {
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: none;
+  stroke: var(--texto);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+}
+
+.fino {
+  stroke-width: 0.6;
+}
+
+.discontinuo {
+  stroke: var(--granate);
+  stroke-dasharray: 3 2.5;
+}
+
+.relleno {
+  fill: rgb(31 46 77 / 0.08);
+}
+
+.rojo {
+  stroke: var(--granate);
+  stroke-width: 1.4;
+}
+
+.punto {
+  fill: var(--texto);
+  stroke: none;
+}
+
+.nota {
+  margin: 6px 0 0;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.2;
+  color: var(--tinta);
+}
+
+/* Solo cuando hay margen para ellos */
+@media (max-width: 1099px) {
+  .garabatos {
+    display: none;
+  }
+}

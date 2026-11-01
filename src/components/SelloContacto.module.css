@@ -1,0 +1,76 @@
+/* Sello de goma en la mesa, asomando por detrás de la polaroid: tinta azul marino y algo girado */
+.sello {
+  position: absolute;
+  z-index: 39;
+  display: block;
+  aspect-ratio: 1;
+  color: var(--marino);
+  rotate: -14deg;
+  opacity: 0.94;
+  mix-blend-mode: multiply;
+  border-radius: 50%;
+  transition:
+    scale var(--dur-hover) var(--ease-out),
+    opacity var(--dur-hover) var(--ease-out);
+}
+
+.sello svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.aro {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.2;
+}
+
+.aroFino {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+
+.arco {
+  fill: currentColor;
+  font-family: var(--sans);
+  font-size: 10.4px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.icono {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.centro {
+  fill: currentColor;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sello:hover {
+    scale: 1.06;
+    opacity: 1;
+  }
+}
+
+.sello:focus-visible {
+  outline: 2px solid var(--granate);
+  outline-offset: 4px;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sello {
+    transition: none;
+  }
+}

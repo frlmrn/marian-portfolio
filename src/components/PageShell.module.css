@@ -1,0 +1,245 @@
+.page {
+  --u: 1px;
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  /* clip (y no hidden) para que la cabecera pueda quedarse fija al hacer scroll */
+  overflow: clip;
+}
+
+/* En las páginas largas la hoja va recta: girada, su borde se desplaza con la
+   altura y el texto acabaría encima de la madera */
+.page::before {
+  rotate: 0deg;
+}
+
+.main {
+  position: relative;
+  z-index: 5;
+  width: min(1200px, 100% - 32px);
+  margin: 0 auto;
+  padding: clamp(28px, 5vh, 56px) 0 clamp(64px, 9vh, 110px);
+}
+
+.numero {
+  position: absolute;
+  z-index: 6;
+  top: 30px;
+  /* a la izquierda de la taza, sin que la tape */
+  right: clamp(104px, 15vw, 230px);
+  margin: 0;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--texto);
+}
+
+/* Objetos de la mesa: entran cortados por los bordes */
+.chai {
+  position: absolute;
+  z-index: 2;
+  top: -26px;
+  right: clamp(-34px, calc(3.4vw - 60px), 6px);
+  width: clamp(120px, 12vw, 180px);
+  cursor: pointer;
+}
+
+.chai img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(4px 8px 6px rgb(30 15 5 / 0.4));
+}
+
+.romero {
+  position: absolute;
+  z-index: 2;
+  left: -20px;
+  bottom: 40px;
+  width: clamp(64px, 6vw, 96px);
+  rotate: 74deg;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(2px 5px 3px rgb(50 30 10 / 0.3));
+  pointer-events: none;
+}
+
+@media (max-width: 899px) {
+  .chai {
+    display: none;
+  }
+  .numero {
+    top: 72px;
+    right: 16px;
+  }
+}
+
+/* ——— Piezas comunes ——— */
+
+/* Hoja de papel sobre la mesa */
+.sheet {
+  position: relative;
+  background:
+    url('../assets/textures/fibres.svg'),
+    url('../assets/textures/grain.svg'),
+    linear-gradient(170deg, #faf6ef, #f1eadf);
+  background-size: 900px 900px, 320px 320px, auto;
+  box-shadow: var(--sombra-2);
+}
+
+.eyebrow {
+  composes: rotulo from global;
+  margin: 0 0 16px;
+  font-size: 12px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 780;
+  font-variation-settings: 'opsz' 96;
+  font-size: clamp(38px, 5.2vw, 72px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--granate);
+  text-wrap: balance;
+}
+
+.lead {
+  margin: 22px 0 0;
+  max-width: 34em;
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.55;
+  color: var(--texto);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 24px;
+  border: 0;
+  cursor: pointer;
+  color: var(--texto-claro);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 16px;
+  background: url('../assets/textures/grain.svg'), linear-gradient(175deg, #7a2227, var(--granate-boton) 55%, #5b1418);
+  box-shadow: var(--sombra-boton);
+  transition:
+    transform var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button svg {
+  transition: translate var(--dur-hover) var(--ease-out);
+}
+
+.button svg {
+  width: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-boton-alta);
+  }
+  /* la flecha se adelanta un poco: invita a seguir */
+  .button:hover svg {
+    translate: 3px 0;
+  }
+}
+
+.button:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: var(--sombra-boton-baja);
+  transition-duration: var(--dur-pulsar);
+}
+
+/* Anotación de archivo (Ibarra cursiva) */
+.note {
+  margin: 0;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--tinta);
+}
+
+.note span {
+  display: block;
+}
+
+/* Cinta adhesiva */
+.tape {
+  composes: cinta from global;
+  z-index: 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}
+
+/* ——— Volver arriba: un recorte de papel con la flecha en azul marino ——— */
+.arriba {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  position: fixed;
+  z-index: 60;
+  right: clamp(14px, 3vw, 40px);
+  bottom: clamp(14px, 3vh, 34px);
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--marino);
+  cursor: pointer;
+  rotate: -4deg;
+  opacity: 0;
+  translate: 0 16px;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-hover) var(--ease-out),
+    translate var(--dur-hover) var(--ease-out);
+}
+
+.arriba svg {
+  width: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.arribaVisible {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .arribaVisible:hover {
+    translate: 0 -4px;
+    color: var(--granate);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arriba {
+    transition: none;
+  }
+}

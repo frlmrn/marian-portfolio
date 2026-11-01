@@ -1,0 +1,1937 @@
+/* Expediente completo de un caso: una página de objetos de archivo sobre la
+   mesa (ver DESIGN.md). Nada de texto suelto sobre la cuadrícula: cada texto
+   va en papel (nota rasgada, ficha, post-it, recorte) o en un objeto con
+   pestañas (cajón de fichero y carpeta de Sobre mí, reutilizados). */
+
+/* ——— Las piezas aparecen al llegar a ellas ——— */
+[data-revela] {
+  opacity: 0;
+  translate: 0 26px;
+  transition:
+    opacity 700ms var(--ease-out),
+    translate 700ms var(--ease-asiento);
+}
+
+[data-revela].vista {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ——— Volver ——— */
+.migas {
+  margin-bottom: 18px;
+}
+
+.final {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 100px;
+}
+
+/* Siguiente caso: una ficha que se puede pulsar */
+.siguienteCaso {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  min-width: min(100%, 320px);
+  padding: 20px 64px 20px 24px;
+  text-decoration: none;
+  color: var(--texto);
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(172deg, #fcfaf5, var(--hoja-2));
+  box-shadow: var(--sombra-2);
+  rotate: 1deg;
+  transition: translate var(--dur-hover) var(--ease-out);
+}
+
+.siguienteNombre {
+  font-weight: 780;
+  font-size: 26px;
+  letter-spacing: -0.03em;
+  color: var(--granate);
+}
+
+.siguienteDesc {
+  font-size: 15px;
+  color: var(--texto-2);
+}
+
+/* El anterior, con la flecha a la izquierda y algo girado al otro lado */
+.anteriorCaso {
+  padding: 20px 24px 20px 64px;
+  text-align: right;
+  rotate: -1deg;
+}
+
+.anteriorCaso svg {
+  right: auto !important;
+  left: 22px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .anteriorCaso:hover {
+    translate: -6px 0 !important;
+  }
+}
+
+.siguienteCaso svg {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  width: 26px;
+  translate: 0 -50%;
+  fill: none;
+  stroke: var(--marino);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .siguienteCaso:hover {
+    translate: 6px 0;
+  }
+}
+
+.volver {
+  composes: rotulo from global;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.volver svg {
+  width: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .volver:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+}
+
+/* ——— Portada ——— */
+.portada {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+}
+
+.hoja {
+  composes: hoja-rasgada from global;
+  padding: clamp(34px, 4vw, 56px) clamp(26px, 4vw, 52px) clamp(36px, 4vw, 54px);
+  rotate: -1.2deg;
+}
+
+.rotulo {
+  composes: rotulo from global;
+  margin: 0 0 14px;
+  font-size: 12.5px;
+}
+
+.h1 {
+  margin: 0;
+  font-weight: 780;
+  font-variation-settings: 'opsz' 96;
+  font-size: clamp(44px, 6vw, 84px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--granate);
+}
+
+.categoria {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 0;
+  font-weight: var(--rotulo-peso);
+  font-size: 12.5px;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--marino);
+}
+
+.categoria::before {
+  content: '';
+  flex: none;
+  width: 22px;
+  height: 2px;
+  background: var(--marino);
+}
+
+.lead {
+  margin: 18px 0 0;
+  max-width: 32em;
+  font-size: clamp(16px, 1.3vw, 18.5px);
+  line-height: 1.55;
+}
+
+.dymo {
+  composes: claves from './Cases.module.css';
+}
+
+/* Datos del proyecto en la cabecera: rol, equipo, contexto, herramientas */
+.meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 22px;
+  margin: 24px 0 0;
+  border-top: 1px solid rgb(60 40 20 / 0.25);
+}
+
+.meta > div {
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(60 40 20 / 0.14);
+}
+
+.meta dt {
+  font-weight: var(--rotulo-peso);
+  font-size: 11px;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--marino);
+}
+
+.meta dd {
+  margin: 3px 0 0;
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+
+/* El resultado, en un post-it pegado sobre las capturas */
+.resultadoPortada {
+  position: absolute;
+  left: -4%;
+  bottom: -26px;
+  z-index: 3;
+  width: min(62%, 290px);
+}
+
+.etqNota {
+  margin: 0 0 0.4em !important;
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: var(--rotulo-peso);
+  font-size: 11px !important;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--granate);
+}
+
+.probar {
+  margin-top: 28px;
+}
+
+.portadaFotos {
+  position: relative;
+  padding: 12px 9% 56px 0;
+}
+
+.fotoMovil {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 26%;
+}
+
+/* En la portada las capturas altas (pantallas de móvil) no pasan de la altura de la pantalla */
+.portadaFotos > .copia {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.portadaFotos > .copia img {
+  width: auto;
+  max-width: 100%;
+  max-height: 62vh;
+}
+
+/* ——— Copias en papel de las capturas ——— */
+.copia {
+  position: relative;
+  margin: 0;
+  padding: 9px 9px 11px;
+  background: url('../assets/textures/grain.svg'), linear-gradient(170deg, #fcfbf8, var(--polaroid) 60%, #f2efe9);
+  box-shadow: var(--sombra-2);
+  transition:
+    translate var(--dur-hover) var(--ease-out),
+    rotate var(--dur-hover) var(--ease-out);
+}
+
+.copiaFoto {
+  display: block;
+}
+
+.copia img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cinta {
+  left: 40%;
+  top: -14px;
+  width: 86px;
+  height: 26px;
+  rotate: 4deg;
+}
+
+.clip {
+  position: absolute;
+  top: -20px;
+  left: 16%;
+  width: 15px;
+  fill: none;
+  stroke: var(--marino);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  rotate: 8deg;
+  filter: drop-shadow(1px 2px 1px rgb(20 25 40 / 0.3));
+}
+
+.pie {
+  margin: 9px 4px 0;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 15.5px;
+  line-height: 1.3;
+  color: var(--tinta);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .copia:hover {
+    translate: 0 -5px;
+    rotate: 0deg !important;
+  }
+}
+
+/* ——— Títulos de cada parte: recorte de papel con cinta ——— */
+.titulo {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  width: fit-content;
+  margin: 0 0 40px;
+  padding: 18px 34px 16px;
+  font-weight: 780;
+  font-variation-settings: 'opsz' 96;
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--granate);
+  rotate: -1.6deg;
+}
+
+/* Número de la parte, en azul marino como los números de archivo */
+.tituloNum {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--marino);
+}
+
+.subtitulo {
+  composes: rotulo from global;
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  width: fit-content;
+  margin: 80px 0 34px 30px;
+  padding: 10px 18px 9px;
+  font-size: 13px;
+  rotate: 1.2deg;
+}
+
+.tituloCinta {
+  left: 18px;
+  top: -12px;
+  width: 70px;
+  height: 24px;
+  rotate: -8deg;
+}
+
+.parte {
+  margin-top: clamp(90px, 12vh, 140px);
+}
+
+/* ——— Notas en papel (texto corto con contexto) ——— */
+.nota {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  padding: 26px 28px 24px;
+  rotate: -0.8deg;
+}
+
+.nota p {
+  margin: 0 0 14px;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* ——— Ficha técnica: ficha impresa de bordes limpios ——— */
+.ficha {
+  margin: 0;
+  padding: 22px 24px 18px;
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(172deg, #fcfaf5, var(--hoja-2));
+  box-shadow: var(--sombra-2);
+  rotate: 1deg;
+}
+
+.fichaTit {
+  composes: rotulo from global;
+  margin: 0 0 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgb(60 40 20 / 0.3);
+  font-size: 12px;
+}
+
+.ficha > div {
+  padding: 9px 0;
+  border-bottom: 1px solid rgb(60 40 20 / 0.14);
+}
+
+.ficha dt {
+  font-weight: 650;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--marino);
+}
+
+.ficha dd {
+  margin: 2px 0 0;
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+/* ——— El reto: ficha, nota rasgada y la cita en un post-it ——— */
+.encargo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr);
+  gap: clamp(26px, 4vw, 60px);
+  align-items: start;
+}
+
+.objetivo {
+  margin-top: 18px !important;
+  padding-top: 14px;
+  border-top: 1px solid rgb(60 40 20 / 0.25);
+  font-weight: 600;
+}
+
+.objetivo .etq {
+  display: block;
+}
+
+.reto {
+  composes: hoja-rasgada from global;
+  padding: 30px 32px 28px;
+  rotate: -1deg;
+}
+
+.h2 {
+  margin: 0 0 14px;
+  font-weight: 780;
+  font-variation-settings: 'opsz' 96;
+  font-size: clamp(28px, 2.8vw, 40px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--granate);
+}
+
+.reto p {
+  margin: 0 0 12px;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* ——— Post-its (los mismos del resto de la web) ——— */
+.postit {
+  composes: postit from '../components/Archivo.module.css';
+  width: auto;
+  min-height: 0;
+  padding: 1.4em 1.15em 1.3em;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--marino);
+  rotate: var(--giro, -2deg);
+  transition:
+    opacity 700ms var(--ease-out),
+    translate var(--dur-media) var(--ease-out),
+    rotate var(--dur-media) var(--ease-out);
+}
+
+.postitTit {
+  composes: postitTit from '../components/Archivo.module.css';
+}
+
+.postitNota {
+  composes: postitNota from '../components/Archivo.module.css';
+}
+
+.cita {
+  margin-top: 30px;
+}
+
+/* Al pasar el ratón, el post-it se levanta y se endereza un poco */
+@media (hover: hover) and (pointer: fine) {
+  .postit.vista:hover {
+    translate: 0 -6px;
+    rotate: calc(var(--giro, -2deg) / 3);
+  }
+}
+
+/* ——— Investigación ——— */
+.segundaFila {
+  margin-top: 70px;
+}
+
+.investigacion {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(30px, 5vw, 70px);
+  align-items: start;
+}
+
+.columna {
+  display: grid;
+  gap: 54px;
+}
+
+.cajon,
+.carpeta {
+  font-size: clamp(14px, 1.12vw, 16.5px);
+}
+
+.cajon {
+  max-width: 34em;
+}
+
+.laminas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 30px;
+  padding-top: 10px;
+  align-items: start;
+}
+
+/* la primera lámina (el journey) va grande; las otras dos, debajo, en pareja */
+.laminas > :first-child {
+  grid-column: 1 / -1;
+}
+
+.hallazgos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hallazgos .postit {
+  height: 100%;
+}
+
+/* Contenido de las fichas del cajón y la carpeta (en em, como el objeto) */
+.fichaPersona p {
+  margin: 0 0 0.3em;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+.personaPerfil {
+  color: var(--texto-2);
+  margin-bottom: 0.6em !important;
+}
+
+.etq {
+  margin: 0.5em 0 0.15em !important;
+  font-weight: var(--rotulo-peso);
+  font-size: 0.68em !important;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--granate);
+}
+
+.etqMarino {
+  color: var(--marino);
+}
+
+.personaCita {
+  margin-top: 0.7em !important;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.05em !important;
+  line-height: 1.25 !important;
+  color: var(--tinta);
+}
+
+/* ——— Antes → después dentro de cada ficha de la carpeta ——— */
+.conNota {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(30px, 4.5vw, 64px);
+  align-items: start;
+}
+
+.antesDespues {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.6em minmax(0, 1fr);
+  gap: 0.8em;
+  align-items: start;
+  padding-top: 0.3em;
+}
+
+.antesDespues p {
+  margin: 0;
+  font-size: 0.98em;
+  line-height: 1.45;
+}
+
+.antes {
+  color: var(--texto-2);
+  text-decoration: line-through;
+  text-decoration-color: rgb(94 14 22 / 0.45);
+  text-decoration-thickness: 1px;
+}
+
+.flecha {
+  width: 100%;
+  margin-top: 1.4em;
+  fill: none;
+  stroke: var(--tinta);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Muchas decisiones de diseño: el fichero ocupa su columna entera */
+.ficheroDecisiones {
+  width: 100%;
+  max-width: none;
+}
+
+/* Alto de las fichas: que quepan el antes y el después enteros */
+.ficheroDecisiones > div {
+  --hojaH: 15.5em;
+}
+
+@media (max-width: 700px) {
+  /* en el móvil el antes y el después van uno debajo del otro */
+  .ficheroDecisiones > div {
+    --hojaH: 24em;
+  }
+
+  /* pestañas estrechas: solo el número (el nombre va dentro de la ficha) */
+  .ficheroDecisiones [class*='tabSub'] {
+    display: none;
+  }
+}
+
+.decisionTit {
+  margin: 0 0 0.2em;
+  font-weight: 650;
+  font-size: 1.05em;
+  color: var(--tinta);
+}
+
+
+.notaLado {
+  max-width: 340px;
+  margin-top: 60px;
+}
+
+/* ——— Pantallas del prototipo dentro de la carpeta ——— */
+.pantalla {
+  display: grid;
+  justify-items: center;
+  gap: 0.6em;
+  margin: 0;
+}
+
+.pantalla img {
+  display: block;
+  max-width: 100%;
+  max-height: 18em;
+  width: auto;
+  height: auto;
+  box-shadow: 0 0.1em 0.5em rgb(40 25 10 / 0.18);
+}
+
+.pantalla figcaption {
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.05em;
+  text-align: center;
+  color: var(--tinta);
+}
+
+.lado {
+  display: grid;
+  gap: 34px;
+  justify-items: start;
+}
+
+.lado .notaLado {
+  margin-top: 30px;
+}
+
+.resultados {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr);
+  gap: clamp(30px, 5vw, 70px);
+  align-items: center;
+}
+
+.resultadoGrande {
+  max-width: 360px;
+  justify-self: center;
+}
+
+.siguientes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 30px 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso;
+}
+
+.siguientes li {
+  counter-increment: paso;
+}
+
+.siguientes .postit::before {
+  content: counter(paso, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.4em;
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--marino);
+}
+
+.probado {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  padding: 24px 26px 20px;
+  rotate: 1deg;
+}
+
+.probado ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.probado li {
+  position: relative;
+  padding-left: 30px;
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+.probado li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 15px;
+  height: 15px;
+  border: 1.4px solid rgb(60 40 20 / 0.55);
+  rotate: -2deg;
+}
+
+.probado li::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: -0.05em;
+  width: 7px;
+  height: 14px;
+  border-right: 2.4px solid var(--granate);
+  border-bottom: 2.4px solid var(--granate);
+  rotate: 40deg;
+}
+
+.aviso {
+  margin: 14px 0 0;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--tinta);
+}
+
+/* ——— Guía de estilo: muestras de color en papel ——— */
+.estilo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(30px, 5vw, 70px);
+  align-items: start;
+}
+
+.muestras {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.muestra {
+  display: grid;
+  padding: 7px 7px 9px;
+  background: var(--hoja-1);
+  box-shadow: var(--sombra-1);
+  transition: translate var(--dur-hover) var(--ease-out);
+}
+
+.muestra:nth-child(odd) {
+  rotate: -1.2deg;
+}
+
+.muestra:nth-child(even) {
+  rotate: 1deg;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .muestra:hover {
+    translate: 0 -5px;
+  }
+}
+
+.muestraColor {
+  display: block;
+  height: 52px;
+  margin-bottom: 7px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+
+.muestraNombre {
+  font-weight: 650;
+  font-size: 13.5px;
+}
+
+.muestraHex {
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  color: var(--texto-2);
+}
+
+.tipo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 22px 0 0 !important;
+  font-size: 15px !important;
+  line-height: 1.45;
+}
+
+.tipoMuestra {
+  font-family: 'Plus Jakarta Sans', var(--sans);
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 1;
+  color: #223b2c;
+}
+
+/* ——— Columna (tablet y móvil) ——— */
+@media (max-width: 899px) {
+  .portada,
+  .encargo,
+  .investigacion,
+  .conNota,
+  .estilo,
+  .resultados {
+    grid-template-columns: 1fr;
+  }
+  .resultadoPortada {
+    position: static;
+    width: min(100%, 320px);
+    margin: 10px auto 0;
+  }
+  .meta {
+    grid-template-columns: 1fr;
+  }
+  .hallazgos {
+    grid-template-columns: 1fr;
+  }
+  .laminas {
+    grid-template-columns: 1fr;
+  }
+  .notaLado {
+    margin-top: 0;
+  }
+  .cajon,
+  .carpeta {
+    font-size: 15px;
+  }
+  .antesDespues {
+    grid-template-columns: 1fr;
+  }
+  /* en columna, antes y después van uno debajo del otro: la ficha crece */
+  .carpetaCambios > div {
+    --hojaH: 20em !important;
+  }
+  .flecha {
+    width: 2em;
+    margin: 0;
+    rotate: 90deg;
+  }
+}
+
+@media (max-width: 480px) {
+  .muestras {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-revela] {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+  .copia,
+  .postit,
+  .muestra {
+    transition: none;
+  }
+}
+
+/* ——— Mesa: contiene el hilo rojo y los objetos del margen ——— */
+.mesa {
+  position: relative;
+}
+
+/* Punto donde se clava la chincheta del hilo, en el margen del papel */
+.ancla {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+
+.anclaHoja {
+  top: auto;
+  bottom: 40px;
+}
+
+/* ——— Objetos del caso en el margen derecho (decorativos) ——— */
+.objetos {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.huellas {
+  position: absolute;
+  right: -70px;
+  top: 1500px;
+  width: 80px;
+  height: 260px;
+}
+
+.pata {
+  position: absolute;
+  left: calc((100% - 100vw) / 2 - 10px);
+  top: 2700px;
+  width: 200px;
+  pointer-events: auto;
+}
+
+.lapiz {
+  position: absolute;
+  right: calc((100% - 100vw) / 2 - 60px);
+  top: 1650px;
+  width: 300px;
+  rotate: -62deg;
+  filter: drop-shadow(3px 8px 6px rgb(30 20 10 / 0.3));
+}
+
+@media (max-width: 1100px) {
+  .objetos {
+    display: none;
+  }
+}
+
+/* ——— Dispositivos dibujados ——— */
+.movil {
+  display: block;
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 390 / 844;
+  padding: 3.2%;
+  border-radius: 13% / 6%;
+  background: linear-gradient(150deg, #3a3836, #1b1a19 40%, #2b2927);
+  box-shadow:
+    inset 0 0 0 1.5px #55524e,
+    0 3px 4px rgb(30 20 10 / 0.3),
+    0 18px 30px rgb(30 20 10 / 0.25);
+  transition: translate var(--dur-hover) var(--ease-out);
+}
+
+/* isla de la cámara */
+.movil::after {
+  content: '';
+  position: absolute;
+  top: 4.2%;
+  left: 50%;
+  width: 28%;
+  height: 3.3%;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #0d0c0c;
+}
+
+.pantallaMovil {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 10.5% / 4.9%;
+  background: #fff;
+}
+
+.pantallaMovil img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.portatil {
+  display: block;
+  width: 100%;
+}
+
+.portatilPantalla {
+  display: block;
+  margin: 0 7%;
+  padding: 2.2% 2.2% 3%;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(160deg, #3a3836, #1b1a19 50%);
+  box-shadow: inset 0 0 0 1.5px #55524e;
+}
+
+.portatilPantalla img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+}
+
+.portatilBase {
+  display: block;
+  height: 14px;
+  border-radius: 0 0 18px 18px;
+  background: linear-gradient(180deg, #d4d0ca, #a7a29b);
+  box-shadow: 0 2px 2px rgb(30 20 10 / 0.25), 0 14px 24px rgb(30 20 10 / 0.22);
+}
+
+.mockupPortatil {
+  position: relative;
+  padding: 10px 0 40px;
+}
+
+.movilDelante {
+  position: absolute;
+  right: -2%;
+  bottom: 0;
+  width: 25%;
+}
+
+.mockupMoviles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  padding: 20px 4% 50px;
+}
+
+.mockupMoviles > :nth-child(2) {
+  z-index: 2;
+  translate: 0 -18px;
+  scale: 1.06;
+}
+
+.mockupMoviles > :nth-child(1) {
+  translate: 14% 10px;
+}
+
+.mockupMoviles > :nth-child(3) {
+  translate: -14% 10px;
+}
+
+/* ——— Cómo funciona: pasos con móviles y su etiqueta ——— */
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 56px clamp(26px, 4vw, 60px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.paso {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+}
+
+.paso .movil {
+  width: min(100%, 250px);
+}
+
+.pasoNota {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  position: relative;
+  width: min(100%, 290px);
+  padding: 16px 18px 14px 52px;
+  rotate: -0.8deg;
+}
+
+.pasoNum {
+  position: absolute;
+  left: 14px;
+  top: 15px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1.4px solid var(--marino);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--marino);
+}
+
+.pasoTit {
+  margin: 0 0 3px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--granate);
+}
+
+.pasoTexto {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+
+/* ——— Pruébalo: el prototipo en vivo dentro de un móvil ——— */
+.probarZona {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(30px, 5vw, 70px);
+  align-items: center;
+}
+
+.movilVivo {
+  width: min(100%, 340px);
+  margin: 0 auto;
+}
+
+.movilVivo iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 390px;
+  height: 844px;
+  border: 0;
+  transform-origin: 0 0;
+}
+
+.encender {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  padding: 20px;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  font-size: 16px;
+  color: var(--texto-claro);
+  background: radial-gradient(circle at 50% 40%, #2f3f61, var(--marino) 70%);
+}
+
+.encender svg {
+  width: 54px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .encender:hover svg {
+    stroke: #f7a3a6;
+  }
+}
+
+.completa {
+  composes: rotulo from global;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.completa svg {
+  width: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ——— Diagramas propios ——— */
+.diagramas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 50px 36px;
+  margin-top: 70px;
+}
+
+@media (max-width: 899px) {
+  .pasos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 18px;
+  }
+  .probarZona,
+  .diagramas {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ——— Carrusel del móvil: las pantallas se deslizan de lado ——— */
+.carruselControles {
+  display: none;
+}
+
+/* (composes no vale dentro de @media: la flecha se define aquí y solo se ve en el móvil) */
+.carruselFlecha {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--marino);
+  cursor: pointer;
+}
+
+@media (max-width: 560px) {
+  .pasos,
+  .pasosWeb {
+    position: relative;
+    grid-auto-flow: column;
+    /* gana a la rejilla de una columna de pantallas medianas, que va después */
+    grid-template-columns: none !important;
+    grid-auto-columns: 78%;
+    gap: 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 6px 11% 14px;
+    margin: 0 -16px;
+  }
+  .pasosWeb {
+    grid-auto-columns: 88%;
+    padding-inline: 6%;
+  }
+  .pasos::-webkit-scrollbar,
+  .pasosWeb::-webkit-scrollbar {
+    display: none;
+  }
+  .paso {
+    scroll-snap-align: center;
+  }
+
+  /* Flechas de papel y un punto por pantalla */
+  .carruselControles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 4px 0 10px;
+  }
+  .carruselFlecha:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .carruselFlecha svg {
+    width: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .carruselPuntos {
+    display: flex;
+    gap: 2px;
+  }
+  .carruselPuntos button {
+    position: relative;
+    width: 22px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .carruselPuntos button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    translate: -50% -50%;
+    background: rgb(31 46 77 / 0.25);
+    transition:
+      background var(--dur-hover) var(--ease-out),
+      scale var(--dur-hover) var(--ease-out);
+  }
+  .carruselPuntos .puntoActual::after {
+    background: var(--granate);
+    scale: 1.3;
+  }
+}
+
+/* En el móvil en vivo la isla taparía la cabecera del prototipo */
+.movilVivo::after {
+  display: none;
+}
+
+/* Hallazgos a todo el ancho, en tres columnas */
+.hallazgosAnchos {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 60px;
+}
+
+@media (max-width: 899px) {
+  .hallazgosAnchos {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* La pantalla del móvil tiene la proporción exacta del prototipo (390 × 844): sin huecos */
+.movil {
+  aspect-ratio: auto;
+}
+
+.pantallaMovil {
+  height: auto;
+  aspect-ratio: 390 / 844;
+}
+
+.movil::after {
+  top: 2.6%;
+  height: 2.9%;
+}
+
+/* ——— Realidad aumentada: lo explorado en Figma, en una ficha ——— */
+.exploracion {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  max-width: 760px;
+  margin: 56px auto 0;
+  padding: 24px 28px 22px;
+  rotate: -0.6deg;
+}
+
+/* Los tres estados del medidor, como etiquetas de la interfaz */
+.estadosAr {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.estadosAr li {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-weight: 650;
+  font-size: 13px;
+}
+
+.ar_calc {
+  color: #0a4858;
+  background: #fff;
+  border: 1.4px solid #349cae;
+}
+
+.ar_ok {
+  color: #fff;
+  background: #4f9b16;
+}
+
+.ar_no {
+  color: #fff;
+  background: #dd0047;
+}
+
+.exploracionLista {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exploracionLista li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+
+.exploracionLista li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.55em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--marino);
+}
+
+/* Cuatro pasos en fila cuando caben (la AR) */
+@media (min-width: 1100px) {
+  .pasos:has(> li:nth-child(4):last-child) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ——— Versión web: portátiles en dos columnas ——— */
+.pasosWeb {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 60px clamp(30px, 4vw, 60px);
+  margin: 0 0 30px;
+  padding: 0;
+  list-style: none;
+}
+
+.pasosWeb .pasoNota {
+  width: min(100%, 420px);
+}
+
+/* Prototipo en vivo en un portátil */
+.probarAncho {
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+}
+
+.pantallaWeb {
+  position: relative;
+  display: block;
+  aspect-ratio: 1440 / 900;
+  overflow: hidden;
+  background: #fff;
+}
+
+.pantallaWeb iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1440px;
+  height: 900px;
+  border: 0;
+  transform-origin: 0 0;
+}
+
+.soloMovil {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .pasosWeb {
+    grid-template-columns: 1fr;
+  }
+  .probarAncho {
+    grid-template-columns: 1fr;
+  }
+  /* en pantallas estrechas el prototipo se prueba en el móvil */
+  .portatilVivo {
+    display: none;
+  }
+  .soloMovil {
+    display: block;
+  }
+}
+
+/* Marco del móvil más fino */
+.movil {
+  padding: max(3px, 2.1%);
+  border-radius: 11% / 5.2%;
+}
+
+.pantallaMovil {
+  border-radius: 9.6% / 4.5%;
+}
+
+.movil::after {
+  top: max(6px, 2.3%);
+  width: 26%;
+  height: 2.4%;
+}
+
+/* ——— Con agentes de IA: ficha rasgada con un robot dibujado a tinta ——— */
+.ia {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  position: relative;
+  margin: 70px 0 0;
+  padding: 30px clamp(20px, 3vw, 40px) 30px clamp(20px, 3vw, 40px);
+  rotate: 0.4deg;
+}
+
+.ia .fichaTit {
+  padding-left: 54px;
+  font-size: 14px;
+}
+
+.iaIntro {
+  max-width: 46em;
+  margin: 16px 0 0;
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.35;
+  color: var(--tinta);
+}
+
+/* El proceso: fichas numeradas unidas por una flecha de tinta */
+.iaPasos {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 26px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iaPasos li {
+  position: relative;
+  padding: 44px 14px 14px;
+  background: var(--hoja-1);
+  box-shadow: var(--sombra-1);
+}
+
+.iaPasos li:nth-child(odd) {
+  rotate: -1deg;
+}
+
+.iaPasos li:nth-child(even) {
+  rotate: 1deg;
+}
+
+.iaPasos .pasoNum {
+  top: 10px;
+}
+
+.iaPasos li + li::before {
+  content: '→';
+  position: absolute;
+  left: -22px;
+  top: 14px;
+  font-size: 18px;
+  color: var(--tinta);
+}
+
+/* ——— Referencia: la web original en el móvil ——— */
+.referencia {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(26px, 4vw, 56px);
+  align-items: center;
+  margin-top: 60px;
+}
+
+.referencia .nota {
+  position: relative;
+  padding-top: 34px;
+}
+
+.referenciaMoviles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 220px));
+  justify-content: center;
+  gap: 30px;
+}
+
+@media (max-width: 1100px) {
+  .iaPasos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .iaPasos li + li::before {
+    display: none;
+  }
+}
+
+@media (max-width: 899px) {
+  .referencia {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .iaPasos {
+    grid-template-columns: 1fr;
+  }
+}
+
+.iaIcono {
+  position: absolute;
+  left: 26px;
+  top: 24px;
+  width: 40px;
+  fill: none;
+  stroke: var(--marino);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 899px) {
+  .ia {
+    margin-left: 0;
+  }
+}
+
+/* ——— El nuevo logo: tres cartulinas blancas con cada versión ——— */
+.logoZona {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr);
+  gap: clamp(26px, 4vw, 56px);
+  align-items: center;
+}
+
+.logos {
+  display: grid;
+  grid-template-columns: 0.8fr 1.3fr 1fr;
+  gap: 26px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.logoCarta {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 30px 18px 16px;
+  background: url('../assets/textures/grain.svg'), var(--hoja-1);
+  box-shadow: var(--sombra-2);
+}
+
+.logoCarta img {
+  display: block;
+  width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.logoPie {
+  font-family: var(--notas);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--tinta);
+}
+
+@media (max-width: 899px) {
+  .logoZona,
+  .logos {
+    grid-template-columns: 1fr;
+  }
+  .logoCarta img {
+    max-height: 120px;
+  }
+}
+
+/* ——— La web antes y después: dos portátiles con su etiqueta ——— */
+.comparar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(30px, 4vw, 60px);
+  margin: 0 0 70px;
+}
+
+.compararLado {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  margin: 0;
+}
+
+.compararLado .pasoNota {
+  width: min(100%, 440px);
+  padding-left: 20px;
+}
+
+/* Etiqueta de rotuladora encima de cada portátil */
+.compararEtq {
+  position: absolute;
+  z-index: 2;
+  top: -14px;
+  left: 6%;
+  padding: 5px 12px 4px;
+  font-weight: var(--rotulo-peso);
+  font-size: 12px;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--marino-claro);
+  background: var(--marino);
+  rotate: -2deg;
+}
+
+.compararAntes {
+  background: var(--granate);
+}
+
+@media (max-width: 899px) {
+  .comparar {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Logo anterior: una tarjetita pequeña, como guardada de referencia */
+.logoIzq {
+  display: grid;
+  gap: 34px;
+  justify-items: start;
+}
+
+.logoAntes {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin: 0 0 0 20px;
+  padding: 26px 26px 12px;
+  background: url('../assets/textures/grain.svg'), var(--hoja-1);
+  box-shadow: var(--sombra-2);
+  rotate: -3deg;
+}
+
+.logoAntes img {
+  width: 130px;
+  height: auto;
+}
+
+/* En la web de antes se ve el logo (la captura es más ancha que la pantalla) */
+.portatilPantalla img[src*='web-antes'] {
+  object-position: left center;
+}
+
+/* ——— SEO: las etiquetas reales del HTML, como una hoja impresa del código ——— */
+.seo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(26px, 4vw, 56px);
+  align-items: start;
+}
+
+.seoCodigo {
+  composes: hoja-rasgada from global;
+  --rasgado: var(--rasgado-ficha);
+  --papel-1: var(--hoja-1);
+  --papel-2: var(--hoja-2);
+  padding: 24px 26px 22px;
+  rotate: -0.6deg;
+}
+
+.seoCodigo ul {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: linea;
+}
+
+.seoCodigo li {
+  display: grid;
+  grid-template-columns: 1.8em 1fr;
+  counter-increment: linea;
+}
+
+.seoCodigo li::before {
+  content: counter(linea);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--texto-3);
+}
+
+.seoCodigo code {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--marino);
+  overflow-wrap: anywhere;
+}
+
+.seoLado {
+  display: grid;
+  gap: 30px;
+}
+
+.seoLista {
+  margin: 0;
+}
+
+@media (max-width: 899px) {
+  .seo {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* En el móvil el antes y el después van uno debajo del otro: la carpeta crece
+   para que no tape el texto (gana al alto que llega en línea) */
+@media (max-width: 700px) {
+  .carpetaCambios > div {
+    --hojaH: 22.5em !important;
+  }
+}
+
+/* En el móvil apenas hay margen: el hilo rojo pasa por debajo de las piezas
+   (notas, post-its, láminas, móviles…) en vez de cruzarlas. Los títulos se
+   quedan debajo del hilo para que su chincheta se vea. */
+@media (max-width: 700px) {
+  .parte > :not(:first-child) {
+    position: relative;
+    z-index: 51;
+  }
+}
+
+/* En el móvil, proyecto anterior, «ver todos» y siguiente, centrados y del mismo ancho */
+@media (max-width: 700px) {
+  .final {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+    max-width: 340px;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .final .siguienteCaso {
+    min-width: 0;
+  }
+  .final .volver {
+    align-self: center;
+  }
+}
+
+/* ——— Microinteracciones (solo con ratón; todo se apaga con reduced-motion) ——— */
+.volver svg,
+.siguienteCaso svg {
+  transition: translate var(--dur-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* «Volver»: la flecha se va hacia atrás */
+  .volver:hover svg {
+    translate: -4px 0;
+  }
+  /* Ficha de proyecto anterior / siguiente: la sombra crece al levantarse */
+  .siguienteCaso {
+    transition:
+      translate var(--dur-hover) var(--ease-out),
+      box-shadow var(--dur-hover) var(--ease-out);
+  }
+  .siguienteCaso:hover {
+    box-shadow: var(--sombra-3);
+  }
+  /* la flecha se adelanta hacia donde lleva */
+  .siguienteCaso:hover svg {
+    translate: 4px -50%;
+  }
+  .anteriorCaso:hover svg {
+    translate: -4px -50%;
+  }
+}
+
+/* Flechas del carrusel: se hunden al pulsar */
+.carruselFlecha {
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    scale var(--dur-pulsar) var(--ease-out),
+    opacity var(--dur-hover) var(--ease-out);
+}
+
+.carruselFlecha:active:not(:disabled) {
+  scale: 0.92;
+}
+
+.carruselPuntos button {
+  min-width: 26px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .volver svg,
+  .siguienteCaso,
+  .siguienteCaso svg,
+  .carruselFlecha {
+    transition: none;
+  }
+}
