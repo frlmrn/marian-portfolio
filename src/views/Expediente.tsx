@@ -622,17 +622,20 @@ export function Expediente({ id }: { id: string }) {
           </h3>
           <Pasos pasos={sol.pasos} img={img} alt={alt} />
 
-          {/* Un tercer perfil con su propia app (MASSolisapp: el portal del cliente) */}
-          {sol.cliente && (
-            <>
-              <h3 className={s.subtitulo} data-revela>
-                {sol.cliente.titulo}
-              </h3>
-              <div className={s.nota} data-revela style={{ maxWidth: '44em', marginBottom: 44 }}>
-                <p>{sol.cliente.nota}</p>
-              </div>
-              <Pasos pasos={sol.cliente.pasos} img={img} alt={alt} />
-            </>
+          {/* Bloques propios de pantallas móviles (MASSolisapp: el manual y el portal del cliente) */}
+          {[sol.manual, sol.cliente].map(
+            b =>
+              b && (
+                <div key={b.titulo}>
+                  <h3 className={s.subtitulo} data-revela>
+                    {b.titulo}
+                  </h3>
+                  <div className={s.nota} data-revela style={{ maxWidth: '44em', marginBottom: 44 }}>
+                    <p>{b.nota}</p>
+                  </div>
+                  <Pasos pasos={b.pasos} img={img} alt={alt} />
+                </div>
+              ),
           )}
 
           {sol.ar && (

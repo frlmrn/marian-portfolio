@@ -345,7 +345,7 @@ export const casos: Caso[] = [
     id: 'massolis',
     categoria: 'Plataforma de gestión · Panel web, app y portal del cliente',
     descripcion:
-      'Herramienta de operaciones para Massoluciones: un panel web para organizar servicios, agenda y equipo, una app para que cada profesional lleve su día con tareas, fotos e incidencias, y un portal para el cliente.',
+      'Herramienta de operaciones para Massoluciones: un panel web para organizar servicios, agenda y equipo, una app para que cada profesional lleve su día con tareas, fotos y el manual digital, un portal para el cliente y facturación.',
     claves: ['Research desde operaciones', 'Panel, app y portal del cliente', 'Prototipo con agentes de IA'],
     nota: ['Todo el equipo,', 'en una pantalla.'],
   },
@@ -636,6 +636,8 @@ export type Expediente = {
       comparar?: { antes: { img: string; texto: string }; despues: { img: string; texto: string } }
       pasos: { img: string; titulo: string; texto: string }[]
     }
+    /** Bloque de pantallas móviles propio (el manual de MASSolisapp) */
+    manual?: { titulo: string; nota: string; pasos: { img: string; titulo: string; texto: string }[] }
     /** Otro perfil con su propia app (el portal del cliente de MASSolisapp) */
     cliente?: { titulo: string; nota: string; pasos: { img: string; titulo: string; texto: string }[] }
     /** Dónde se prueba el prototipo en vivo en pantallas anchas */
@@ -1340,12 +1342,13 @@ export const expedientes: Record<string, Expediente> = {
           pie: 'Tres productos sobre los mismos datos: lo que hace la profesional llega al panel y al portal del cliente.',
           raiz: 'MASSolisapp',
           ramas: [
-            { nombre: 'App del profesional', hijos: ['Inicio y fichaje', 'Agenda', 'Mis servicios', 'Ruta del día', 'Mi jornada', 'Historial', 'Mensajes', 'Perfil y ayuda'] },
-            { nombre: 'Panel de administración', hijos: ['Inicio', 'Agenda', 'Servicios', 'Incidencias', 'Equipo', 'Clientes', 'Informes', 'Configuración y ayuda'] },
+            { nombre: 'App del profesional', hijos: ['Inicio y fichaje', 'Agenda', 'Mis servicios', 'Manual MASS', 'Ruta del día', 'Mi jornada', 'Historial', 'Mensajes', 'Perfil y ayuda'] },
+            { nombre: 'Panel de administración', hijos: ['Inicio', 'Agenda', 'Servicios', 'Incidencias', 'Equipo', 'Clientes', 'Informes', 'Manual', 'Facturación', 'Configuración y ayuda'] },
             { nombre: 'Portal del cliente', hijos: ['Inicio', 'Servicios', 'Mensajes', 'Avisos', 'Perfil'] },
           ],
           aparte: [
             { nombre: 'Un servicio en la app', hijos: ['Detalle', 'Tareas', 'Fotos', 'Incidencia', 'Revisar y finalizar'] },
+            { nombre: 'Manual MASS', hijos: ['Fichas', 'Buscador', 'MASS IA', 'Comparar', '¿Cómo limpio esto?', 'Aprende'] },
             { nombre: 'Un servicio en el portal', hijos: ['Seguimiento', 'Pedir un cambio', 'Valorar'] },
           ],
         },
@@ -1361,7 +1364,7 @@ export const expedientes: Record<string, Expediente> = {
     },
     solucion: {
       titulo: 'La solución',
-      nota: 'Tres caras de la misma información: el panel para organizar, la app para hacer y el portal para que el cliente sepa qué pasa. Lo que marca el profesional aparece al momento en el panel y en el portal.',
+      nota: 'Tres caras de la misma información: el panel para organizar, la app para hacer y el portal para que el cliente sepa qué pasa. Lo que marca el profesional aparece al momento en el panel y en el portal, y de ahí sale la factura.',
       mockup: { portatil: 'web-inicio', moviles: ['inicio'] },
       pasosTitulo: 'La app del profesional: un servicio de principio a fin',
       pasos: [
@@ -1372,6 +1375,18 @@ export const expedientes: Record<string, Expediente> = {
         { img: 'revisar', titulo: 'Revisar y finalizar', texto: 'Tareas y fotos a la vista antes de cerrar.' },
         { img: 'completado', titulo: '¡Buen trabajo!', texto: 'El servicio pasa a la oficina para que lo valide.' },
       ],
+    manual: {
+      titulo: 'El manual, con su chatbot',
+      nota: 'El manual de limpieza que escribí deja de ser un PDF: se consulta desde la app, y la oficina lo mantiene al día desde el panel, con un historial de cada cambio.',
+      pasos: [
+        { img: 'manual', titulo: 'Centro de conocimiento', texto: '73 fichas en 7 categorías, siempre a mano en su propia pestaña.' },
+        { img: 'ficha', titulo: 'Cada código, claro', texto: 'Tiempos, materiales y tareas, con la página del manual de donde sale.' },
+        { img: 'massia', titulo: 'MASS IA', texto: 'El chatbot del manual, en demostración: responde solo con lo que hay en él y, si no aparece, lo dice.' },
+        { img: 'comparar', titulo: 'Comparar códigos', texto: 'Qué cambia de un servicio a otro, de un vistazo.' },
+        { img: 'comolimpio', titulo: '¿Cómo limpio esto?', texto: 'Se elige qué hay que limpiar y lleva al procedimiento.' },
+        { img: 'aprende', titulo: 'Aprende MASS', texto: 'Tarjetas, casos y cuestionarios para quien empieza.' },
+      ],
+    },
       cliente: {
         titulo: 'Y el portal del cliente',
         nota: 'El cliente también tiene su sitio: ve quién va, cuándo llega y cómo avanza su servicio, pide cambios y lo valora.',
@@ -1395,6 +1410,8 @@ export const expedientes: Record<string, Expediente> = {
           { img: 'web-detalle', titulo: 'Cada servicio', texto: 'Tareas sincronizadas con la app, fotos, personal asignado y cierre.' },
           { img: 'web-equipo', titulo: 'Equipo', texto: 'Quién está en servicio, disponible o de descanso, y cuánta carga lleva.' },
           { img: 'web-informes', titulo: 'Informes', texto: 'Servicios por día, horas por profesional y servicios por zona.' },
+        { img: 'web-manual', titulo: 'Manual', texto: 'La oficina edita las fichas; cada cambio pide un motivo y queda en el historial.' },
+        { img: 'web-factura-detalle', titulo: 'Facturación', texto: 'Del servicio a la factura: horas, IVA, cobros y descarga en la plantilla de la empresa.' },
         ],
       },
       probarEn: 'portatil',
@@ -1404,32 +1421,32 @@ export const expedientes: Record<string, Expediente> = {
       nota: 'Cada problema de la investigación pedía una decisión. Estas son las más importantes; pasa las pestañas.',
       items: [
         { tab: 'Horario', antes: 'Un Excel compartido que cada una editaba a su manera: formatos cambiados y errores.', despues: 'Una sola agenda en el panel. Cada profesional ve su día en la app, sin poder romper nada.' },
-        { tab: 'Móvil', antes: 'El Excel de Drive no estaba pensado para el móvil, que es donde trabajan.', despues: 'App hecha para el móvil: botones grandes, cuatro pestañas abajo y lo urgente arriba.' },
-        { tab: 'Fichaje', antes: 'Había que acordarse de rellenar el horario después.', despues: 'Se ficha al empezar y al salir; las horas quedan registradas solas.' },
-        { tab: 'Códigos', antes: 'Los códigos del manual quedaban fuera de la herramienta.', despues: 'Cada servicio lleva su código, M, MA, MAS, MASS o LG, y su lista de tareas.' },
+        { tab: 'Móvil', antes: 'El Excel de Drive no estaba pensado para el móvil, que es donde trabajan.', despues: 'App hecha para el móvil: botones grandes, cinco pestañas abajo y lo urgente arriba.' },
+        { tab: 'Manual', antes: 'El manual de limpieza era un PDF para leer entero, fuera de la herramienta.', despues: 'Un centro de consulta con 73 fichas y buscador. Cada servicio lleva su código y enlaza a lo que incluye.' },
         { tab: 'Fotos', antes: 'Las fotos iban por WhatsApp y se perdían entre mensajes.', despues: 'Antes y después dentro de cada servicio. Sin foto del después no se puede finalizar.' },
         { tab: 'Incidencias', antes: 'Se contaban por WhatsApp, mezcladas con todo.', despues: 'Con tipo, descripción y foto, unidas al servicio, y la oficina responde en la misma conversación.' },
         { tab: 'Cierre', antes: 'Al finalizar, el servicio pasaba directamente a «Completado».', despues: 'Cierre en dos pasos: la profesional finaliza y la oficina revisa las evidencias y lo valida.' },
+        { tab: 'Facturación', antes: 'La factura se preparaba aparte, en una plantilla de Excel.', despues: 'Sale de las horas de los servicios completados, y lo ya facturado no se puede cobrar dos veces.' },
       ],
     },
     estilo: {
       titulo: 'Sistema de diseño Suave',
-      nota: 'La CEO quería algo elegante y acorde con la empresa, así que partí de los azules de su marca. Es un sistema propio en Figma: 25 colores, 8 radios y 10 espaciados como variables, 18 estilos de texto, 4 elevaciones y componentes como botones, campos, tarjetas, KPI y navegación.',
+      nota: 'La CEO quería algo elegante y acorde con la empresa, así que partí de los azules de su marca. Las tres interfaces comparten un único sistema en Figma y en código: una sola tipografía, once tamaños de texto, colores con nombre y componentes comunes. Después subí el contraste de bordes, textos y estados.',
       colores: [
-        { nombre: 'Fondo', hex: '#F4F9FF' },
-        { nombre: 'Suave', hex: '#EAF4FF' },
+        { nombre: 'Fondo', hex: '#EEF4FB' },
+        { nombre: 'Suave', hex: '#E4F0FD' },
         { nombre: 'Cielo', hex: '#7BBEF4' },
         { nombre: 'Hero', hex: '#1B65AD' },
         { nombre: 'Acción', hex: '#003D9B' },
         { nombre: 'Tinta', hex: '#001848' },
       ],
       tipografia: 'Inter',
-      tipografiaNota: 'Inter en el panel; Encode Sans en la app del profesional.',
+      tipografiaNota: 'La misma familia en el panel, la app y el portal del cliente.',
       contrastes: [
-        { texto: 'Texto sobre el fondo', fondo: '#F4F9FF', tinta: '#001848', ratio: '16,21:1' },
+        { texto: 'Texto sobre el fondo', fondo: '#EEF4FB', tinta: '#001848', ratio: '15,49:1' },
         { texto: 'Blanco sobre acción', fondo: '#003D9B', tinta: '#FFFFFF', ratio: '9,81:1' },
-        { texto: 'Texto secundario', fondo: '#FFFFFF', tinta: '#56677D', ratio: '5,78:1' },
-        { texto: 'Estado «completado»', fondo: '#EAF7F1', tinta: '#22765C', ratio: '5,00:1' },
+        { texto: 'Texto secundario', fondo: '#FFFFFF', tinta: '#4A5B72', ratio: '6,93:1' },
+        { texto: 'Estado «completado»', fondo: '#E3F4EC', tinta: '#1B6B52', ratio: '5,63:1' },
       ],
     },
     garabatos: [
@@ -1448,6 +1465,8 @@ export const expedientes: Record<string, Expediente> = {
       'Los códigos del manual y sus tareas van dentro de cada servicio.',
       'La CEO lo ve todo en un panel, sin buscar en Drive ni en WhatsApp.',
       'El cliente sigue su servicio y pide cambios desde su portal.',
+      'El manual se consulta desde el móvil, en vez de buscar en un PDF.',
+      'La factura sale de las horas de los servicios, sin pasar los datos a mano.',
     ],
     ia: {
       intro: 'Usé agentes de IA como herramienta para pasar antes del diseño a un prototipo que funciona. Las decisiones fueron mías: qué construir, cómo debía comportarse y qué había que corregir.',
@@ -1461,6 +1480,14 @@ export const expedientes: Record<string, Expediente> = {
       ],
     },
     alt: {
+    manual: 'App: centro de conocimiento con buscador, MASS IA y categorías del manual',
+    ficha: 'App: ficha del código 03MAS con tiempos, materiales y tareas',
+    massia: 'App: asistente MASS IA con preguntas sugeridas sobre el manual',
+    comparar: 'App: comparador de dos códigos de servicio',
+    comolimpio: 'App: asistente «¿Cómo limpio esto?» con las superficies',
+    aprende: 'App: Aprende MASS con tarjetas, casos y cuestionarios',
+    'web-manual': 'Panel: listado de fichas del manual con su estado',
+    'web-factura-detalle': 'Panel: factura de demostración con sus datos, acciones y resumen',
       'web-inicio': 'Panel de administración: inicio con los servicios de hoy, el estado de la jornada y lo que requiere atención',
       'web-agenda': 'Panel: agenda del día con columnas por profesional y el servicio seleccionado',
       'web-servicios': 'Panel: gestión de servicios con indicadores, pestañas y la lista filtrable',
