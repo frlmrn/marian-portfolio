@@ -22,7 +22,7 @@ function validar(c: Campos): Errores {
  * Clave pública de Web3Forms: lleva los mensajes a frlmrn13@gmail.com. Sin ella, el
  * formulario abre el programa de correo. No es secreta: el servicio la pide en la web.
  */
-const CLAVE_FORMULARIO = ''
+const CLAVE_FORMULARIO = 'e839704a-8324-455a-849e-8f24a36d4df1'
 
 /**
  * Ficha de proyecto: el formulario de contacto (compartido por la versión en
