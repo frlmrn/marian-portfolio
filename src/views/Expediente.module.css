@@ -1001,7 +1001,6 @@
   display: block;
   align-self: start;
   width: 100%;
-  filter: drop-shadow(0 3px 3px rgb(30 20 10 / 0.25)) drop-shadow(0 16px 18px rgb(30 20 10 / 0.2));
 }
 
 .movil {
@@ -1019,6 +1018,8 @@
   height: 100%;
   overflow: visible;
   pointer-events: none;
+  /* la sombra solo en el marco: un filtro en el conjunto emborrona la pantalla */
+  filter: drop-shadow(0 3px 3px rgb(30 20 10 / 0.25)) drop-shadow(0 16px 18px rgb(30 20 10 / 0.2));
 }
 
 /* Pantalla de 390 × 844 dentro del marco de 414 × 868 */

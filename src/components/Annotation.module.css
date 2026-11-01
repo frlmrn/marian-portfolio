@@ -16,20 +16,21 @@
   position: absolute;
   overflow: visible;
   pointer-events: none;
-  fill: var(--tinta);
+  fill: none;
   stroke: var(--tinta);
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .leader path {
-  fill: none;
-  stroke-width: 1;
+  stroke-width: 1.3;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 1;
   animation: draw 0.5s var(--t) var(--ease-out) both;
 }
 
-.leader circle {
-  stroke: none;
+.leader .punta {
+  stroke-dasharray: none;
   animation: fade 0.3s calc(var(--t) + 0.4s) both;
 }
 
@@ -52,7 +53,7 @@
 @media (prefers-reduced-motion: reduce) {
   .note,
   .leader path,
-  .leader circle {
+  .leader .punta {
     animation: none;
   }
 }

@@ -128,13 +128,16 @@ export function Home({ unit }: { unit: number }) {
                 <span>{home.titulo.linea1}</span> <em>{home.titulo.linea2}</em>
               </h1>
               <p className={s.texto}>{home.texto}</p>
-              <button
-                type="button"
-                className={s.boton}
-                onClick={() => exploreCards([sobreMiRef, cecotecRef, ohmycatRef, n4Ref])}
-              >
-                {home.boton}
-              </button>
+              <div className={s.accion}>
+                <button
+                  type="button"
+                  className={s.boton}
+                  onClick={() => exploreCards([sobreMiRef, cecotecRef, ohmycatRef, n4Ref])}
+                >
+                  {home.boton}
+                </button>
+                <Annotation lines={home.chivato} delay={T_01} className={s.chivato} />
+              </div>
             </section>
           </div>
 
@@ -156,6 +159,9 @@ export function Home({ unit }: { unit: number }) {
               />
               {/* Asoma por detrás de la polaroid; no se mueve con ella */}
               <SelloContacto style={box(372, 742, 138, 138)} />
+              {/* Explica para qué sirve el sello; solo en la portada */}
+              <Annotation lines={home.pistaSello} delay={T_03} className={s.cardNote} style={box(546, 744)} />
+              <Leader from={[542, 784]} to={[506, 802]} delay={T_03} className={s.leader} />
             </div>
 
             <div className={s.right}>
@@ -171,8 +177,8 @@ export function Home({ unit }: { unit: number }) {
                 style={box(card01.x, card01.y, card01.w, card01.h)}
                 onSway={tense(['D'])}
               />
-              <Annotation lines={cards.cecotec.nota!} delay={T_01} className={s.cardNote} style={box(1272, 446)} />
-              <Leader from={[1268, 452]} to={[1252, 424]} delay={T_01} className={s.leader} />
+              <Annotation lines={cards.cecotec.nota!} delay={T_01} className={s.cardNote} style={box(1272, 464)} />
+              <Leader from={[1314, 460]} to={[1296, 428]} delay={T_01} className={s.leader} />
             </div>
 
             <div className={s.right}>
@@ -186,7 +192,7 @@ export function Home({ unit }: { unit: number }) {
                 onSway={tense(['C', 'D'])}
               />
               <Annotation lines={cards.ohmycat.nota!} delay={T_03} className={s.cardNote} style={box(1000, 792)} />
-              <Leader from={[1094, 800]} to={[1122, 790]} delay={T_03} className={s.leader} />
+              <Leader from={[1096, 808]} to={[1122, 796]} delay={T_03} className={s.leader} />
             </div>
 
             <div className={s.center}>
@@ -199,8 +205,8 @@ export function Home({ unit }: { unit: number }) {
                 style={box(card04.x, card04.y, card04.w, card04.h)}
                 onSway={tense(['B', 'C'])}
               />
-              <Annotation lines={cards.massolis.nota!} delay={T_02} className={s.cardNote} style={box(840, 772)} />
-              <Leader from={[836, 780]} to={[818, 794]} delay={T_02} className={s.leader} />
+              <Annotation lines={cards.massolis.nota!} delay={T_02} className={s.cardNote} style={box(868, 768)} />
+              <Leader from={[864, 784]} to={[830, 794]} delay={T_02} className={s.leader} />
             </div>
           </section>
         </main>

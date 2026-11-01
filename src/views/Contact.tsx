@@ -19,6 +19,12 @@ function validar(c: Campos): Errores {
 }
 
 /**
+ * Clave pública de Web3Forms: lleva los mensajes a frlmrn13@gmail.com. Sin ella, el
+ * formulario abre el programa de correo. No es secreta: el servicio la pide en la web.
+ */
+const CLAVE_FORMULARIO = ''
+
+/**
  * Ficha de proyecto: el formulario de contacto (compartido por la versión en
  * columna y la de escritorio). Medidas en em: la versión de escritorio la
  * escala con el tamaño de la mesa.
@@ -36,14 +42,16 @@ export function ContactForm({
   const id = useId()
   const [campos, setCampos] = useState<Campos>({ nombre: '', email: '', idea: '' })
   const [errores, setErrores] = useState<Errores>({})
-  const [estado, setEstado] = useState<'' | 'ok' | 'sin-conectar'>('')
+  const [estado, setEstado] = useState<'' | 'enviando' | 'ok' | 'ok-correo' | 'error'>('')
+  // Campo oculto: solo lo rellenan los robots
+  const [trampa, setTrampa] = useState('')
 
   const set = (k: keyof Campos) => (v: string) => {
     setCampos(c => ({ ...c, [k]: v }))
     if (errores[k]) setErrores(e => ({ ...e, [k]: undefined }))
   }
 
-  const enviar = (ev: FormEvent<HTMLFormElement>) => {
+  const enviar = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault()
     const e = validar(campos)
     setErrores(e)
@@ -53,14 +61,37 @@ export function ContactForm({
       setEstado('')
       return
     }
-    if (!contacto.email) {
-      setEstado('sin-conectar')
+    const asunto = `${ui.form.asunto} — ${campos.nombre}`
+    if (!CLAVE_FORMULARIO) {
+      // Sin clave (o en la versión de doble clic), el mensaje se abre en el programa de correo
+      const cuerpo = `${campos.idea}\n\n${campos.nombre}\n${campos.email}`
+      location.href = `mailto:${contacto.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`
+      setEstado('ok-correo')
       return
     }
-    const asunto = `${ui.form.asunto} — ${campos.nombre}`
-    const cuerpo = `${campos.idea}\n\n${campos.nombre}\n${campos.email}`
-    location.href = `mailto:${contacto.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`
-    setEstado('ok')
+    setEstado('enviando')
+    try {
+      const r = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: CLAVE_FORMULARIO,
+          subject: asunto,
+          from_name: campos.nombre,
+          name: campos.nombre,
+          email: campos.email,
+          replyto: campos.email,
+          message: campos.idea,
+          botcheck: trampa,
+        }),
+      })
+      const datos = await r.json()
+      if (!datos.success) throw new Error(datos.message)
+      setEstado('ok')
+      setCampos({ nombre: '', email: '', idea: '' })
+    } catch {
+      setEstado('error')
+    }
   }
 
   const field = (k: keyof Campos) => ({
@@ -116,8 +147,18 @@ export function ContactForm({
         {error('idea')}
       </div>
 
-      <button type="submit" className={`${p.button} ${s.enviar}`}>
-        {contacto.boton}
+      <input
+        className={s.trampa}
+        type="text"
+        name="botcheck"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={trampa}
+        onChange={e => setTrampa(e.target.value)}
+      />
+      <button type="submit" className={`${p.button} ${s.enviar}`} disabled={estado === 'enviando'}>
+        {estado === 'enviando' ? ui.form.enviando : contacto.boton}
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M7 17 17 7M9 7h8v8" />
         </svg>
@@ -126,7 +167,12 @@ export function ContactForm({
       {/* oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- es un aviso, no el resultado de un cálculo */}
       <p className={s.estado} role="status">
         {estado === 'ok' && ui.form.ok}
-        {estado === 'sin-conectar' && ui.form.sinConectar}
+        {estado === 'ok-correo' && ui.form.okCorreo}
+        {estado === 'error' && (
+          <>
+            {ui.form.errorEnvio} <a href={`mailto:${contacto.email}`}>{contacto.email}</a>.
+          </>
+        )}
       </p>
     </form>
   )

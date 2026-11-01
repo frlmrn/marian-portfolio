@@ -140,7 +140,20 @@
 }
 
 /* Botón: etiqueta de tela burdeos, presente pero por debajo del titular */
+/* Botón y chivato de que los objetos se pueden pulsar */
+.accion {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--u) * 20);
+}
+
+.chivato {
+  padding-bottom: calc(var(--u) * 4);
+  font-size: max(13px, calc(var(--u) * 16));
+}
+
 .boton {
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 0.6em;

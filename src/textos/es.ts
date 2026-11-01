@@ -14,6 +14,8 @@ export const home = {
   texto:
     'Investigo, conecto ideas y diseño experiencias digitales que combinan funcionalidad, creatividad y una identidad visual cuidada.',
   boton: 'Explora las tarjetas',
+  pistaSello: ['Púlsalo', 'para', 'escribirme.'],
+  chivato: ['Psst: lo que hay sobre la mesa', 'también se puede pulsar.'],
   /** Cita en la nota rasgada (Los argonautas del Pacífico occidental). */
   cita: {
     texto: 'Captar el punto de vista del nativo, su relación con la vida, comprender su visión de su mundo.',
@@ -213,7 +215,7 @@ export const sobreMi = {
   nombre: 'Marian López Solís',
   rol: 'Antropóloga y diseñadora digital',
   gancho: ['Estudié antropología para entender a las personas.', 'Ahora diseño para ellas.'],
-  lead: 'Investigo cómo vive la gente y lo convierto en webs, apps e identidades claras. Los agentes de IA me ayudan a pasar antes de la idea al prototipo.',
+  lead: 'Investigo cómo vive la gente y lo convierto en webs, apps e identidades claras. Integro agentes de IA en mi proceso para validar ideas y llegar antes a prototipos funcionales.',
   datos: ['Sevilla', 'Disponibilidad inmediata', 'Español nativo', 'Inglés C1'],
   /** Trayectoria (de los CV de Marian, octubre de 2026) */
   trayectoria: [
@@ -449,8 +451,10 @@ export const ui = {
     faltaEmail: 'Escribe tu email para poder responderte.',
     emailMal: 'Revisa el email: falta algo (por ejemplo, la @).',
     faltaIdea: 'Cuéntame en unas líneas qué tienes en mente.',
-    ok: 'Se ha abierto tu programa de correo con el mensaje listo para enviar.',
-    sinConectar: 'Gracias. El formulario aún no está conectado, así que tu mensaje no se ha enviado.',
+    ok: 'Mensaje enviado. Te responderé lo antes posible.',
+    okCorreo: 'Se ha abierto tu programa de correo con el mensaje listo para enviar.',
+    enviando: 'Enviando…',
+    errorEnvio: 'No se ha podido enviar. Prueba otra vez o escríbeme a',
     asunto: 'Nuevo caso',
   },
   /** Expediente completo de un caso */

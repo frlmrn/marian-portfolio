@@ -79,6 +79,11 @@
   color: var(--texto);
 }
 
+.chivato {
+  margin-top: 12px;
+  font-size: clamp(15px, 4.2vw, 18px);
+}
+
 .boton {
   display: inline-flex;
   align-items: center;
@@ -228,6 +233,30 @@
 
 .right .cardNote {
   left: 0;
+}
+
+/* Nota y flecha que explican el sello */
+.selloNota {
+  position: absolute;
+  z-index: 45;
+  top: 12%;
+  right: 0;
+  width: calc(100% - min(300px, 64vw) - 6px);
+  font-size: clamp(14px, 3.9vw, 17px);
+  text-align: center;
+}
+
+.selloFlecha {
+  position: absolute;
+  z-index: 45;
+  top: 32%;
+  right: 11%;
+  width: 26px;
+  fill: none;
+  stroke: var(--tinta);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Sello de contacto: en la mesa, junto a la polaroid y por detrás */

@@ -4,6 +4,7 @@ import romero from '../assets/archivo/romero.webp'
 import chai from '../assets/decor/chai.webp'
 import { cards, home, ui, type CardItem } from '../content'
 import { Annotation } from '../components/Annotation'
+import { BotonArriba } from '../components/BotonArriba'
 import { CatPaw } from '../components/CatPaw'
 import { Header } from '../components/Header'
 import { Polaroid, type PolaroidHandle } from '../components/Polaroid'
@@ -101,6 +102,7 @@ export function HomeMobile() {
           <button type="button" className={s.boton} onClick={explore}>
             {home.boton}
           </button>
+          <Annotation lines={home.chivato} delay={0.5} className={s.chivato} />
         </section>
 
         <figure className={s.note}>
@@ -137,7 +139,15 @@ export function HomeMobile() {
                     className={s.card}
                     onSway={() => threadsRef.current?.tense(tense)}
                   />
-                  {item.id === 'sobre-mi' && <SelloContacto className={s.sello} />}
+                  {item.id === 'sobre-mi' && (
+                    <>
+                      <SelloContacto className={s.sello} />
+                      <Annotation lines={home.pistaSello} delay={0.5} className={s.selloNota} />
+                      <svg className={s.selloFlecha} viewBox="0 0 30 44" aria-hidden="true">
+                        <path d="M8 2C22 12 24 26 15 41M15 41l-2-10M15 41l9-6" />
+                      </svg>
+                    </>
+                  )}
                 </div>
               )
             })}
@@ -158,6 +168,7 @@ export function HomeMobile() {
           <img className={s.sprigRight} src={romero} alt="" />
         </div>
       </footer>
+      <BotonArriba />
     </div>
   )
 }

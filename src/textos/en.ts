@@ -13,6 +13,8 @@ export const en: Textos = {
     texto:
       'I research, connect ideas and design digital experiences that blend functionality, creativity and a carefully crafted visual identity.',
     boton: 'Explore the cards',
+    pistaSello: ['Press it', 'to write', 'to me.'],
+    chivato: ['Psst: what’s on the table', 'can be pressed too.'],
     cita: {
       texto: 'To grasp the native’s point of view, his relation to life, to realise his vision of his world.',
       autor: 'Bronisław Malinowski',
@@ -184,7 +186,7 @@ export const en: Textos = {
     nombre: 'Marian López Solís',
     rol: 'Anthropologist and digital designer',
     gancho: ['I studied anthropology to understand people.', 'Now I design for them.'],
-    lead: 'I research how people live and turn it into clear websites, apps and visual identities. AI agents help me get from idea to prototype faster.',
+    lead: 'I research how people live and turn it into clear websites, apps and visual identities. I integrate AI agents into my process to test ideas and reach working prototypes sooner.',
     datos: ['Seville', 'Available immediately', 'Native Spanish', 'English C1'],
     trayectoria: [
       {
@@ -404,8 +406,10 @@ export const en: Textos = {
       faltaEmail: 'Please write your email so I can reply.',
       emailMal: 'Check the email: something is missing (the @, for example).',
       faltaIdea: 'Tell me in a few lines what you have in mind.',
-      ok: 'Your email app has opened with the message ready to send.',
-      sinConectar: 'Thank you. The form isn’t connected yet, so your message hasn’t been sent.',
+      ok: 'Message sent. I’ll reply as soon as I can.',
+      okCorreo: 'Your email app has opened with the message ready to send.',
+      enviando: 'Sending…',
+      errorEnvio: 'It couldn’t be sent. Try again or write to me at',
       asunto: 'New case',
     },
     expediente: {
