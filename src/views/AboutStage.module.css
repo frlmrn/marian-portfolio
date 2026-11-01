@@ -104,8 +104,9 @@
 }
 
 .postitDiplomas {
-  /* pegado a la esquina del primer diploma */
-  left: -5.5em;
+  /* a la izquierda del primer diploma, tocando su borde sin pisar el texto
+     (se ancla por la derecha: así no depende del ancho de la nota) */
+  right: calc(100% - 0.5em);
   top: 1em;
   rotate: -6deg;
 }

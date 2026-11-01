@@ -133,12 +133,13 @@ export function AboutStage({ unit }: { unit: number }) {
           {ui.estudiado}
         </PostIt>
         <Diplomas />
+        {/* Punto del hilo en la esquina de la nota, sin cruzar su texto; va dentro para moverse con ella */}
+        <span className={s.anchor} data-anchor="sm3" style={{ left: '-0.9em', top: '5em' }} />
       </section>
 
       {/* Puntos del hilo: foto, cajón, diplomas y carpeta */}
       <span className={s.anchor} data-anchor="sm1" style={box(204, 294)} />
       <span className={s.anchor} data-anchor="sm2" style={box(338, 738)} />
-      <span className={s.anchor} data-anchor="sm3" style={box(954, 618)} />
       <span className={s.anchor} data-anchor="sm4" style={box(986, 396)} />
       {/* Atajo a Contacto: el sello, pequeño, junto a la carpeta */}
       <SelloContacto style={{ ...box(1392, 300, 100, 100) }} />
