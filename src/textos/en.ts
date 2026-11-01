@@ -970,7 +970,7 @@ export const en: Textos = {
       },
       logo: {
         titulo: 'Branding',
-        nota: 'What do you say when you walk into a cat café? “Oh!”. So the cat in the logo raises its paw to its mouth in surprise, exclamation mark and all. And since cats rule here, it sneaks into the “A” of CAT. The letters are set in Jua, round and friendly, and the silhouette jumps onto the website as its mascot.',
+        nota: 'The café is called Oh My Cat!, and the new logo reflects that “Oh!”: the cat raises its paw to its mouth in surprise, exclamation mark and all. And since cats rule here, it sneaks into the “A” of CAT. The letters are set in Jua, round and friendly, and the silhouette jumps onto the website as its mascot.',
         antes: { img: 'logo-antiguo', pie: 'The previous logo' },
         versiones: [
           { img: 'logo-simbolo', pie: 'The cat that says “oh!”' },

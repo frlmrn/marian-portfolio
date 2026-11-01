@@ -1149,7 +1149,7 @@ export const expedientes: Record<string, Expediente> = {
     },
     logo: {
       titulo: 'Branding',
-      nota: '¿Qué dices al entrar en un cat café? «¡Oh!». Por eso el gato del logo se lleva la pata a la boca, sorprendido, con su signo de exclamación. Y como aquí los gatos mandan, se cuela en la «A» de CAT. Las letras van en Jua, redondas y amables, y la silueta salta a la web como mascota.',
+      nota: 'El café se llama Oh My Cat!, y el logo nuevo refleja ese «¡Oh!»: el gato se lleva la pata a la boca, sorprendido, con su signo de exclamación. Y como aquí los gatos mandan, se cuela en la «A» de CAT. Las letras van en Jua, redondas y amables, y la silueta salta a la web como mascota.',
       antes: { img: 'logo-antiguo', pie: 'El logo anterior' },
       versiones: [
         { img: 'logo-simbolo', pie: 'El gato que dice «¡oh!»' },
