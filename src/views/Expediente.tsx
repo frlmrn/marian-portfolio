@@ -6,6 +6,7 @@ import { Fichas, Huellas, type Ficha } from '../components/Archivo'
 import { CatPaw } from '../components/CatPaw'
 import { Contrastes, Lamina } from '../components/Diagramas'
 import { Garabatos } from '../components/Garabatos'
+import { MarcoMovil, MarcoPortatil } from '../components/Marcos'
 import { Threads, type Pt, type ThreadDef } from '../components/Threads'
 import { expedienteHref, Link, paths, urlPublica } from '../lib/router'
 import { href } from './Cases'
@@ -108,6 +109,7 @@ function Movil({
       <span className={s.pantallaMovil}>
         <img src={src} alt={alt} loading="lazy" decoding="async" />
       </span>
+      <MarcoMovil className={s.marco} />
     </span>
   )
 }
@@ -119,7 +121,7 @@ function Portatil({ src, alt }: { src: string; alt: string }) {
       <span className={s.portatilPantalla}>
         <img src={src} alt={alt} loading="lazy" decoding="async" />
       </span>
-      <span className={s.portatilBase} />
+      <MarcoPortatil className={s.marco} />
     </span>
   )
 }
@@ -153,6 +155,7 @@ function MovilVivo({ url, titulo }: { url: string; titulo: string }) {
           </button>
         )}
       </span>
+      <MarcoMovil className={s.marco} />
     </div>
   )
 }
@@ -185,7 +188,7 @@ function PortatilVivo({ url, titulo }: { url: string; titulo: string }) {
           )}
         </span>
       </span>
-      <span className={s.portatilBase} />
+      <MarcoPortatil className={s.marco} />
     </div>
   )
 }
@@ -584,7 +587,7 @@ export function Expediente({ id }: { id: string }) {
             <p>{sol.nota}</p>
           </div>
           {sol.aviso && (
-            <Nota giro={-1} className={s.avisoBorroso}>
+            <Nota giro={-1} className={s.avisoDatos}>
               <p className={s.postitTit}>{sol.aviso}</p>
             </Nota>
           )}

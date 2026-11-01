@@ -1187,7 +1187,7 @@ export const en: Textos = {
       },
       solucion: {
         titulo: 'The solution',
-        aviso: 'Some parts are blurred on purpose: the codes, the methods and the manual’s content are the company’s internal information.',
+        aviso: 'The manual is the company’s internal information: what you see in the prototype and the screenshots is sample data, not its real content.',
         nota: 'Three sides of the same information: the dashboard to organise, the app to do the work and the portal so clients know what’s happening. What the professional ticks shows up straight away in the dashboard and the portal, and the invoice comes from there.',
         mockup: { portatil: 'web-inicio', moviles: ['inicio'] },
         pasosTitulo: 'The professional’s app: one service from start to finish',
@@ -1224,7 +1224,7 @@ export const en: Textos = {
           ],
         },
         probarTitulo: 'Try it here',
-        probarNota: 'This is the real prototype: sign in with the demo account, move a service in the calendar or open the professional’s app and the client portal from the “Demo” button. The manual’s content is blurred for confidentiality.',
+        probarNota: 'This is the real prototype: sign in with the demo account, move a service in the calendar or open the professional’s app and the client portal from the “Demo” button. The manual’s content is sample data.',
         web: {
           titulo: 'The admin dashboard',
           pasos: [

@@ -168,6 +168,7 @@ o, si no se puede, `font-weight: var(--rotulo-peso)` y
 - **Diagramas propios, nunca capturas del Figma**: journey, arquitectura,
   service blueprint, benchmarking y contrastes se dibujan en la web
   (`components/Diagramas.tsx`) sobre láminas impresas, con los datos del Figma.
+- **Marcos únicos**: todos los móviles y portátiles usan `components/Marcos.tsx`, con medidas fijas.
 - **Pantallas en mockups**: móviles y portátil dibujados con capturas del
   prototipo real; «Cómo funciona» paso a paso y «Pruébalo aquí» con el
   prototipo en vivo dentro de un móvil.

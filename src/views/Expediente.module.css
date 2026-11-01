@@ -781,8 +781,8 @@
   rotate: 40deg;
 }
 
-/* Por qué hay partes borrosas (MASSolisapp) */
-.avisoBorroso {
+/* Aviso de datos de ejemplo (MASSolisapp) */
+.avisoDatos {
   max-width: 34em;
   margin-top: 26px;
 }
@@ -993,43 +993,43 @@
   }
 }
 
-/* ——— Dispositivos dibujados ——— */
-.movil {
-  display: block;
+/* ——— Dispositivos: un solo marco SVG (components/Marcos.tsx) para todos ———
+   Medidas fijas: pase lo que pase alrededor, no se estiran ni cambian de grosor */
+.movil,
+.portatil {
   position: relative;
   display: block;
+  align-self: start;
   width: 100%;
-  aspect-ratio: 390 / 844;
-  padding: 3.2%;
-  border-radius: 13% / 6%;
-  background: linear-gradient(150deg, #3a3836, #1b1a19 40%, #2b2927);
-  box-shadow:
-    inset 0 0 0 1.5px #55524e,
-    0 3px 4px rgb(30 20 10 / 0.3),
-    0 18px 30px rgb(30 20 10 / 0.25);
-  transition: translate var(--dur-hover) var(--ease-out);
+  filter: drop-shadow(0 3px 3px rgb(30 20 10 / 0.25)) drop-shadow(0 16px 18px rgb(30 20 10 / 0.2));
 }
 
-/* isla de la cámara */
-.movil::after {
-  content: '';
+.movil {
+  aspect-ratio: 414 / 868;
+}
+
+.portatil {
+  aspect-ratio: 1640 / 985;
+}
+
+.marco {
   position: absolute;
-  top: 4.2%;
-  left: 50%;
-  width: 28%;
-  height: 3.3%;
-  translate: -50% 0;
-  border-radius: 999px;
-  background: #0d0c0c;
-}
-
-.pantallaMovil {
-  position: relative;
-  display: block;
+  inset: 0;
   width: 100%;
   height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Pantalla de 390 × 844 dentro del marco de 414 × 868 */
+.pantallaMovil {
+  position: absolute;
+  top: 1.383%;
+  left: 2.899%;
+  width: 94.203%;
+  height: 97.235%;
   overflow: hidden;
-  border-radius: 10.5% / 4.9%;
+  border-radius: 11.8% / 5.45%;
   background: #fff;
 }
 
@@ -1041,34 +1041,23 @@
   object-position: top;
 }
 
-.portatil {
-  display: block;
-  width: 100%;
-}
-
+/* Pantalla de 1440 × 900 dentro del marco de 1640 × 985 */
 .portatilPantalla {
-  display: block;
-  margin: 0 7%;
-  padding: 2.2% 2.2% 3%;
-  border-radius: 14px 14px 0 0;
-  background: linear-gradient(160deg, #3a3836, #1b1a19 50%);
-  box-shadow: inset 0 0 0 1.5px #55524e;
+  position: absolute;
+  top: 3.046%;
+  left: 6.098%;
+  width: 87.805%;
+  height: 91.371%;
+  overflow: hidden;
+  background: #fff;
 }
 
 .portatilPantalla img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: 100%;
   object-fit: cover;
   object-position: top;
-}
-
-.portatilBase {
-  display: block;
-  height: 14px;
-  border-radius: 0 0 18px 18px;
-  background: linear-gradient(180deg, #d4d0ca, #a7a29b);
-  box-shadow: 0 2px 2px rgb(30 20 10 / 0.25), 0 14px 24px rgb(30 20 10 / 0.22);
 }
 
 .mockupPortatil {
@@ -1116,6 +1105,7 @@
 
 .paso {
   display: grid;
+  align-content: start;
   justify-items: center;
   gap: 18px;
 }
@@ -1354,11 +1344,6 @@
   }
 }
 
-/* En el móvil en vivo la isla taparía la cabecera del prototipo */
-.movilVivo::after {
-  display: none;
-}
-
 /* Hallazgos a todo el ancho, en tres columnas */
 .hallazgosAnchos {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1369,21 +1354,6 @@
   .hallazgosAnchos {
     grid-template-columns: 1fr;
   }
-}
-
-/* La pantalla del móvil tiene la proporción exacta del prototipo (390 × 844): sin huecos */
-.movil {
-  aspect-ratio: auto;
-}
-
-.pantallaMovil {
-  height: auto;
-  aspect-ratio: 390 / 844;
-}
-
-.movil::after {
-  top: 2.6%;
-  height: 2.9%;
 }
 
 /* ——— Realidad aumentada: lo explorado en Figma, en una ficha ——— */
@@ -1484,7 +1454,8 @@
 .pantallaWeb {
   position: relative;
   display: block;
-  aspect-ratio: 1440 / 900;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #fff;
 }
@@ -1517,22 +1488,6 @@
   .soloMovil {
     display: block;
   }
-}
-
-/* Marco del móvil más fino */
-.movil {
-  padding: max(3px, 2.1%);
-  border-radius: 11% / 5.2%;
-}
-
-.pantallaMovil {
-  border-radius: 9.6% / 4.5%;
-}
-
-.movil::after {
-  top: max(6px, 2.3%);
-  width: 26%;
-  height: 2.4%;
 }
 
 /* ——— Con agentes de IA: ficha rasgada con un robot dibujado a tinta ——— */
