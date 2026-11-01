@@ -15,8 +15,8 @@ import {
 export const modoArchivo = location.protocol === 'file:'
 const rutaActual = () => (modoArchivo ? location.hash.slice(1) || '/' : location.pathname)
 
-/** Dirección de un prototipo: sin servidor, se abre desde la carpeta public. */
-export const urlPrototipo = (url: string) => (modoArchivo ? `public${url}` : url)
+/** Dirección de un archivo de public (prototipos, PDF): sin servidor, se abre desde esa carpeta. */
+export const urlPublica = (url: string) => (modoArchivo ? `public${url}` : url)
 
 export type PageName = 'inicio' | 'sobre-mi' | 'casos' | 'contacto'
 

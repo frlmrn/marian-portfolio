@@ -1,5 +1,6 @@
-import { useId, useState, type CSSProperties, type ReactNode } from 'react'
+import { useId, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { sobreMi, ui } from '../content'
+import { VisorReferencia } from './Referencia'
 import s from './Archivo.module.css'
 
 /*
@@ -106,6 +107,7 @@ export function Fichas({
 
 /** Cajón de fichero con la experiencia: una ficha por puesto. */
 export function FicheroExperiencia() {
+  const visor = useRef<HTMLDialogElement>(null)
   const fichas: Ficha[] = sobreMi.trayectoria.map(t => ({
     id: t.lugar,
     label: `${t.fecha}: ${t.puesto}, ${t.lugar}`,
@@ -118,6 +120,14 @@ export function FicheroExperiencia() {
     body: (
       <>
         <p className={s.fecha}>{t.fecha}</p>
+        {t.referencia && (
+          <button type="button" className={s.clipRef} aria-label={ui.referencia.abrir} onClick={() => visor.current?.showModal()}>
+            <svg viewBox="0 0 16 34" aria-hidden="true">
+              <path d="M11.5 8v18a3.5 3.5 0 0 1-7 0V6a2.5 2.5 0 0 1 5 0v18a1 1 0 0 1-2 0V9" />
+            </svg>
+            {ui.referencia.clip}
+          </button>
+        )}
         <h3 className={s.puesto}>{t.puesto}</h3>
         <p className={s.lugar}>{t.lugar}</p>
         <p className={s.detalle}>{t.detalle}</p>
@@ -125,12 +135,15 @@ export function FicheroExperiencia() {
     ),
   }))
   return (
-    <Fichas variante="cajon" fichas={fichas}>
-      <span className={s.portaEtiqueta}>
-        <span>{ui.dondeHeTrabajado}</span>
-      </span>
-      <span className={s.tirador} />
-    </Fichas>
+    <>
+      <Fichas variante="cajon" fichas={fichas}>
+        <span className={s.portaEtiqueta}>
+          <span>{ui.dondeHeTrabajado}</span>
+        </span>
+        <span className={s.tirador} />
+      </Fichas>
+      <VisorReferencia ref={visor} />
+    </>
   )
 }
 

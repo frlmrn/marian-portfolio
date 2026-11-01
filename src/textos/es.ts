@@ -219,7 +219,7 @@ export const sobreMi = {
   trayectoria: [
     {
       fecha: 'Ene–jul 2026',
-      puesto: 'UX Designer',
+      puesto: 'UX Designer en prácticas',
       lugar: 'Green Hat Workers / YellowBreak',
       corto: 'YellowBreak',
       detalle: 'Auditorías UX, rediseño web, sistemas de diseño e IA',
@@ -229,6 +229,7 @@ export const sobreMi = {
       puesto: 'UX Researcher & UX Designer',
       lugar: 'Grupo Portillo',
       corto: 'Portillo',
+      referencia: true,
       detalle: 'Investigación de usuarios y rediseño web',
     },
     {
@@ -402,6 +403,15 @@ export const ui = {
     'sobre-mi': 'Sobre mí',
     casos: 'Proyectos',
     contacto: 'Contacto',
+  },
+  referencia: {
+    clip: 'Referencias',
+    abrir: 'Abrir la carta de referencia de Grupo Portillo',
+    titulo: 'Carta de referencia · Grupo Portillo',
+    idiomas: { es: 'ES', en: 'EN' },
+    descargar: 'Descargar PDF',
+    cerrar: 'Cerrar',
+    alt: 'Carta de referencia firmada por José Manuel Portillo: Marian colaboró con Grupo Portillo durante aproximadamente un año en análisis, estrategia, marketing y experiencia digital.',
   },
   irInicio: 'Marian, ir al inicio',
   secciones: 'Secciones',

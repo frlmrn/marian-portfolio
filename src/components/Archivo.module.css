@@ -217,6 +217,61 @@
   color: var(--texto-2);
 }
 
+/* Clip con su papelito: abre la carta de referencia */
+.clipRef {
+  position: absolute;
+  z-index: 2;
+  top: -0.3em;
+  right: 0.9em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 2.6em;
+  padding: 0.5em 0.7em 0.45em 0.4em;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-weight: var(--rotulo-peso);
+  font-size: 0.72em;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--marino);
+  background: var(--cartulina-clara-1);
+  box-shadow: var(--sombra-1);
+  rotate: 2deg;
+  transition:
+    translate var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.clipRef svg {
+  width: 0.9em;
+  height: 2.1em;
+  margin-top: -1.1em;
+  fill: none;
+  stroke: var(--marino);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.clipRef:focus-visible {
+  outline: 2px solid var(--marino);
+  outline-offset: 2px;
+}
+
+.clipRef:active {
+  scale: 0.97;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .clipRef:hover {
+    translate: 0 -2px;
+    box-shadow: var(--sombra-2);
+  }
+}
+
 .fecha {
   margin: 0;
   font-weight: var(--rotulo-peso);
@@ -623,4 +678,10 @@
 
 .pestana {
   -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clipRef {
+    transition: none;
+  }
 }

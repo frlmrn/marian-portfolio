@@ -7,7 +7,7 @@ import { CatPaw } from '../components/CatPaw'
 import { Contrastes, Lamina } from '../components/Diagramas'
 import { Garabatos } from '../components/Garabatos'
 import { Threads, type Pt, type ThreadDef } from '../components/Threads'
-import { expedienteHref, Link, paths, urlPrototipo } from '../lib/router'
+import { expedienteHref, Link, paths, urlPublica } from '../lib/router'
 import { href } from './Cases'
 import a from '../components/Archivo.module.css'
 import p from '../components/PageShell.module.css'
@@ -481,7 +481,7 @@ export function Expediente({ id }: { id: string }) {
                 </div>
               ))}
             </dl>
-            <Probar url={urlPrototipo(e.prototipo)} />
+            <Probar url={urlPublica(e.prototipo)} />
           </div>
           <div className={s.portadaFotos}>
             <Mockup caso={id} mockup={sol.mockup} alt={alt} />
@@ -669,20 +669,20 @@ export function Expediente({ id }: { id: string }) {
             <div data-revela>
               {sol.probarEn === 'portatil' ? (
                 <>
-                  <PortatilVivo url={urlPrototipo(e.prototipo)} titulo={`${card.nombre} · ${sol.probarTitulo}`} />
+                  <PortatilVivo url={urlPublica(e.prototipo)} titulo={`${card.nombre} · ${sol.probarTitulo}`} />
                   <div className={s.soloMovil}>
-                    <MovilVivo url={urlPrototipo(e.prototipo)} titulo={`${card.nombre} · ${sol.probarTitulo}`} />
+                    <MovilVivo url={urlPublica(e.prototipo)} titulo={`${card.nombre} · ${sol.probarTitulo}`} />
                   </div>
                 </>
               ) : (
-                <MovilVivo url={urlPrototipo(e.prototipo)} titulo={`${card.nombre} · ${sol.probarTitulo}`} />
+                <MovilVivo url={urlPublica(e.prototipo)} titulo={`${card.nombre} · ${sol.probarTitulo}`} />
               )}
             </div>
             <div className={s.lado}>
               <Nota giro={-2} className={s.notaLado}>
                 <p className={s.postitTit}>{sol.probarNota}</p>
               </Nota>
-              <a className={s.completa} href={urlPrototipo(e.prototipo)} target="_blank" rel="noopener noreferrer">
+              <a className={s.completa} href={urlPublica(e.prototipo)} target="_blank" rel="noopener noreferrer">
                 {t.completa}
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 17 17 7M9 7h8v8" />

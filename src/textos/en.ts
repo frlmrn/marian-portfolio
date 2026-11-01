@@ -189,7 +189,7 @@ export const en: Textos = {
     trayectoria: [
       {
         fecha: 'Jan–Jul 2026',
-        puesto: 'UX Designer',
+        puesto: 'UX Design Intern',
         lugar: 'Green Hat Workers / YellowBreak',
         corto: 'YellowBreak',
         detalle: 'UX audits, web redesign, design systems and AI',
@@ -199,6 +199,7 @@ export const en: Textos = {
         puesto: 'UX Researcher & UX Designer',
         lugar: 'Grupo Portillo',
         corto: 'Portillo',
+        referencia: true,
         detalle: 'User research and web redesign',
       },
       {
@@ -357,6 +358,15 @@ export const en: Textos = {
       'sobre-mi': 'About me',
       casos: 'Projects',
       contacto: 'Contact',
+    },
+    referencia: {
+      clip: 'References',
+      abrir: 'Open the reference letter from Grupo Portillo',
+      titulo: 'Reference letter · Grupo Portillo',
+      idiomas: { es: 'ES', en: 'EN' },
+      descargar: 'Download PDF',
+      cerrar: 'Close',
+      alt: 'Reference letter signed by José Manuel Portillo: Marian collaborated with Grupo Portillo for approximately one year on analysis, marketing strategy and digital experience.',
     },
     irInicio: 'Marian, go to the home page',
     secciones: 'Sections',
