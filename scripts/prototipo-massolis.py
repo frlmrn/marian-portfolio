@@ -16,6 +16,8 @@ import subprocess
 import sys
 import zipfile
 
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+
 ORIGEN = 'C:/Users/Gustavo/Desktop/massolis'
 DESTINO = 'C:/Users/Gustavo/Desktop/Marian Portfolio/public/prototipos/massolis/index.html'
 TMP = sys.argv[1]
@@ -85,14 +87,60 @@ s, n = re.subn(r"<script>\s*// Abierto con doble clic:.*?</script>\s*", '', s, c
 assert n == 1
 open(ruta, 'w', encoding='utf8').write(s)
 
-subprocess.run('npm run build:standalone', cwd=TMP, shell=True, check=True, stdout=subprocess.DEVNULL)
+# ——— El manual no se puede descargar: sus páginas van borrosas ———
+# El desenfoque se graba en la imagen y a baja resolución: no se puede deshacer
+# desde el navegador, como pasaría con un filtro CSS.
+carpeta = os.path.join(TMP, 'src/assets/manual')
+fuente = ImageFont.truetype('C:/Windows/Fonts/arialbd.ttf', 20)
+for nombre in os.listdir(carpeta):
+    ruta = os.path.join(carpeta, nombre)
+    im = Image.open(ruta).convert('RGB')
+    im.thumbnail((420, 600), Image.LANCZOS)
+    im = im.resize((im.width // 3, im.height // 3), Image.BILINEAR).resize(im.size, Image.BILINEAR)
+    im = im.filter(ImageFilter.GaussianBlur(9))
+    d = ImageDraw.Draw(im)
+    texto = 'Documento interno · vista protegida'
+    x0, y0, x1, y1 = d.textbbox((0, 0), texto, font=fuente)
+    ancho, alto = x1 - x0, y1 - y0
+    cx, cy = (im.width - ancho) // 2, (im.height - alto) // 2
+    d.rectangle((cx - 12, cy - 10, cx + ancho + 12, cy + alto + 14), fill=(0, 61, 155))
+    d.text((cx, cy), texto, font=fuente, fill=(255, 255, 255))
+    im.save(ruta, 'JPEG', quality=60)
+
+# Sin imprimir, seleccionar ni menú contextual en las pantallas del manual.
+# Solo disuade: lo que se ve en pantalla siempre se puede fotografiar.
+PROTECCION = """<style>
+      @media print { html[data-manual] { display: none } }
+      html[data-manual] * { -webkit-user-select: none; user-select: none }
+      html[data-manual] input, html[data-manual] textarea { -webkit-user-select: text; user-select: text }
+    </style>
+    <script>
+      ;(function () {
+        var marca = function () {
+          document.documentElement.toggleAttribute('data-manual', /conocimiento|\\/admin\\/manual/.test(location.hash))
+        }
+        marca()
+        setInterval(marca, 400)
+        addEventListener('beforeprint', marca)
+        addEventListener('contextmenu', function (e) {
+          if (document.documentElement.hasAttribute('data-manual') && !e.target.closest('input,textarea')) e.preventDefault()
+        })
+      })()
+    </script>
+  </head>"""
+ruta = os.path.join(TMP, 'index.html')
+s = open(ruta, encoding='utf8').read()
+assert '</head>' in s
+s = s.replace('</head>', PROTECCION, 1)
+open(ruta, 'w', encoding='utf8').write(s)
+
+subprocess.run('npx vite build --mode standalone', cwd=TMP, shell=True, check=True, stdout=subprocess.DEVNULL)
+shutil.copyfile(os.path.join(TMP, 'dist-standalone/index.html'), os.path.join(TMP, 'MASSolisapp.html'))
 html = open(os.path.join(TMP, 'MASSolisapp.html'), encoding='utf8').read()
 
 # ——— Ningún dato real en lo que se publica ———
-fugas = [k for k, v in reales.items() if k != 'bank' and v.strip() in html] + (['bank'] if reales['bank'] in html else [])
-sin_espacios = reales['nif'].replace('-', '')
-if sin_espacios in html:
-    fugas.append('nif sin guion')
+# (si el origen ya trae datos de ejemplo, coinciden con los ficticios y no cuentan)
+fugas = [k for k, v in reales.items() if v != FICTICIOS[k] and v.strip() and v.strip() in html]
 assert not fugas, f'Datos reales en el archivo: {fugas}'
 open(DESTINO, 'w', encoding='utf8').write(html)
 print('ok', len(html) // 1024, 'kB')
