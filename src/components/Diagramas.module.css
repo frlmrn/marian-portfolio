@@ -537,7 +537,7 @@ tr[data-linea] th:first-child::before {
     grid-template-columns: 1fr;
   }
   .lamina {
-    padding: 22px 16px 16px;
+    padding: 24px 16px 26px;
   }
 }
 

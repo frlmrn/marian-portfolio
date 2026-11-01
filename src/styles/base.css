@@ -78,6 +78,27 @@
   color-scheme: light;
 }
 
+/* En el móvil las hojas son muy largas y los dientes en % crecían con la altura
+   hasta comerse el texto: se limitan a unos píxeles, sea cual sea el largo */
+@media (max-width: 700px) {
+  :root {
+    --rasgado-ancho: polygon(
+      0 min(3%, 10.5px), 6% 0, 18% min(2.5%, 8.8px), 31% min(0.5%, 1.8px), 46% min(2.5%, 8.8px), 60% 0,
+      74% min(2%, 7px), 88% min(0.4%, 1.4px), 100% min(2.5%, 8.8px), 99% 30%, 100% 62%, 98.6% 100%,
+      84% max(97.6%, calc(100% - 8.4px)), 70% 100%, 55% max(97.8%, calc(100% - 7.7px)),
+      40% max(99.6%, calc(100% - 1.4px)), 24% max(97.4%, calc(100% - 9.1px)),
+      10% max(99.8%, calc(100% - 0.7px)), 0 max(97%, calc(100% - 10.5px)), 1% 60%
+    );
+    --rasgado-ficha: polygon(
+      0.6% min(2.2%, 8.8px), 12% min(0.4%, 1.6px), 27% min(1.8%, 7.2px), 44% 0, 61% min(1.6%, 6.4px),
+      78% min(0.2%, 0.8px), 99% min(1.4%, 5.6px), 98.2% 22%, 100% 47%, 98.6% 73%,
+      99.6% max(98.4%, calc(100% - 6.4px)), 82% max(99.6%, calc(100% - 1.6px)),
+      63% max(98%, calc(100% - 8px)), 45% 100%, 26% max(98.4%, calc(100% - 6.4px)),
+      9% max(99.8%, calc(100% - 0.8px)), 0 max(98.6%, calc(100% - 5.6px)), 1.4% 76%, 0 51%, 1.2% 25%
+    );
+  }
+}
+
 * {
   box-sizing: border-box;
 }
