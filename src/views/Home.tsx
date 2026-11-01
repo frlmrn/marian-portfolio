@@ -17,11 +17,12 @@ import { box } from '../lib/layout'
 import { exploreCards } from '../lib/explore'
 import s from './Home.module.css'
 
-/* Polaroids alrededor del hero; la chincheta de cada una hace de eje del balanceo */
-const card01 = pinnedRect({ cx: 1210, cy: 262, w: 286, h: 330, rot: -4, px: 7, py: 4.5 })
-const card02 = pinnedRect({ cx: 270, cy: 655, w: 296, h: 336, rot: -3.5, px: 90, py: 4 })
-const card03 = pinnedRect({ cx: 1262, cy: 738, w: 258, h: 312, rot: 8, px: 42, py: 3 })
-const card04 = pinnedRect({ cx: 704, cy: 846, w: 238, h: 276, rot: 3, px: 50, py: 4 })
+/* Polaroids alrededor del hero, todas del mismo tamaño; la chincheta de cada una hace de eje del balanceo */
+const TARJETA = { w: 272, h: 316 }
+const card01 = pinnedRect({ cx: 1210, cy: 262, ...TARJETA, rot: -4, px: 7, py: 4.5 })
+const card02 = pinnedRect({ cx: 270, cy: 655, ...TARJETA, rot: -3.5, px: 90, py: 4 })
+const card03 = pinnedRect({ cx: 1270, cy: 738, ...TARJETA, rot: 8, px: 42, py: 3 })
+const card04 = pinnedRect({ cx: 730, cy: 846, ...TARJETA, rot: 3, px: 50, py: 4 })
 
 /* La nota rasgada se reduce para dejar aire al titular */
 const NOTA_ESCALA = 0.75
@@ -160,8 +161,8 @@ export function Home({ unit }: { unit: number }) {
               {/* Asoma por detrás de la polaroid; no se mueve con ella */}
               <SelloContacto style={box(372, 742, 138, 138)} />
               {/* Explica para qué sirve el sello; solo en la portada */}
-              <Annotation lines={home.pistaSello} delay={T_03} className={s.cardNote} style={box(546, 744)} />
-              <Leader from={[542, 784]} to={[506, 802]} delay={T_03} className={s.leader} />
+              <Annotation lines={home.pistaSello} delay={T_03} className={s.cardNote} style={box(516, 722)} />
+              <Leader from={[534, 790]} to={[511, 806]} delay={T_03} className={s.leader} />
             </div>
 
             <div className={s.right}>
@@ -178,7 +179,7 @@ export function Home({ unit }: { unit: number }) {
                 onSway={tense(['D'])}
               />
               <Annotation lines={cards.cecotec.nota!} delay={T_01} className={s.cardNote} style={box(1272, 464)} />
-              <Leader from={[1314, 460]} to={[1296, 428]} delay={T_01} className={s.leader} />
+              <Leader from={[1314, 460]} to={[1296, 424]} delay={T_01} className={s.leader} />
             </div>
 
             <div className={s.right}>
@@ -205,8 +206,8 @@ export function Home({ unit }: { unit: number }) {
                 style={box(card04.x, card04.y, card04.w, card04.h)}
                 onSway={tense(['B', 'C'])}
               />
-              <Annotation lines={cards.massolis.nota!} delay={T_02} className={s.cardNote} style={box(868, 768)} />
-              <Leader from={[864, 784]} to={[830, 794]} delay={T_02} className={s.leader} />
+              <Annotation lines={cards.massolis.nota!} delay={T_02} className={s.cardNote} style={box(898, 738)} />
+              <Leader from={[894, 756]} to={[874, 766]} delay={T_02} className={s.leader} />
             </div>
           </section>
         </main>
