@@ -781,6 +781,12 @@
   rotate: 40deg;
 }
 
+/* Por qué hay partes borrosas (MASSolisapp) */
+.avisoBorroso {
+  max-width: 34em;
+  margin-top: 26px;
+}
+
 .aviso {
   margin: 14px 0 0;
   font-family: var(--notas);

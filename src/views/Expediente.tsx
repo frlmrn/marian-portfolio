@@ -583,6 +583,11 @@ export function Expediente({ id }: { id: string }) {
           <div className={s.nota} data-revela style={{ maxWidth: '40em' }}>
             <p>{sol.nota}</p>
           </div>
+          {sol.aviso && (
+            <Nota giro={-1} className={s.avisoBorroso}>
+              <p className={s.postitTit}>{sol.aviso}</p>
+            </Nota>
+          )}
 
           {sol.web && (
             <>

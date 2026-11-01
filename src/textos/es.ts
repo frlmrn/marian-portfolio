@@ -636,6 +636,8 @@ export type Expediente = {
       comparar?: { antes: { img: string; texto: string }; despues: { img: string; texto: string } }
       pasos: { img: string; titulo: string; texto: string }[]
     }
+    /** Aviso al inicio de la solución (partes borrosas por confidencialidad) */
+    aviso?: string
     /** Bloque de pantallas móviles propio (el manual de MASSolisapp) */
     manual?: { titulo: string; nota: string; pasos: { img: string; titulo: string; texto: string }[] }
     /** Otro perfil con su propia app (el portal del cliente de MASSolisapp) */
@@ -1364,6 +1366,7 @@ export const expedientes: Record<string, Expediente> = {
     },
     solucion: {
       titulo: 'La solución',
+      aviso: 'Algunas partes salen borrosas a propósito: los códigos, los métodos y el contenido del manual son información interna de la empresa.',
       nota: 'Tres caras de la misma información: el panel para organizar, la app para hacer y el portal para que el cliente sepa qué pasa. Lo que marca el profesional aparece al momento en el panel y en el portal, y de ahí sale la factura.',
       mockup: { portatil: 'web-inicio', moviles: ['inicio'] },
       pasosTitulo: 'La app del profesional: un servicio de principio a fin',
@@ -1400,7 +1403,7 @@ export const expedientes: Record<string, Expediente> = {
         ],
       },
       probarTitulo: 'Pruébalo aquí',
-      probarNota: 'Es el prototipo de verdad: entra con la cuenta de demostración, mueve un servicio en la agenda o abre la app del profesional y el portal del cliente desde el botón «Demo».',
+      probarNota: 'Es el prototipo de verdad: entra con la cuenta de demostración, mueve un servicio en la agenda o abre la app del profesional y el portal del cliente desde el botón «Demo». El contenido del manual sale borroso por confidencialidad.',
       web: {
         titulo: 'El panel de administración',
         pasos: [

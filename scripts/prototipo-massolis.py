@@ -10,6 +10,7 @@ Uso: python scripts/prototipo-massolis.py <carpeta temporal>
 import base64
 import io
 import os
+import random
 import re
 import shutil
 import subprocess
@@ -107,18 +108,94 @@ for nombre in os.listdir(carpeta):
     d.text((cx, cy), texto, font=fuente, fill=(255, 255, 255))
     im.save(ruta, 'JPEG', quality=60)
 
+# ——— Códigos, métodos y demás contenido: el texto real no llega al archivo ———
+# Un filtro CSS se quitaría en segundos y el texto seguiría en el código, así que
+# cada palabra se cambia por letras al azar del mismo largo y luego se difumina.
+# Títulos, nombres de código y categorías se conservan: la navegación se entiende.
+MARCA = '\u2060'
+NO_TOCAR = {'id', 'tipo', 'categoria', 'subcategoria', 'titulo', 'seccion', 'pagina', 'codigo', 'denominacion', 'origen',
+            'secuencial', 'etiquetas', 'servicios', 'zonas', 'superficies', 'claves', 'relacionadas', 'entradaId',
+            'descripcion', 'S', 'base', 'dis', 'fecha', 'autor', 'motivo', 'correcta'}
+LITERAL = re.compile(r"'((?:[^'\\\n]|\\.)*)'")
+CLAVE = re.compile(r"(\w+)\s*:(?!:)|const\s+(\w+)")
+
+
+def letras(m):
+    palabra = m.group(0)
+    azar = random.Random(palabra)
+    fuera = ''
+    for c in palabra:
+        if c.isdigit():
+            fuera += azar.choice('0123456789')
+        elif c.isalpha():
+            n = azar.choice('abcdefghijklmnoprstuvz')
+            fuera += n.upper() if c.isupper() else n
+        else:
+            fuera += c
+    return fuera
+
+
+def difumina(fuente):
+    fuera, ultimo = [], 0
+    for m in LITERAL.finditer(fuente):
+        previo = LITERAL.sub("''", fuente[max(0, m.start() - 900):m.start()])
+        claves = CLAVE.findall(previo)
+        clave = (claves[-1][0] or claves[-1][1]) if claves else ''
+        texto = m.group(1)
+        ligado = fuente[m.end():m.end() + 2].lstrip().startswith(':')
+        linea = fuente[fuente.rfind('\n', 0, m.start()) + 1:m.start()]
+        indice = re.search(r'\w\[$', fuente[max(0, m.start() - 3):m.start()]) is not None  # SERVICIOS['03MAS']
+        # Las frases largas se ocultan siempre, salvo que sean títulos o nombres de sección
+        frase = len(texto) >= 42 and ' ' in texto and clave not in ('titulo', 'descripcion', 'seccion', 'denominacion')
+        if (clave in NO_TOCAR and not frase) or ligado or indice or linea.lstrip().startswith(('import', 'export type', 'export interface')) \
+                or not re.search(r'[^\W\d_]', texto):
+            continue
+        fuera += [fuente[ultimo:m.start()], "'", MARCA, re.sub(r'\w+', letras, texto), "'"]
+        ultimo = m.end()
+    return ''.join(fuera) + fuente[ultimo:]
+
+
+base = os.path.join(TMP, 'src/knowledge')
+archivos = [os.path.join(base, 'aprendizaje.ts')] + [os.path.join(base, 'contenido', f) for f in os.listdir(os.path.join(base, 'contenido'))]
+for ruta in archivos:
+    fuente = open(ruta, encoding='utf8').read()
+    open(ruta, 'w', encoding='utf8').write(difumina(fuente))
+
 # Sin imprimir, seleccionar ni menú contextual en las pantallas del manual.
 # Solo disuade: lo que se ve en pantalla siempre se puede fotografiar.
 PROTECCION = """<style>
       @media print { html[data-manual] { display: none } }
       html[data-manual] * { -webkit-user-select: none; user-select: none }
       html[data-manual] input, html[data-manual] textarea { -webkit-user-select: text; user-select: text }
+      .protegido { filter: blur(4px); }
+      #aviso-protegido { display: none; position: fixed; z-index: 2147483647; top: 0; left: 0; right: 0; padding: 4px 10px;
+        font: 600 11px/1.3 Inter, system-ui, sans-serif; text-align: center; color: #fff; background: #001848; pointer-events: none }
+      html[data-manual] #aviso-protegido { display: block }
+      html[data-manual] body { padding-top: 22px; box-sizing: border-box }
+      html[data-manual] body > #root { height: calc(100dvh - 22px); overflow: hidden }
     </style>
     <script>
       ;(function () {
         var marca = function () {
           document.documentElement.toggleAttribute('data-manual', /conocimiento|\\/admin\\/manual/.test(location.hash))
         }
+        var difumina = function () {
+          var nodos = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+          while (nodos.nextNode()) {
+            if (nodos.currentNode.nodeValue.indexOf('\\u2060') !== -1) nodos.currentNode.parentElement.classList.add('protegido')
+          }
+          document.querySelectorAll('input,textarea,option').forEach(function (e) {
+            if ((e.value || '').indexOf('\\u2060') !== -1) e.classList.add('protegido')
+          })
+        }
+        addEventListener('DOMContentLoaded', function () {
+          var aviso = document.createElement('div')
+          aviso.id = 'aviso-protegido'
+          aviso.textContent = 'Contenido interno borroso por confidencialidad'
+          document.body.appendChild(aviso)
+          difumina()
+          new MutationObserver(difumina).observe(document.body, { childList: true, subtree: true, characterData: true })
+        })
         marca()
         setInterval(marca, 400)
         addEventListener('beforeprint', marca)
@@ -142,5 +219,8 @@ html = open(os.path.join(TMP, 'MASSolisapp.html'), encoding='utf8').read()
 # (si el origen ya trae datos de ejemplo, coinciden con los ficticios y no cuentan)
 fugas = [k for k, v in reales.items() if v != FICTICIOS[k] and v.strip() and v.strip() in html]
 assert not fugas, f'Datos reales en el archivo: {fugas}'
+muestra = re.findall(r"'([^'\\n]{40,})'", open(os.path.join(ORIGEN, 'src/knowledge/contenido/codigos.ts'), encoding='utf8').read())
+visibles = [t for t in muestra if t in html]
+assert len(muestra) > 10 and not visibles, f'Texto del manual en el archivo: {len(visibles)} de {len(muestra)}'
 open(DESTINO, 'w', encoding='utf8').write(html)
 print('ok', len(html) // 1024, 'kB')
