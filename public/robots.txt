@@ -1,2 +1,4 @@
 User-agent: *
 Disallow: /prototipos/
+
+Sitemap: https://marian-portfolio-mu.vercel.app/sitemap.xml

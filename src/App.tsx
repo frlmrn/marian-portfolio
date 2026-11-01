@@ -16,6 +16,9 @@ const ContactStage = lazy(() => import('./views/ContactStage').then(m => ({ defa
 const Expediente = lazy(() => import('./views/Expediente').then(m => ({ default: m.Expediente })))
 const NoEncontrado = lazy(() => import('./views/NoEncontrado').then(m => ({ default: m.NoEncontrado })))
 
+/** Dirección pública de la web (para la URL canónica de cada página) */
+const SITIO = 'https://marian-portfolio-mu.vercel.app'
+
 /** ¿La dirección corresponde a una página que existe? */
 function existe(path: string) {
   const limpio = path.replace(/\/+$/, '') || '/'
@@ -42,6 +45,17 @@ export function App() {
     document.querySelector('meta[name="description"]')?.setAttribute('content', desc)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title)
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc)
+    const url = SITIO + (path.replace(/\/+$/, '') || '/')
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', url)
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', url)
+    // La 404 no debe aparecer en buscadores
+    document.querySelector('meta[name="robots"]')?.remove()
+    if (!valida) {
+      const robots = document.createElement('meta')
+      robots.name = 'robots'
+      robots.content = 'noindex'
+      document.head.append(robots)
+    }
   }, [page, path, idioma, valida])
 
   return <Suspense fallback={<div className="papel" style={{ minHeight: '100vh' }} />}>{vista()}</Suspense>

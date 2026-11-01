@@ -8,6 +8,10 @@ las fotos vacías a la espera de las imágenes definitivas, cabecera compacta co
 «Marian» y el símbolo en burdeos, dos tipografías (Bricolage Grotesque + Ibarra
 Real Nova cursiva para las notas), bocetos de diseño digital en lugar de planos antiguos y una pata de gato.
 
+## Web publicada
+
+https://marian-portfolio-mu.vercel.app (Vercel, se actualiza al subir a la rama `main` de GitHub).
+
 ## Abrir sin instalar nada
 
 Haz doble clic en `Marian Portfolio.html` (o en `index.html`, que redirige a él). Es la web entera en un solo archivo; los prototipos se abren desde la carpeta `public`, así que el archivo tiene que seguir dentro de esta carpeta.
