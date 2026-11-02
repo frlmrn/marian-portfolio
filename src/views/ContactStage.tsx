@@ -2,14 +2,14 @@ import { contacto, pages, ui } from '../content'
 import { StageShell } from '../components/StageShell'
 import { MiniPolaroid } from '../components/MiniPolaroid'
 import { sagPath, type ThreadDef } from '../components/Threads'
-import { box } from '../lib/layout'
+import { box, u } from '../lib/layout'
 import { ContactForm, Sobre } from './Contact'
 import h from './Home.module.css'
 import s from './ContactStage.module.css'
 
 /* El hilo va de la hoja del titular a la ficha de proyecto */
 const threads: ThreadDef[] = [
-  { id: 'A', from: 'ct1', to: 'ct2', draw: [0.5, 0.7], path: (a, b, u, t) => sagPath(a, b, 40 * u * t) },
+  { id: 'A', from: 'ct1', to: 'ct2', draw: [0.5, 0.7], path: (a, b, un, t) => sagPath(a, b, 40 * un * t) },
 ]
 
 /**
@@ -19,6 +19,8 @@ const threads: ThreadDef[] = [
  */
 export function ContactStage({ unit }: { unit: number }) {
   const page = pages.contacto
+  // En portátiles muy bajos el sobre no cabe bajo la ficha: se deja a su lado
+  const alLado = unit < 0.7 && innerWidth / unit > 1900
   return (
     <StageShell unit={unit} numero={page.numero} threads={threads} pins={['ct1', 'ct2']} bocetos="contacto">
       <section className={s.torn} style={box(262, 132, 560, 380)} aria-labelledby="titulo">
@@ -39,7 +41,7 @@ export function ContactStage({ unit }: { unit: number }) {
         <span className={s.anchor} data-anchor="ct1" style={{ left: '94%', top: '88%' }} />
       </section>
 
-      <section className={s.pasos} style={box(318, 586, 330, 236)} aria-labelledby="empezar">
+      <section className={s.pasos} style={{ ...box(318, 586, 330), minHeight: u(236) }} aria-labelledby="empezar">
         <span className={h.cinta} style={{ ...box(118, -16, 92, 32), transform: 'rotate(3deg)' }} />
         <h2 id="empezar" className={s.pasosTitle}>
           {ui.empezar}
@@ -70,12 +72,24 @@ export function ContactStage({ unit }: { unit: number }) {
         <span className={h.cinta} style={{ ...box(300, -16, 96, 32), transform: 'rotate(5deg)' }} />
         <span className={s.anchor} data-anchor="ct2" style={{ left: '5%', top: '4%' }} />
         {/* El sobre cuelga justo bajo la ficha, mida lo que mida el formulario */}
-        <Sobre className={s.sobre} style={{ left: 'calc(var(--u) * 44)', top: 'calc(100% + var(--u) * 26)', width: 'calc(var(--u) * 360)' }} />
+        <Sobre
+          className={s.sobre}
+          style={{
+            left: alLado ? 'calc(100% + var(--u) * 34)' : 'calc(var(--u) * 44)',
+            top: alLado ? 'calc(var(--u) * 320)' : 'calc(100% + var(--u) * 26)',
+            width: 'calc(var(--u) * 360)',
+          }}
+        />
         {/* Atajo a Sobre mí: la polaroid pequeña, dejada encima del sobre, en su esquina libre */}
         <MiniPolaroid
           id="sobre-mi"
           giro={6}
-          style={{ left: 'calc(var(--u) * 300)', top: 'calc(100% + var(--u) * 118)', width: 'calc(var(--u) * 104)', zIndex: 33 }}
+          style={{
+            left: alLado ? 'calc(100% + var(--u) * 290)' : 'calc(var(--u) * 300)',
+            top: alLado ? 'calc(var(--u) * 412)' : 'calc(100% + var(--u) * 118)',
+            width: 'calc(var(--u) * 104)',
+            zIndex: 33,
+          }}
         />
       </ContactForm>
     </StageShell>

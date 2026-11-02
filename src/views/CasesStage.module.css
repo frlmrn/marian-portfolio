@@ -16,6 +16,7 @@
   line-height: 1;
   letter-spacing: -0.04em;
   color: var(--granate);
+  white-space: nowrap;
 }
 
 .sub {
@@ -25,17 +26,44 @@
   font-weight: 500;
   font-size: max(14px, calc(var(--u) * 19));
   color: var(--tinta);
+  white-space: nowrap;
   rotate: -2deg;
 }
 
 /* ——— Índice ——— */
+
+/* Columna del índice y los atajos, centrada respecto a la carpeta */
+.lateral {
+  position: absolute;
+  z-index: 32;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  gap: calc(var(--u) * 30);
+}
+
 .index {
   composes: hoja-rasgada from global;
   --rasgado: var(--rasgado-ficha);
-  position: absolute;
-  z-index: 32;
+  position: relative;
   padding: calc(var(--u) * 30) calc(var(--u) * 20) calc(var(--u) * 22);
   rotate: -2deg;
+}
+
+/* Polaroid y sello, pequeños, bajo el índice */
+.atajos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.atajos > a {
+  position: relative;
+  flex: none;
+}
+
+.atajos > a + a {
+  margin-left: calc(var(--u) * -6);
 }
 
 /* Rótulo de ficha: en granate, con una raya fina debajo */
@@ -97,12 +125,22 @@
   }
 }
 
-.anchor {
+.anchor,
+.anchorCarpeta {
   position: absolute;
-  right: calc(var(--u) * 4);
   top: 50%;
   width: 0;
   height: 0;
+}
+
+/* Sobre el borde del papel, sin tocar el texto */
+.anchor {
+  right: calc(var(--u) * -8);
+}
+
+/* Sobre la tapa de la carpeta: padding del índice + hueco − medio borde de la tapa */
+.anchorCarpeta {
+  right: calc(var(--u) * -45);
 }
 
 /* Números de caso: azul marino (son números de archivo) */
@@ -174,13 +212,6 @@
 
 .tabActive .num {
   color: var(--marino);
-}
-
-.folderAnchor {
-  position: absolute;
-  left: calc(var(--u) * -9);
-  width: 0;
-  height: 0;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -325,6 +356,7 @@
   text-decoration: none;
   font-weight: 600;
   font-size: max(13px, calc(var(--u) * 15));
+  white-space: nowrap;
   background: url('../assets/textures/grain.svg'), linear-gradient(175deg, #7a2227, var(--granate-boton) 55%, #5b1418);
   box-shadow: var(--sombra-boton);
   rotate: -1.5deg;
@@ -349,6 +381,8 @@
 /* ——— Fotos vacías ——— */
 .visual {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .photo {
@@ -414,11 +448,11 @@
   filter: drop-shadow(calc(var(--u) * 1) calc(var(--u) * 2) calc(var(--u) * 1) rgb(20 25 40 / 0.3));
 }
 
+/* Al pie de la hoja, en la misma línea que el paginador */
 .caseNote {
-  position: absolute;
-  left: 0;
-  top: 78%;
-  margin: 0;
+  align-self: flex-start;
+  margin: auto 0 0;
+  padding-top: calc(var(--u) * 26);
   font-family: var(--notas);
   font-style: italic;
   font-weight: 500;
@@ -433,13 +467,14 @@
   display: block;
 }
 
-/* ——— Paginador ——— */
+/* ——— Paginador: dentro de la hoja, en la esquina inferior derecha ——— */
 .pager {
   position: absolute;
-  z-index: 30;
+  z-index: 2;
+  right: calc(var(--u) * 48);
+  bottom: calc(var(--u) * 40);
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: calc(var(--u) * 14);
 }
 

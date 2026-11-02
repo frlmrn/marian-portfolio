@@ -65,6 +65,8 @@ export function Home({ unit }: { unit: number }) {
   const sobreMiRef = useRef<PolaroidHandle>(null)
   const n4Ref = useRef<PolaroidHandle>(null)
   const cecotecRef = useRef<PolaroidHandle>(null)
+  // En portátiles bajos la letra de las notas ocupa más: se apartan un poco
+  const holgura = unit < 0.74 ? 18 : 0
 
   return (
     <PointerDepth unit={unit}>
@@ -161,8 +163,8 @@ export function Home({ unit }: { unit: number }) {
               {/* Asoma por detrás de la polaroid; no se mueve con ella */}
               <SelloContacto style={box(372, 742, 138, 138)} />
               {/* Explica para qué sirve el sello; solo en la portada */}
-              <Annotation lines={home.pistaSello} delay={T_03} className={s.cardNote} style={box(516, 722)} />
-              <Leader from={[534, 790]} to={[511, 806]} delay={T_03} className={s.leader} />
+              <Annotation lines={home.pistaSello} delay={T_03} className={s.cardNote} style={box(516 + holgura, 722)} />
+              <Leader from={[534 + holgura, 790]} to={[511, 806]} delay={T_03} className={s.leader} />
             </div>
 
             <div className={s.right}>
@@ -192,7 +194,7 @@ export function Home({ unit }: { unit: number }) {
                 style={box(card03.x, card03.y, card03.w, card03.h)}
                 onSway={tense(['C', 'D'])}
               />
-              <Annotation lines={cards.ohmycat.nota!} delay={T_03} className={s.cardNote} style={box(1000, 792)} />
+              <Annotation lines={cards.ohmycat.nota!} delay={T_03} className={s.cardNote} style={box(1000 - holgura, 792)} />
               <Leader from={[1096, 808]} to={[1122, 796]} delay={T_03} className={s.leader} />
             </div>
 
