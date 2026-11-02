@@ -11,7 +11,7 @@ export const en: Textos = {
     etiqueta: 'Digital design · Experience · Visual identity',
     titulo: { linea1: 'Hi, I’m Marian.', linea2: 'Digital Designer.' },
     texto:
-      'I research, connect ideas and design digital experiences that blend functionality, creativity and a carefully crafted visual identity.',
+      'I studied anthropology to understand people. Now I design for them: from research to apps, websites and visual identities.',
     boton: 'Explore the cards',
     pistaSello: ['Press it', 'to write', 'to me.'],
     chivato: ['Psst: what’s on the table', 'can be pressed too.'],
@@ -140,7 +140,7 @@ export const en: Textos = {
     cecotec: {
       id: 'cecotec',
       alt: 'The Cecotec app on three phones: home, Ceco answering and augmented reality',
-      numero: '01',
+      numero: '02',
       nombre: 'Cecotec',
       descripcion: 'App, chatbot and AR',
       to: `${paths.casos}/cecotec`,
@@ -149,7 +149,7 @@ export const en: Textos = {
     ohmycat: {
       id: 'ohmycat',
       alt: 'The Oh My Cat! website on a laptop and a phone',
-      numero: '02',
+      numero: '03',
       nombre: 'Oh My Cat!',
       descripcion: 'Responsive website and rebranding',
       to: `${paths.casos}/ohmycat`,
@@ -158,7 +158,7 @@ export const en: Textos = {
     massolis: {
       id: 'massolis',
       alt: 'The MASSolisapp dashboard on a laptop and the professional’s app on a phone',
-      numero: '03',
+      numero: '01',
       nombre: 'MASSolisapp',
       descripcion: 'Service management platform',
       to: `${paths.casos}/massolis`,
@@ -289,10 +289,18 @@ export const en: Textos = {
 
   casos: [
     {
+      id: 'massolis',
+      categoria: 'Management platform · Web dashboard, app and client portal',
+      descripcion:
+        'UX/UI for an operations tool for Massoluciones: a web dashboard to organise services, the calendar and the team, an app for each professional to manage their day with tasks, photos and the digital manual, a client portal and billing.',
+      claves: ['Research from operations', 'Dashboard, app and client portal', 'Prototype with AI agents'],
+      nota: ['The whole team,', 'on one screen.'],
+    },
+    {
       id: 'cecotec',
       categoria: 'Mobile app · Chatbot · AR',
       descripcion:
-        'Redesign of the Cecotec app: a catalogue by product family, after-sales gathered in “Your account”, Ceco, a virtual assistant that answers questions about purchases, shipping and warranty, and augmented reality to see each appliance at home.',
+        'UX/UI redesign of the Cecotec app: a catalogue by product family, after-sales gathered in “Your account”, Ceco, a virtual assistant that answers questions about purchases, shipping and warranty, and augmented reality to see each appliance at home.',
       claves: ['Mobile UX/UI', 'Conversational assistant', 'Interactive prototype'],
       nota: ['Conversations', 'that solve things.'],
     },
@@ -300,17 +308,9 @@ export const en: Textos = {
       id: 'ohmycat',
       categoria: 'Responsive website · Rebranding',
       descripcion:
-        'Website for the cat café run by Asociación Ghato Verde in Seville: visit booking in three steps, profiles of the cats up for adoption and a form to volunteer, foster or donate.',
+        'UX/UI for the website of the cat café run by Asociación Ghato Verde in Seville: visit booking in three steps, profiles of the cats up for adoption and a form to volunteer, foster or donate.',
       claves: ['Design audit', 'Booking flow', 'Responsive website'],
       nota: ['Brands that', 'leave a mark.'],
-    },
-    {
-      id: 'massolis',
-      categoria: 'Management platform · Web dashboard, app and client portal',
-      descripcion:
-        'Operations tool for Massoluciones: a web dashboard to organise services, the calendar and the team, an app for each professional to manage their day with tasks, photos and the digital manual, a client portal and billing.',
-      claves: ['Research from operations', 'Dashboard, app and client portal', 'Prototype with AI agents'],
-      nota: ['The whole team,', 'on one screen.'],
     },
   ],
 
@@ -318,6 +318,7 @@ export const en: Textos = {
     texto: ['Tell me what you’re working on.', 'We start with a conversation.'],
     nota: ['Every idea', 'starts here.'],
     email: 'frlmrn13@gmail.com',
+    cv: '/cv/CV_Marian_Lopez_Solis_EN.pdf',
     linkedin: 'https://www.linkedin.com/in/marian-lopez-solis-a15707389',
     telefono: '+34 645 53 22 65',
     sobre: {
@@ -326,6 +327,8 @@ export const en: Textos = {
       ciudad: 'Seville, Spain',
       whatsapp: 'Message me on WhatsApp at',
       linkedin: 'My LinkedIn profile',
+      cv: 'Download my CV',
+      matasellos: 'SEVILLE · ARCHIVE · SEVILLE · ARCHIVE ·',
     },
     boton: 'Send message',
     pasos: ['You tell me what you’re working on.', 'We talk it through, no rush.', 'And we open the case.'],
@@ -340,11 +343,11 @@ export const en: Textos = {
     },
     descripciones: {
       inicio:
-        'Portfolio of Marian López Solís, anthropologist and digital designer in Seville: user research, UX/UI and visual identity in projects such as Cecotec, Oh My Cat! and MASSolisapp.',
+        'Portfolio of Marian López Solís, anthropologist and digital designer in Seville: user research, UX/UI and visual identity in projects such as MASSolisapp, Cecotec and Oh My Cat!',
       'sobre-mi':
         'Marian López Solís: anthropologist and digital designer. Her experience, education (Master’s in UX, AI applied to design) and tools.',
       casos:
-        'Projects by Marian López Solís: the Cecotec app with an assistant and augmented reality, the Oh My Cat! website and the MASSolisapp management platform.',
+        'UX/UI projects by Marian López Solís: the MASSolisapp management platform, the Cecotec app with an assistant and augmented reality, and the Oh My Cat! website.',
       contacto: 'Write to Marian López Solís to start a digital design or user research project.',
     },
     noEncontrado: {
@@ -442,6 +445,10 @@ export const en: Textos = {
       completa: 'Open full screen',
       contrastes: 'Measured contrast',
       resultadoEtq: 'Outcome',
+      enResumen: 'At a glance',
+      problemaEtq: 'Problem',
+      papelEtq: 'My role',
+      decisionEtq: 'Key decision',
       resultados: 'Results',
       siguienteCaso: 'Next project',
       casoAnterior: 'Previous project',
@@ -505,7 +512,7 @@ export const en: Textos = {
   expedientes: {
     cecotec: {
       categoria: 'Mobile app · Chatbot · AR',
-      lead: 'An e-commerce app reorganised to make shopping and after-sales easier: a catalogue by product family, “Your account” with all after-sales in one place and two value propositions, Ceco, a virtual assistant, and augmented reality to see each appliance at home.',
+      lead: 'UX/UI for an e-commerce app reorganised to make shopping and after-sales easier: a catalogue by product family, “Your account” with all after-sales in one place and two value propositions, Ceco, a virtual assistant, and augmented reality to see each appliance at home.',
       ficha: [
         { k: 'Client', v: 'Cecotec · two meetings with the company' },
         { k: 'My role', v: 'I led the UX research and the accessibility audit, and built the interactive simulation' },
@@ -514,7 +521,12 @@ export const en: Textos = {
         { k: 'Tools', v: 'Figma · UXtweak · Google Forms · TAW · AI agents' },
       ],
       prototipo: '/prototipos/cecotec/index.html',
-      resultado: 'In the usability test with 7 people, Ceco was one of the most valued features.',
+      resumen: {
+        problema: 'Too many categories at the same level, after-sales that was hard to find and accessibility barriers at key moments.',
+        papel: 'In a team of three, I led the UX research and the WCAG 2.2 audit, and built the interactive simulation.',
+        decision: 'Four sections in the bottom bar, all after-sales in “Your account” and Ceco always within reach.',
+      },
+      resultado: 'Test with 7 people and three tasks: the only improvements they asked for were about orientation (breadcrumbs and active states), and they wanted Ceco in more parts of the app.',
       reto: {
         titulo: 'Context and challenge',
         texto: [
@@ -605,9 +617,9 @@ export const en: Textos = {
           {
             tipo: 'bench',
             titulo: 'The current website against 11 apps in the sector',
-            pie: 'Benchmarking of 11 apps (Amazon, IKEA, MediaMarkt, Samsung Shop…) with 12 criteria; here, how Cecotec’s website scored.',
+            pie: 'Benchmarking of 11 apps (Amazon, IKEA, MediaMarkt, Samsung Shop…) with 12 criteria; here, how Cecotec’s website scored. Accessibility is marked as not assessed because I analysed it separately, in the WCAG 2.2 audit.',
             leyenda: { si: 'Meets', parcial: 'Partly meets', no: 'Doesn’t meet', na: 'Not assessed' },
-            resumen: 'The current website didn’t fully meet any of the 12 criteria.',
+            resumen: 'The current website didn’t fully meet any of the 11 criteria assessed.',
             filas: [
               { criterio: 'Architecture and navigation', estado: 'parcial' },
               { criterio: 'Search and catalogue', estado: 'no' },
@@ -712,7 +724,7 @@ export const en: Textos = {
       ],
       probado: [
         'Usability test with 7 participants and three tasks.',
-        'Ceco, highly valued: “The robot assistant, very functional”.',
+        'Ceco proved useful: “The robot assistant, very functional”. They wanted it in more parts of the app.',
         'Requested improvements: clearer breadcrumbs and active states.',
         'Two meetings with Cecotec about the app.',
       ],
@@ -746,7 +758,7 @@ export const en: Textos = {
     },
     ohmycat: {
       categoria: 'Responsive website · Rebranding',
-      lead: 'The website of a cat café that is also an adoption association: quick, clear visit booking, the cats in the spotlight and a new brand with more personality.',
+      lead: 'UX/UI and rebranding for the website of a cat café that is also an adoption association: quick, clear visit booking, the cats in the spotlight and a new brand with more personality.',
       ficha: [
         { k: 'Client', v: 'Oh My Cat! · Asociación Ghato Verde, Seville' },
         { k: 'My role', v: 'Research, branding, UX/UI design and prototype' },
@@ -754,6 +766,11 @@ export const en: Textos = {
         { k: 'Tools', v: 'Figma · AI agents · HTML, CSS and JavaScript' },
       ],
       prototipo: '/prototipos/ohmycat/index.html',
+      resumen: {
+        problema: 'Booking wasn’t in the header, it was unclear where to say how many of you were coming and a group booking turned into several appointments.',
+        papel: 'I handled the research, rebranding, UX/UI design and prototype.',
+        decision: 'Bring booking to the home page, in three steps and with a clear party-size selector.',
+      },
       resultado: 'A working prototype, with full booking on desktop, tablet and mobile.',
       reto: {
         titulo: 'Context and challenge',
@@ -1046,7 +1063,7 @@ export const en: Textos = {
     },
     massolis: {
       categoria: 'Management platform · Web dashboard, app and client portal',
-      lead: 'An operations platform for a cleaning and maintenance company, with three products on the same data: a dashboard for the office, an app for the professionals and a portal for clients.',
+      lead: 'UX/UI for an operations platform for a cleaning and maintenance company, with three products on the same data: a dashboard for the office, an app for the professionals and a portal for clients.',
       ficha: [
         { k: 'Client', v: 'Massoluciones · commissioned directly by its CEO' },
         { k: 'My role', v: 'Research, UX, UI design, testing and prototype' },
@@ -1055,7 +1072,12 @@ export const en: Textos = {
         { k: 'Tools', v: 'Figma · AI agents · React · TypeScript' },
       ],
       prototipo: '/prototipos/massolis/index.html',
-      resultado: 'The schedule, photos and incidents, finally in one place: no more Excel or WhatsApp.',
+      resumen: {
+        problema: 'Ten professionals and the office ran everything on a Drive Excel sheet and WhatsApp: schedules with errors, and photos and incidents lost among messages.',
+        papel: 'I did the research, UX, UI, testing and prototype; someone else is building the backend.',
+        decision: 'Three products on the same data, with the app built for mobile: closing a service requires the “after” photo.',
+      },
+      resultado: 'A working prototype that brings the schedule, photos and incidents together in one place, instead of Excel and WhatsApp. The backend is still in development.',
       reto: {
         titulo: 'Context and challenge',
         texto: [

@@ -13,7 +13,14 @@ import {
 
 /** Abierta con doble clic (file://) no hay servidor: las rutas van detrás de #. */
 export const modoArchivo = location.protocol === 'file:'
-const rutaActual = () => (modoArchivo ? location.hash.slice(1) || '/' : location.pathname)
+
+/** La versión inglesa vive bajo /en; las rutas internas de la web no llevan ese prefijo. */
+export const enIngles = () => !modoArchivo && /^\/en(\/|$)/.test(location.pathname)
+export const rutaActual = () =>
+  modoArchivo ? location.hash.slice(1) || '/' : location.pathname.replace(/^\/en(?=\/|$)/, '') || '/'
+
+/** Dirección pública de una ruta interna en un idioma (por defecto, en el actual). */
+export const urlDe = (ruta: string, en = enIngles()) => (en ? (ruta === '/' ? '/en' : `/en${ruta}`) : ruta)
 
 /** Dirección de un archivo de public (prototipos, PDF): sin servidor, se abre desde esa carpeta. */
 export const urlPublica = (url: string) => (modoArchivo ? `public${url}` : url)
@@ -65,7 +72,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
 
   const navigate = useCallback((to: string, opts?: { scroll?: boolean }) => {
     if (modoArchivo) location.hash = to
-    else if (to !== location.pathname) history.pushState(null, '', to)
+    else if (urlDe(to) !== location.pathname) history.pushState(null, '', urlDe(to))
     if (opts?.scroll !== false) scrollTo(0, 0)
     setPath(to)
   }, [])
@@ -94,5 +101,5 @@ export function Link({
     navigate(to, { scroll: !keepScroll })
   }
   // oxlint-disable-next-line jsx-a11y/anchor-has-content -- el contenido llega en rest.children
-  return <a href={modoArchivo ? `#${to}` : to} onClick={handle} {...rest} />
+  return <a href={modoArchivo ? `#${to}` : urlDe(to)} onClick={handle} {...rest} />
 }

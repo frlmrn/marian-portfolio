@@ -47,9 +47,9 @@ const rows: {
   tense: string[]
 }[] = [
   { id: 'sobre-mi', rot: -3, side: 'left', n: 1, tense: ['A'] },
-  { id: 'cecotec', rot: 3.5, side: 'right', n: 2, tense: ['A', 'B'] },
-  { id: 'ohmycat', rot: -2.5, side: 'left', n: 3, tense: ['B', 'C'] },
-  { id: 'massolis', rot: 2.5, side: 'right', n: 4, tense: ['C'] },
+  { id: 'massolis', rot: 3.5, side: 'right', n: 2, tense: ['A', 'B'] },
+  { id: 'cecotec', rot: -2.5, side: 'left', n: 3, tense: ['B', 'C'] },
+  { id: 'ohmycat', rot: 2.5, side: 'right', n: 4, tense: ['C'] },
 ]
 
 /** Activa las animaciones de una zona cuando entra en pantalla. */

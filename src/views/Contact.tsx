@@ -2,6 +2,7 @@ import { useId, useState, type CSSProperties, type FormEvent, type ReactNode } f
 import { contacto, pages, ui } from '../content'
 import { PageShell } from '../components/PageShell'
 import { Logo } from '../components/Header'
+import { urlPublica } from '../lib/router'
 import p from '../components/PageShell.module.css'
 import s from './Contact.module.css'
 
@@ -220,6 +221,11 @@ export function Sobre({ className = '', style }: { className?: string; style?: C
             {contacto.sobre.linkedin}
           </a>
         </p>
+        <p>
+          <a href={urlPublica(contacto.cv)} download>
+            {contacto.sobre.cv}
+          </a>
+        </p>
         <p className={s.ciudad}>{contacto.sobre.ciudad}</p>
       </div>
     </section>
@@ -239,7 +245,7 @@ function Matasellos({ className }: { className?: string }) {
       <circle cx="55" cy="55" r="48" />
       <circle cx="55" cy="55" r="29" />
       <text>
-        <textPath href="#matasellos-arco">SEVILLA · ARCHIVO · SEVILLA · ARCHIVO ·</textPath>
+        <textPath href="#matasellos-arco">{contacto.sobre.matasellos}</textPath>
       </text>
       <text x="55" y="60" textAnchor="middle" className="anio">
         {ANIO}

@@ -213,12 +213,49 @@
 }
 
 /* El resultado, en un post-it pegado sobre las capturas */
-.resultadoPortada {
-  position: absolute;
-  left: -4%;
-  bottom: -26px;
-  z-index: 3;
-  width: min(62%, 290px);
+/* Resumen del caso, nada más empezar: problema, papel, decisión y resultado */
+.resumen {
+  position: relative;
+  z-index: 4;
+  margin-top: clamp(30px, 4vw, 52px);
+  padding: clamp(22px, 2.6vw, 32px) clamp(22px, 3vw, 40px) clamp(24px, 2.8vw, 34px);
+  background:
+    url('../assets/textures/grain.svg'),
+    linear-gradient(170deg, var(--hoja-1), var(--polaroid) 60%, var(--hoja-2));
+  box-shadow: var(--sombra-2);
+}
+
+.resumenTit {
+  composes: rotulo from global;
+  margin: 0 0 clamp(14px, 1.6vw, 20px);
+  font-size: 13px;
+}
+
+.resumen dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px clamp(22px, 2.6vw, 38px);
+  margin: 0;
+}
+
+.resumen dt {
+  font-weight: var(--rotulo-peso);
+  font-size: 12px;
+  letter-spacing: var(--rotulo-tracking);
+  text-transform: uppercase;
+  color: var(--marino);
+}
+
+.resumen dd {
+  margin: 6px 0 0;
+  font-size: clamp(15px, 1.1vw, 16.5px);
+  line-height: 1.5;
+}
+
+@media (max-width: 560px) {
+  .resumen dl {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 .etqNota {
@@ -881,10 +918,8 @@
   .resultados {
     grid-template-columns: 1fr;
   }
-  .resultadoPortada {
-    position: static;
-    width: min(100%, 320px);
-    margin: 10px auto 0;
+  .resumen dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .meta {
     grid-template-columns: 1fr;

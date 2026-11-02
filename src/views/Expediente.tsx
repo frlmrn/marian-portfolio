@@ -92,22 +92,29 @@ function Nota({ children, giro = 0, className = '' }: { children: ReactNode; gir
   )
 }
 
+/** Las imágenes de cabecera se piden ya; el resto, al acercarse a la pantalla. */
+const carga = (inmediata: boolean) =>
+  inmediata ? ({ fetchPriority: 'high' } as const) : ({ loading: 'lazy', decoding: 'async' } as const)
+
 /** Móvil dibujado (marco, isla y pantalla) con una captura del prototipo. */
 function Movil({
   src,
   alt,
   giro = 0,
   className = '',
+  inmediata = false,
 }: {
   src: string
   alt: string
   giro?: number
   className?: string
+  /** Imagen de cabecera: se carga de inmediato, sin esperar al scroll */
+  inmediata?: boolean
 }) {
   return (
     <span className={`${s.movil} ${className}`} style={{ rotate: `${giro}deg` }}>
       <span className={s.pantallaMovil}>
-        <img src={src} alt={alt} loading="lazy" decoding="async" />
+        <img {...carga(inmediata)} src={src} alt={alt} />
       </span>
       <MarcoMovil className={s.marco} />
     </span>
@@ -115,11 +122,11 @@ function Movil({
 }
 
 /** Portátil dibujado con una captura de escritorio. */
-function Portatil({ src, alt }: { src: string; alt: string }) {
+function Portatil({ src, alt, inmediata = false }: { src: string; alt: string; inmediata?: boolean }) {
   return (
     <span className={s.portatil}>
       <span className={s.portatilPantalla}>
-        <img src={src} alt={alt} loading="lazy" decoding="async" />
+        <img {...carga(inmediata)} src={src} alt={alt} />
       </span>
       <MarcoPortatil className={s.marco} />
     </span>
@@ -206,13 +213,14 @@ function Mockup({
   if (mockup.portatil)
     return (
       <div className={s.mockupPortatil}>
-        <Portatil src={pantalla(caso, mockup.portatil)} alt={alt(mockup.portatil)} />
+        <Portatil src={pantalla(caso, mockup.portatil)} alt={alt(mockup.portatil)} inmediata />
         {mockup.moviles[0] && (
           <Movil
             src={pantalla(caso, mockup.moviles[0])}
             alt={alt(mockup.moviles[0])}
             giro={-3}
             className={s.movilDelante}
+            inmediata
           />
         )}
       </div>
@@ -220,7 +228,7 @@ function Mockup({
   return (
     <div className={s.mockupMoviles}>
       {mockup.moviles.map((k, i) => (
-        <Movil key={k} src={pantalla(caso, k)} alt={alt(k)} giro={[-7, 0, 7][i % 3]} />
+        <Movil key={k} src={pantalla(caso, k)} alt={alt(k)} giro={[-7, 0, 7][i % 3]} inmediata />
       ))}
     </div>
   )
@@ -488,14 +496,28 @@ export function Expediente({ id }: { id: string }) {
           </div>
           <div className={s.portadaFotos}>
             <Mockup caso={id} mockup={sol.mockup} alt={alt} />
-            <div className={s.resultadoPortada}>
-              <Nota giro={-3}>
-                <p className={s.etqNota}>{t.resultadoEtq}</p>
-                <p className={s.postitTit}>{e.resultado}</p>
-              </Nota>
-            </div>
           </div>
         </header>
+
+        {/* ——— En resumen ——— */}
+        <section className={s.resumen} aria-labelledby="en-resumen">
+          <h2 id="en-resumen" className={s.resumenTit}>
+            {t.enResumen}
+          </h2>
+          <dl>
+            {[
+              [t.problemaEtq, e.resumen.problema],
+              [t.papelEtq, e.resumen.papel],
+              [t.decisionEtq, e.resumen.decision],
+              [t.resultadoEtq, e.resultado],
+            ].map(([k, v]) => (
+              <div key={k}>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
 
         {/* ——— 01 Contexto y reto ——— */}
         <section className={s.parte} aria-labelledby="reto">

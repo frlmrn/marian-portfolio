@@ -35,7 +35,7 @@ const notaRect = {
 
 /*
  * Un solo hilo que recorre las fotos sin cruzar ningún texto:
- * nota → Sobre mí → MASSolisapp (por debajo del botón) → Oh My Cat! → Cecotec.
+ * nota → Sobre mí → Oh My Cat! (por debajo del botón) → Cecotec → MASSolisapp.
  * Los casos se leen 01, 02, 03 de arriba abajo por la derecha.
  */
 const threads: ThreadDef[] = [
@@ -61,10 +61,10 @@ export function Home({ unit }: { unit: number }) {
   const threadsRef = useRef<ThreadsHandle>(null)
   const tense = (ids: string[]) => () => threadsRef.current?.tense(ids)
   // En el orden del recorrido del hilo
-  const ohmycatRef = useRef<PolaroidHandle>(null)
-  const sobreMiRef = useRef<PolaroidHandle>(null)
-  const n4Ref = useRef<PolaroidHandle>(null)
   const cecotecRef = useRef<PolaroidHandle>(null)
+  const sobreMiRef = useRef<PolaroidHandle>(null)
+  const ohmycatRef = useRef<PolaroidHandle>(null)
+  const massolisRef = useRef<PolaroidHandle>(null)
   // En portátiles bajos la letra de las notas ocupa más: se apartan un poco
   const holgura = unit < 0.74 ? 18 : 0
 
@@ -135,7 +135,7 @@ export function Home({ unit }: { unit: number }) {
                 <button
                   type="button"
                   className={s.boton}
-                  onClick={() => exploreCards([sobreMiRef, cecotecRef, ohmycatRef, n4Ref])}
+                  onClick={() => exploreCards([sobreMiRef, massolisRef, cecotecRef, ohmycatRef])}
                 >
                   {home.boton}
                 </button>
@@ -169,8 +169,8 @@ export function Home({ unit }: { unit: number }) {
 
             <div className={s.right}>
               <Polaroid
-                ref={cecotecRef}
-                item={cards.cecotec}
+                ref={massolisRef}
+                item={cards.massolis}
                 rotate={card01.rot}
                 pivot={card01.pivot}
                 anchors={[
@@ -180,35 +180,35 @@ export function Home({ unit }: { unit: number }) {
                 style={box(card01.x, card01.y, card01.w, card01.h)}
                 onSway={tense(['D'])}
               />
-              <Annotation lines={cards.cecotec.nota!} delay={T_01} className={s.cardNote} style={box(1272, 464)} />
+              <Annotation lines={cards.massolis.nota!} delay={T_01} className={s.cardNote} style={box(1272, 464)} />
               <Leader from={[1314, 460]} to={[1296, 424]} delay={T_01} className={s.leader} />
             </div>
 
             <div className={s.right}>
               <Polaroid
-                ref={ohmycatRef}
-                item={cards.ohmycat}
+                ref={cecotecRef}
+                item={cards.cecotec}
                 rotate={card03.rot}
                 pivot={card03.pivot}
                 anchors={[{ id: 'p3', x: card03.pivot.x, y: card03.pivot.y }]}
                 style={box(card03.x, card03.y, card03.w, card03.h)}
                 onSway={tense(['C', 'D'])}
               />
-              <Annotation lines={cards.ohmycat.nota!} delay={T_03} className={s.cardNote} style={box(1000 - holgura, 792)} />
+              <Annotation lines={cards.cecotec.nota!} delay={T_03} className={s.cardNote} style={box(968 - holgura, 792)} />
               <Leader from={[1096, 808]} to={[1122, 796]} delay={T_03} className={s.leader} />
             </div>
 
             <div className={s.center}>
               <Polaroid
-                ref={n4Ref}
-                item={cards.massolis}
+                ref={ohmycatRef}
+                item={cards.ohmycat}
                 rotate={card04.rot}
                 pivot={card04.pivot}
                 anchors={[{ id: 'p4', x: card04.pivot.x, y: card04.pivot.y }]}
                 style={box(card04.x, card04.y, card04.w, card04.h)}
                 onSway={tense(['B', 'C'])}
               />
-              <Annotation lines={cards.massolis.nota!} delay={T_02} className={s.cardNote} style={box(898, 738)} />
+              <Annotation lines={cards.ohmycat.nota!} delay={T_02} className={s.cardNote} style={box(898, 738)} />
               <Leader from={[894, 756]} to={[874, 766]} delay={T_02} className={s.leader} />
             </div>
           </section>

@@ -1,10 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://marian-portfolio-mu.vercel.app/</loc></url>
-  <url><loc>https://marian-portfolio-mu.vercel.app/sobre-mi</loc></url>
-  <url><loc>https://marian-portfolio-mu.vercel.app/casos</loc></url>
-  <url><loc>https://marian-portfolio-mu.vercel.app/casos/cecotec/expediente</loc></url>
-  <url><loc>https://marian-portfolio-mu.vercel.app/casos/ohmycat/expediente</loc></url>
-  <url><loc>https://marian-portfolio-mu.vercel.app/casos/massolis/expediente</loc></url>
-  <url><loc>https://marian-portfolio-mu.vercel.app/contacto</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/sobre-mi</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/sobre-mi" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/sobre-mi" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/sobre-mi" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/en/sobre-mi</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/sobre-mi" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/sobre-mi" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/sobre-mi" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/casos</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/en/casos</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/casos/massolis/expediente</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos/massolis/expediente" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos/massolis/expediente" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos/massolis/expediente" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/en/casos/massolis/expediente</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos/massolis/expediente" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos/massolis/expediente" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos/massolis/expediente" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/casos/cecotec/expediente</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos/cecotec/expediente" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos/cecotec/expediente" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos/cecotec/expediente" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/en/casos/cecotec/expediente</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos/cecotec/expediente" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos/cecotec/expediente" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos/cecotec/expediente" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/casos/ohmycat/expediente</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos/ohmycat/expediente" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos/ohmycat/expediente" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos/ohmycat/expediente" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/en/casos/ohmycat/expediente</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos/ohmycat/expediente" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos/ohmycat/expediente" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos/ohmycat/expediente" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/contacto</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/contacto" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/contacto" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/contacto" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/en/contacto</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/contacto" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/contacto" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/contacto" />
+  </url>
 </urlset>

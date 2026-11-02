@@ -12,7 +12,7 @@ export const home = {
   etiqueta: 'Diseño digital · Experiencia · Identidad visual',
   titulo: { linea1: 'Hola, soy Marian.', linea2: 'Digital Designer.' },
   texto:
-    'Investigo, conecto ideas y diseño experiencias digitales que combinan funcionalidad, creatividad y una identidad visual cuidada.',
+    'Estudié antropología para entender a las personas. Ahora diseño para ellas: de la investigación a apps, webs e identidades visuales.',
   boton: 'Explora las tarjetas',
   pistaSello: ['Púlsalo', 'para', 'escribirme.'],
   chivato: ['Psst: lo que hay sobre la mesa', 'también se puede pulsar.'],
@@ -164,7 +164,7 @@ export const cards: Record<CardItem['id'], CardItem> = {
   cecotec: {
     id: 'cecotec',
     alt: 'La app de Cecotec en tres móviles: el inicio, Ceco respondiendo y la realidad aumentada',
-    numero: '01',
+    numero: '02',
     nombre: 'Cecotec',
     descripcion: 'App, chatbot y AR',
     to: `${paths.casos}/cecotec`,
@@ -173,7 +173,7 @@ export const cards: Record<CardItem['id'], CardItem> = {
   ohmycat: {
     id: 'ohmycat',
     alt: 'La web de Oh My Cat! en un portátil y en un móvil',
-    numero: '02',
+    numero: '03',
     nombre: 'Oh My Cat!',
     descripcion: 'Web responsive y rebranding',
     to: `${paths.casos}/ohmycat`,
@@ -182,7 +182,7 @@ export const cards: Record<CardItem['id'], CardItem> = {
   massolis: {
     id: 'massolis',
     alt: 'El panel de MASSolisapp en un portátil y la app del profesional en un móvil',
-    numero: '03',
+    numero: '01',
     nombre: 'MASSolisapp',
     descripcion: 'Plataforma de gestión de servicios',
     to: `${paths.casos}/massolis`,
@@ -328,10 +328,18 @@ export type Caso = {
 
 export const casos: Caso[] = [
   {
+    id: 'massolis',
+    categoria: 'Plataforma de gestión · Panel web, app y portal del cliente',
+    descripcion:
+      'UX/UI de una herramienta de operaciones para Massoluciones: un panel web para organizar servicios, agenda y equipo, una app para que cada profesional lleve su día con tareas, fotos y el manual digital, un portal para el cliente y facturación.',
+    claves: ['Research desde operaciones', 'Panel, app y portal del cliente', 'Prototipo con agentes de IA'],
+    nota: ['Todo el equipo,', 'en una pantalla.'],
+  },
+  {
     id: 'cecotec',
     categoria: 'App móvil · Chatbot · AR',
     descripcion:
-      'Rediseño de la app de Cecotec: un catálogo por familias, la posventa reunida en «Tu cuenta», Ceco, un asistente virtual que resuelve dudas de compra, envíos y garantía, y la realidad aumentada para ver cada electrodoméstico en casa.',
+      'Rediseño UX/UI de la app de Cecotec: un catálogo por familias, la posventa reunida en «Tu cuenta», Ceco, un asistente virtual que resuelve dudas de compra, envíos y garantía, y la realidad aumentada para ver cada electrodoméstico en casa.',
     claves: ['UX/UI móvil', 'Asistente conversacional', 'Prototipo interactivo'],
     nota: ['Conversaciones', 'que resuelven.'],
   },
@@ -339,17 +347,9 @@ export const casos: Caso[] = [
     id: 'ohmycat',
     categoria: 'Web responsive · Rebranding',
     descripcion:
-      'Web del cat café de la Asociación Ghato Verde en Sevilla: reserva de visitas en tres pasos, fichas de los gatos en adopción y un formulario para colaborar como voluntaria, casa de acogida o con donaciones.',
+      'UX/UI de la web del cat café de la Asociación Ghato Verde en Sevilla: reserva de visitas en tres pasos, fichas de los gatos en adopción y un formulario para colaborar como voluntaria, casa de acogida o con donaciones.',
     claves: ['Auditoría del diseño', 'Flujo de reserva', 'Web responsive'],
     nota: ['Marcas que', 'dejan huella.'],
-  },
-  {
-    id: 'massolis',
-    categoria: 'Plataforma de gestión · Panel web, app y portal del cliente',
-    descripcion:
-      'Herramienta de operaciones para Massoluciones: un panel web para organizar servicios, agenda y equipo, una app para que cada profesional lleve su día con tareas, fotos y el manual digital, un portal para el cliente y facturación.',
-    claves: ['Research desde operaciones', 'Panel, app y portal del cliente', 'Prototipo con agentes de IA'],
-    nota: ['Todo el equipo,', 'en una pantalla.'],
   },
 ]
 
@@ -358,6 +358,8 @@ export const contacto = {
   nota: ['Toda idea', 'empieza por aquí.'],
   /** Correo que recibe los mensajes (de los CV de Marian). Vacío = formulario sin conectar. */
   email: 'frlmrn13@gmail.com',
+  /** CV en PDF, en el idioma de la web */
+  cv: '/cv/CV_Marian_Lopez_Solis.pdf',
   linkedin: 'https://www.linkedin.com/in/marian-lopez-solis-a15707389',
   /** Teléfono (de los CV): Marian pidió publicarlo con enlace a WhatsApp */
   telefono: '+34 645 53 22 65',
@@ -368,6 +370,8 @@ export const contacto = {
     ciudad: 'Sevilla, España',
     whatsapp: 'Escribirme por WhatsApp al',
     linkedin: 'Mi perfil de LinkedIn',
+    cv: 'Descargar mi CV',
+    matasellos: 'SEVILLA · ARCHIVO · SEVILLA · ARCHIVO ·',
   },
   boton: 'Enviar mensaje',
   pasos: ['Me cuentas qué tienes entre manos.', 'Lo conversamos con calma.', 'Y abrimos el caso.'],
@@ -384,11 +388,11 @@ export const ui = {
   /** Descripción de cada página para buscadores y al compartir el enlace */
   descripciones: {
     inicio:
-      'Portfolio de Marian López Solís, antropóloga y diseñadora digital en Sevilla: investigación con usuarios, UX/UI e identidad visual en proyectos como Cecotec, Oh My Cat! y MASSolisapp.',
+      'Portfolio de Marian López Solís, antropóloga y diseñadora digital en Sevilla: investigación con usuarios, UX/UI e identidad visual en proyectos como MASSolisapp, Cecotec y Oh My Cat!',
     'sobre-mi':
       'Marian López Solís: antropóloga y diseñadora digital. Su trayectoria, formación (Máster en UX, IA aplicada al diseño) y herramientas.',
     casos:
-      'Proyectos de Marian López Solís: la app de Cecotec con asistente y realidad aumentada, la web de Oh My Cat! y la plataforma de gestión MASSolisapp.',
+      'Proyectos UX/UI de Marian López Solís: la plataforma de gestión MASSolisapp, la app de Cecotec con asistente y realidad aumentada y la web de Oh My Cat!',
     contacto: 'Escribe a Marian López Solís para empezar un proyecto de diseño digital o de investigación con usuarios.',
   },
   /** Título de la página de un expediente */
@@ -488,6 +492,10 @@ export const ui = {
     completa: 'Abrir en pantalla completa',
     contrastes: 'Contrastes medidos',
     resultadoEtq: 'Resultado',
+    enResumen: 'En resumen',
+    problemaEtq: 'Problema',
+    papelEtq: 'Mi papel',
+    decisionEtq: 'Decisión clave',
     resultados: 'Resultados',
     siguienteCaso: 'Siguiente proyecto',
     casoAnterior: 'Proyecto anterior',
@@ -606,7 +614,9 @@ export type Expediente = {
   lead: string
   ficha: { k: string; v: string }[]
   prototipo: string
-  /** Resultado principal, en una frase (va en la cabecera) */
+  /** Resumen al inicio del caso; se completa con el resultado */
+  resumen: { problema: string; papel: string; decision: string }
+  /** Resultado principal, en una frase */
   resultado: string
   reto: {
     titulo: string
@@ -684,7 +694,7 @@ export type Expediente = {
 export const expedientes: Record<string, Expediente> = {
   cecotec: {
     categoria: 'App móvil · Chatbot · AR',
-    lead: 'Una app de e-commerce reorganizada para que comprar y resolver la posventa sea más fácil: un catálogo por familias, «Tu cuenta» con toda la posventa y dos propuestas de valor, Ceco, un asistente virtual, y la realidad aumentada para ver cada electrodoméstico en casa.',
+    lead: 'UX/UI de una app de e-commerce reorganizada para que comprar y resolver la posventa sea más fácil: un catálogo por familias, «Tu cuenta» con toda la posventa y dos propuestas de valor, Ceco, un asistente virtual, y la realidad aumentada para ver cada electrodoméstico en casa.',
     ficha: [
       { k: 'Cliente', v: 'Cecotec · dos reuniones con la empresa' },
       { k: 'Mi rol', v: 'Lideré el UX Research y la auditoría de accesibilidad, y construí la simulación interactiva' },
@@ -693,7 +703,12 @@ export const expedientes: Record<string, Expediente> = {
       { k: 'Herramientas', v: 'Figma · UXtweak · Google Forms · TAW · Agentes de IA' },
     ],
     prototipo: '/prototipos/cecotec/index.html',
-    resultado: 'En el test de usabilidad con 7 personas, Ceco fue de lo más valorado.',
+    resumen: {
+      problema: 'Demasiadas categorías al mismo nivel, una posventa difícil de encontrar y barreras de accesibilidad en momentos clave.',
+      papel: 'En un equipo de tres, lideré el UX Research y la auditoría WCAG 2.2, y construí la simulación interactiva.',
+      decision: 'Cuatro apartados en la barra inferior, toda la posventa en «Tu cuenta» y Ceco siempre a mano.',
+    },
+    resultado: 'Test con 7 personas y tres tareas: las únicas mejoras que pidieron fueron de orientación (migas de pan y estados activos), y quisieron tener a Ceco en más partes de la app.',
     reto: {
       titulo: 'Contexto y reto',
       texto: [
@@ -784,9 +799,9 @@ export const expedientes: Record<string, Expediente> = {
         {
           tipo: 'bench',
           titulo: 'La web actual frente a 11 apps del sector',
-          pie: 'Benchmarking de 11 apps (Amazon, IKEA, MediaMarkt, Samsung Shop…) con 12 criterios; aquí, cómo salía la web de Cecotec.',
+          pie: 'Benchmarking de 11 apps (Amazon, IKEA, MediaMarkt, Samsung Shop…) con 12 criterios; aquí, cómo salía la web de Cecotec. La accesibilidad queda sin evaluar porque la analicé aparte, en la auditoría WCAG 2.2.',
           leyenda: { si: 'Cumple', parcial: 'Cumple a medias', no: 'No cumple', na: 'No evaluado' },
-          resumen: 'La web actual no cumplía del todo ninguno de los 12 criterios.',
+          resumen: 'La web actual no cumplía del todo ninguno de los 11 criterios evaluados.',
           filas: [
             { criterio: 'Arquitectura y navegación', estado: 'parcial' },
             { criterio: 'Búsqueda y catálogo', estado: 'no' },
@@ -891,7 +906,7 @@ export const expedientes: Record<string, Expediente> = {
     ],
     probado: [
       'Test de usabilidad con 7 participantes y tres tareas.',
-      'Ceco, muy valorado: «El robot asistente, muy funcional».',
+      'Ceco resultó útil: «El robot asistente, muy funcional». Pidieron tenerlo en más partes de la app.',
       'Mejoras pedidas: migas de pan y estados activos más claros.',
       'Dos reuniones con Cecotec sobre la app.',
     ],
@@ -925,7 +940,7 @@ export const expedientes: Record<string, Expediente> = {
   },
   ohmycat: {
     categoria: 'Web responsive · Rebranding',
-    lead: 'La web de un cat café que también es una asociación de adopción: una reserva de visitas rápida y clara, los gatos como protagonistas y una marca nueva con más personalidad.',
+    lead: 'UX/UI y rebranding de la web de un cat café que también es una asociación de adopción: una reserva de visitas rápida y clara, los gatos como protagonistas y una marca nueva con más personalidad.',
     ficha: [
       { k: 'Cliente', v: 'Oh My Cat! · Asociación Ghato Verde, Sevilla' },
       { k: 'Mi rol', v: 'Investigación, branding, diseño UX/UI y prototipo' },
@@ -933,6 +948,11 @@ export const expedientes: Record<string, Expediente> = {
       { k: 'Herramientas', v: 'Figma · Agentes de IA · HTML, CSS y JavaScript' },
     ],
     prototipo: '/prototipos/ohmycat/index.html',
+    resumen: {
+      problema: 'La reserva no estaba en el encabezado, no quedaba claro dónde indicar cuántas personas iban y una reserva de grupo se convertía en varias citas.',
+      papel: 'Me encargué de la investigación, el rebranding, el diseño UX/UI y el prototipo.',
+      decision: 'Llevar la reserva a la portada, en tres pasos y con un selector de personas claro.',
+    },
     resultado: 'Un prototipo que funciona, con la reserva completa en escritorio, tablet y móvil.',
     reto: {
       titulo: 'Contexto y reto',
@@ -1225,7 +1245,7 @@ export const expedientes: Record<string, Expediente> = {
   },
   massolis: {
     categoria: 'Plataforma de gestión · Panel web, app y portal del cliente',
-    lead: 'Una plataforma de operaciones para una empresa de limpieza y mantenimiento, con tres productos sobre los mismos datos: un panel para la oficina, una app para las profesionales y un portal para el cliente.',
+    lead: 'UX/UI de una plataforma de operaciones para una empresa de limpieza y mantenimiento, con tres productos sobre los mismos datos: un panel para la oficina, una app para las profesionales y un portal para el cliente.',
     ficha: [
       { k: 'Cliente', v: 'Massoluciones · encargo directo de su CEO' },
       { k: 'Mi rol', v: 'Research, UX, diseño UI, testing y prototipo' },
@@ -1234,7 +1254,12 @@ export const expedientes: Record<string, Expediente> = {
       { k: 'Herramientas', v: 'Figma · Agentes de IA · React · TypeScript' },
     ],
     prototipo: '/prototipos/massolis/index.html',
-    resultado: 'El horario, las fotos y las incidencias, por fin en un mismo sitio: sin Excel ni WhatsApp.',
+    resumen: {
+      problema: 'Diez profesionales y la oficina se organizaban con un Excel en Drive y WhatsApp: horarios con errores, y fotos e incidencias perdidas entre mensajes.',
+      papel: 'Hice el research, la UX, la UI, el testing y el prototipo; otra persona desarrolla el backend.',
+      decision: 'Tres productos sobre los mismos datos, con la app pensada para el móvil: cerrar un servicio exige la foto del después.',
+    },
+    resultado: 'Un prototipo funcional que reúne el horario, las fotos y las incidencias en un solo sitio, en lugar de Excel y WhatsApp. El backend sigue en desarrollo.',
     reto: {
       titulo: 'Contexto y reto',
       texto: [

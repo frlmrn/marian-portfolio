@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { matchCase, matchExpediente, useRouter } from './lib/router'
+import { matchCase, matchExpediente, urlDe, useRouter } from './lib/router'
 import { useViewport } from './lib/layout'
 import { useIdioma } from './lib/idioma'
 import { cards, expedientes, ui } from './content'
@@ -45,9 +45,23 @@ export function App() {
     document.querySelector('meta[name="description"]')?.setAttribute('content', desc)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title)
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc)
-    const url = SITIO + (path.replace(/\/+$/, '') || '/')
+    const ruta = path.replace(/\/+$/, '') || '/'
+    const url = SITIO + urlDe(ruta, idioma === 'en')
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', url)
     document.querySelector('meta[property="og:url"]')?.setAttribute('content', url)
+    document.querySelector('meta[property="og:locale"]')?.setAttribute('content', idioma === 'en' ? 'en_GB' : 'es_ES')
+    document.querySelector('meta[property="og:locale:alternate"]')?.setAttribute('content', idioma === 'en' ? 'es_ES' : 'en_GB')
+    // Cada página indica a los buscadores su versión en el otro idioma
+    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(l => l.remove())
+    if (valida) {
+      for (const [lang, en] of [['es', false], ['en', true], ['x-default', false]] as const) {
+        const enlace = document.createElement('link')
+        enlace.rel = 'alternate'
+        enlace.hreflang = lang
+        enlace.href = SITIO + urlDe(ruta, en)
+        document.head.append(enlace)
+      }
+    }
     // La 404 no debe aparecer en buscadores
     document.querySelector('meta[name="robots"]')?.remove()
     if (!valida) {
