@@ -235,7 +235,7 @@ export const sobreMi = {
       detalle: 'Investigación de usuarios y rediseño web',
     },
     {
-      fecha: 'Oct 2021–mar 2022',
+      fecha: 'Oct 2024–mar 2025',
       puesto: 'Investigación de usuarios',
       lugar: 'Asociación Andaluza Prader-Willi',
       corto: 'Prader-Willi',
@@ -1230,7 +1230,7 @@ export const expedientes: Record<string, Expediente> = {
       { k: 'Cliente', v: 'Massoluciones · encargo directo de su CEO' },
       { k: 'Mi rol', v: 'Research, UX, diseño UI, testing y prototipo' },
       { k: 'Equipo', v: 'Dos personas: diseño (yo) y desarrollo backend' },
-      { k: 'Contexto', v: 'Proyecto real · 2026 · backend en desarrollo' },
+      { k: 'Contexto', v: 'Proyecto real · 2026–actualidad · backend en desarrollo' },
       { k: 'Herramientas', v: 'Figma · Agentes de IA · React · TypeScript' },
     ],
     prototipo: '/prototipos/massolis/index.html',

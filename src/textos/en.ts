@@ -205,7 +205,7 @@ export const en: Textos = {
         detalle: 'User research and web redesign',
       },
       {
-        fecha: 'Oct 2021–Mar 2022',
+        fecha: 'Oct 2024–Mar 2025',
         puesto: 'User research',
         lugar: 'Asociación Andaluza Prader-Willi',
         corto: 'Prader-Willi',
@@ -1051,7 +1051,7 @@ export const en: Textos = {
         { k: 'Client', v: 'Massoluciones · commissioned directly by its CEO' },
         { k: 'My role', v: 'Research, UX, UI design, testing and prototype' },
         { k: 'Team', v: 'Two people: design (me) and backend development' },
-        { k: 'Context', v: 'Real project · 2026 · backend in development' },
+        { k: 'Context', v: 'Real project · 2026–present · backend in development' },
         { k: 'Tools', v: 'Figma · AI agents · React · TypeScript' },
       ],
       prototipo: '/prototipos/massolis/index.html',
