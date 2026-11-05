@@ -101,8 +101,10 @@ export function Cases() {
                   keepScroll
                   className={`${s.tab} ${c.id === caso.id ? s.tabActive : ''}`}
                   aria-current={c.id === caso.id ? 'page' : undefined}
+                  aria-label={`${cards[c.id].numero} ${cards[c.id].nombre}`}
                 >
-                  <span className={s.num}>{cards[c.id].numero}</span> {cards[c.id].nombre.toUpperCase()}
+                  <span className={s.num}>{cards[c.id].numero}</span>
+                  <span className={s.tabNombre}>{cards[c.id].nombre.toUpperCase()}</span>
                 </Link>
               ))}
             </nav>

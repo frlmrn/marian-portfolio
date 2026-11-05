@@ -548,3 +548,33 @@
     animation: none;
   }
 }
+
+@media (max-width: 639px) {
+  /* Cuatro pestañas no caben con su nombre: las cerradas solo llevan el
+     número y la abierta, más alta y del color de la hoja, lleva también el nombre */
+  .tabs {
+    align-items: flex-end;
+  }
+  .tab:not(.tabActive) {
+    flex: none;
+    height: 34px;
+    padding: 0 16px 0 12px;
+  }
+  .tab:not(.tabActive) .tabNombre {
+    display: none;
+  }
+  .tab:not(.tabActive) .num {
+    font-size: 13px;
+    color: #dfe6f2;
+  }
+  .tabActive {
+    flex: 0 1 auto;
+    min-width: 0;
+    height: 44px;
+  }
+  .tabNombre {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
