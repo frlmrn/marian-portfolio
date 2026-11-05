@@ -458,6 +458,40 @@ export function Expediente({ id }: { id: string }) {
     ),
   }))
 
+  // Versión web (portátiles): antes o después de los pasos móviles, según el caso
+  const web = sol.web && (
+    <>
+      <h3 className={s.subtitulo} data-revela>
+        {sol.web.titulo}
+      </h3>
+      {sol.web.comparar && (
+        <div className={s.comparar}>
+          {(['antes', 'despues'] as const).map(k => (
+            <figure key={k} className={s.compararLado} data-revela>
+              <span className={`${s.compararEtq} ${k === 'antes' ? s.compararAntes : ''}`}>{t[k]}</span>
+              <Portatil src={img(sol.web!.comparar![k].img)} alt={alt(sol.web!.comparar![k].img)} />
+              <figcaption className={s.pasoNota}>
+                <p className={s.pasoTexto}>{sol.web!.comparar![k].texto}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
+      <Carrusel className={s.pasosWeb}>
+        {sol.web.pasos.map((ps, i) => (
+          <li key={ps.img} className={s.paso} data-revela>
+            <Portatil src={img(ps.img)} alt={alt(ps.img)} />
+            <div className={s.pasoNota}>
+              <span className={s.pasoNum}>{String(i + 1).padStart(2, '0')}</span>
+              <p className={s.pasoTit}>{ps.titulo}</p>
+              <p className={s.pasoTexto}>{ps.texto}</p>
+            </div>
+          </li>
+        ))}
+      </Carrusel>
+    </>
+  )
+
   return (
     <PageShell numero={pages.casos.numero}>
       <div ref={raiz} className={s.mesa}>
@@ -614,38 +648,7 @@ export function Expediente({ id }: { id: string }) {
             </Nota>
           )}
 
-          {sol.web && (
-            <>
-              <h3 className={s.subtitulo} data-revela>
-                {sol.web.titulo}
-              </h3>
-              {sol.web.comparar && (
-                <div className={s.comparar}>
-                  {(['antes', 'despues'] as const).map(k => (
-                    <figure key={k} className={s.compararLado} data-revela>
-                      <span className={`${s.compararEtq} ${k === 'antes' ? s.compararAntes : ''}`}>{t[k]}</span>
-                      <Portatil src={img(sol.web!.comparar![k].img)} alt={alt(sol.web!.comparar![k].img)} />
-                      <figcaption className={s.pasoNota}>
-                        <p className={s.pasoTexto}>{sol.web!.comparar![k].texto}</p>
-                      </figcaption>
-                    </figure>
-                  ))}
-                </div>
-              )}
-              <Carrusel className={s.pasosWeb}>
-                {sol.web.pasos.map((ps, i) => (
-                  <li key={ps.img} className={s.paso} data-revela>
-                    <Portatil src={img(ps.img)} alt={alt(ps.img)} />
-                    <div className={s.pasoNota}>
-                      <span className={s.pasoNum}>{String(i + 1).padStart(2, '0')}</span>
-                      <p className={s.pasoTit}>{ps.titulo}</p>
-                      <p className={s.pasoTexto}>{ps.texto}</p>
-                    </div>
-                  </li>
-                ))}
-              </Carrusel>
-            </>
-          )}
+          {!sol.webDespues && web}
 
           <h3 className={s.subtitulo} data-revela>
             {sol.pasosTitulo}
@@ -667,6 +670,8 @@ export function Expediente({ id }: { id: string }) {
                 </div>
               ),
           )}
+
+          {sol.webDespues && web}
 
           {sol.ar && (
             <>

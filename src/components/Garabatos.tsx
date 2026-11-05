@@ -281,12 +281,15 @@ const sitios: { top: string; lado: 'izq' | 'der'; giro: number }[] = [
   { top: '68%', lado: 'izq', giro: 6 },
 ]
 
-export function Garabatos({ items }: { items: { dibujo: string; nota: string }[] }) {
+type Garabato = { dibujo: string; nota: string; top?: string; lado?: 'izq' | 'der' }
+
+export function Garabatos({ items }: { items: Garabato[] }) {
   return (
     <div className={s.garabatos} aria-hidden="true">
       {items.map((it, i) => {
         const dib = dibujos[it.dibujo]
-        const sitio = sitios[i % sitios.length]
+        // Un caso puede fijar su propio sitio para no tapar diagramas anchos
+        const sitio = { ...sitios[i % sitios.length], ...(it.top && { top: it.top }), ...(it.lado && { lado: it.lado }) }
         if (!dib) return null
         const ancho = dib.vb.endsWith('120') ? 210 : 160
         return (
