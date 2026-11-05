@@ -84,4 +84,16 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/contacto" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/contacto" />
   </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/casos/path6/expediente</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos/path6/expediente" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos/path6/expediente" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos/path6/expediente" />
+  </url>
+  <url>
+    <loc>https://marian-portfolio-mu.vercel.app/en/casos/path6/expediente</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://marian-portfolio-mu.vercel.app/casos/path6/expediente" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marian-portfolio-mu.vercel.app/en/casos/path6/expediente" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://marian-portfolio-mu.vercel.app/casos/path6/expediente" />
+  </url>
 </urlset>

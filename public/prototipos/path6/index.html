@@ -1,0 +1,1404 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Path6 · Demo</title>
+<meta name="description" content="Demo de Path6: la red donde autores, lectores beta, correctores, ilustradores y promotores literarios se encuentran y colaboran.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23FFB3AB'/%3E%3Cstop offset='.5' stop-color='%23FFE2BC'/%3E%3Cstop offset='1' stop-color='%23F4FFC4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23FFB86B'/%3E%3Ccircle cx='22' cy='20' r='4.5' fill='%2316142B'/%3E%3Ccircle cx='43' cy='26' r='3.8' fill='%2316142B'/%3E%3Cpath d='M14 36c0-4 4-5 9-4 7 1.3 14 1.6 19 1.4 4-.1 5 3 2.6 5.6C40 44 30 47 22 46 17 45.4 14 41 14 36z' fill='%23000000'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   PATH 6 · SISTEMA DE DISEÑO
+   1. Tokens   2. Base   3. Layout   4. Componentes   5. Vistas   6. Visor
+   Regla: los componentes solo usan tokens (var(--…)), nunca colores sueltos.
+   ===================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root{
+  /* Marca (paleta Atardecer vivo) */
+  --coral:#FF7F6E; --apricot:#FFB86B; --green:#8BC34A;
+  --pink:#F7A1B5; --lilac:#C9A7EB; --mint:#7FCFC4; --star:#F59E0B;
+  --on-color:#16142B;               /* texto sobre cualquier color de marca */
+
+  /* Superficies y texto */
+  --bg:#FFF8F4; --surface:#FFFFFF; --surface-2:#FFF0E8; --line:#F2E2D9;
+  --text:#16142B; --muted:#5A5873;
+  --ink:#16142B; --on-ink:#FFFFFF;  /* botones principales */
+  --accent:#C2412D;                 /* enlaces y foco (coral oscuro, AA) */
+  --nav:#16142B; --logo:#16142B; --bubble-me:#16142B; --on-bubble-me:#FFFFFF;
+
+  /* Estados */
+  --ok:#15803D; --warn:#B45309; --danger:#C2412D;
+
+  /* Alias de color por etapa/rol */
+  --p1:var(--coral); --p2:var(--green); --p3:var(--pink); --p4:var(--apricot); --p5:var(--lilac); --p6:var(--mint);
+
+  /* Forma */
+  --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:22px; --r-pill:999px;
+  --radius:var(--r-xl);
+
+  /* Sombras */
+  --sh-1:0 1px 2px rgba(20,20,40,.04),0 6px 18px rgba(20,20,40,.06);
+  --sh-2:0 10px 30px rgba(22,20,43,.28);
+  --sh-3:0 -10px 40px rgba(0,0,0,.2);
+  --shadow:var(--sh-1);
+
+  /* Tipografía */
+  --font-ui:"Plus Jakarta Sans",system-ui,sans-serif;
+  --font-read:Literata,Georgia,serif;
+  --fs-xs:11px; --fs-sm:13px; --fs-md:15px; --fs-lg:18px; --fs-xl:26px; --fs-xxl:30px;
+
+  /* Espacio */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+
+  /* Papel (visor de documentos): siempre claro */
+  --paper:#FFFFFF; --paper-ink:#1D1B22; --paper-muted:#6B6577; --paper-line:#EEE6E0; --paper-soft:#FFF0E8;
+  --viewer-bg:#2B2B2E; --viewer-bar:#1C1C1E;
+}
+
+/* ---------- 2. Base ---------- */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--fs-md)/1.55 var(--font-ui);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+h1,h2,h3{font-family:var(--font-ui);font-weight:800;line-height:1.2;margin:0;letter-spacing:-.02em}
+h1{font-size:var(--fs-xl)} h2{font-size:var(--fs-lg)} h3{font-size:16px}
+.muted{color:var(--muted)} .small{font-size:var(--fs-sm)}
+.hash{font-family:ui-monospace,Consolas,monospace;font-size:11.5px}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* ---------- 3. Layout ---------- */
+.app{max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:120px}
+main{padding:var(--sp-4)}
+.row{display:flex;align-items:center;gap:10px}
+.wrap{flex-wrap:wrap}
+.spacer{flex:1}
+.stack>*+*{margin-top:var(--sp-3)}
+.section{margin-top:26px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.section-head a{font-size:var(--fs-sm);font-weight:700;color:var(--accent);text-decoration:none}
+.empty{text-align:center;padding:30px 10px;color:var(--muted)}
+.soon{opacity:.55}
+
+/* ---------- 4. Componentes ---------- */
+/* Barra superior y logo */
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:var(--sp-3) var(--sp-4);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:var(--sp-2);text-decoration:none;font-weight:800}
+.logo span{text-transform:uppercase;letter-spacing:.06em;font-size:var(--fs-lg)}
+.logo .mark circle,.logo .mark path{fill:var(--logo)}
+.pill{font-size:var(--fs-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px var(--sp-2);border-radius:var(--r-pill);background:var(--surface-2);color:var(--muted)}
+@media (max-width:400px){.topbar .pill{display:none}}
+.bell{position:relative;border:0;background:var(--surface-2);color:var(--text);width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none}
+.bell i{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:var(--coral);color:var(--on-color);font:800 var(--fs-xs)/18px var(--font-ui);font-style:normal;text-align:center;border:2px solid var(--bg)}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:var(--r-pill);padding:11px 18px;font-weight:700;background:var(--ink);color:var(--on-ink);text-decoration:none;white-space:nowrap;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.sm{padding:7px var(--sp-3);font-size:var(--fs-sm)}
+.btn.ghost{background:var(--surface-2);color:var(--text)}
+.btn.line{background:transparent;border:1.5px solid var(--line);color:var(--text)}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.lnk{border:0;background:none;padding:0;font:700 12px var(--font-ui);color:var(--accent);cursor:pointer}
+.x{border:0;background:var(--surface-2);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none}
+.back{display:inline-flex;align-items:center;gap:var(--sp-1);font-weight:700;font-size:14px;text-decoration:none;color:var(--muted);margin-bottom:var(--sp-3)}
+
+/* Tarjetas (una base + variantes) */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:var(--sp-4);box-shadow:var(--sh-1)}
+.card-link{display:block;text-decoration:none;color:inherit}
+.tint{background:color-mix(in srgb,var(--c) 12%,var(--surface));border-color:transparent;box-shadow:none}
+.req{background:var(--surface-2);border-color:transparent;box-shadow:none}
+.cta,.cmp{box-shadow:none}
+.cta{text-align:center}
+.soonbox{text-align:center;border-style:dashed;box-shadow:none}
+.next{background:var(--coral);border-radius:var(--radius);padding:var(--sp-4) 18px;color:var(--on-color);margin-top:14px;--text:var(--on-color);--muted:#2E2A26}
+.next .btn{background:var(--on-color);color:#FFFFFF}
+.mapcard{padding:6px 2px}
+.jobc{padding:0}
+.appicon{width:64px;height:64px;margin:0 auto var(--sp-3)}
+.appicon svg{width:100%;height:100%}
+
+/* Chips (filtros) y etiquetas (datos) */
+.chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);padding-bottom:var(--sp-1)}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-pill);padding:6px var(--sp-3);font-size:var(--fs-sm);font-weight:600;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:transparent}
+.tag{display:inline-flex;align-items:center;gap:var(--sp-1);font-size:12px;font-weight:700;padding:3px 9px;border-radius:var(--r-sm);background:color-mix(in srgb,var(--c,var(--muted)) 30%,#FFFFFF);color:var(--on-color)}
+.lvl{--c:var(--muted)} .lvl-junior{--c:var(--mint)} .lvl-intermedio{--c:var(--apricot)} .lvl-senior{--c:var(--lilac)}
+.price{font-weight:800;font-size:var(--fs-sm);padding:6px var(--sp-3);border-radius:var(--r-pill);background:var(--surface);color:var(--text);white-space:nowrap}
+.verified{display:inline-flex;align-items:center;gap:3px;color:var(--text);font-size:12px;font-weight:700}
+.verified svg{color:var(--coral)}
+.stars{font-weight:700;font-size:var(--fs-sm)} .stars i{color:var(--star);font-style:normal}
+.status{font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.status.progress{color:var(--warn)} .status.delivered{color:var(--accent)} .status.done{color:var(--ok)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--coral);flex:none}
+
+/* Avatares y portadas */
+.avatar{flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;display:grid;place-items:center}
+.avatar svg{display:block}
+.avatar.lg{width:76px;height:76px}
+.avatar.xs{width:28px;height:28px;border:2px solid var(--surface)}
+.avatars{display:flex} .avatars .avatar+.avatar{margin-left:-8px}
+.cover{position:relative;overflow:hidden;width:72px;height:100px;border-radius:6px var(--r-md) var(--r-md) 6px;flex:none;box-shadow:0 6px 16px rgba(0,0,0,.2);display:grid;place-items:end start;padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3);font-weight:700;font-size:10px;line-height:1.1}
+.cover svg{position:absolute;inset:0;width:100%;height:100%}
+.cover::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:rgba(0,0,0,.18);z-index:1}
+.cover>span{position:relative;z-index:2;color:var(--on-color)}
+.cover.mini{width:40px;height:54px;padding:0}
+.cover.mini span{display:none}
+
+/* Listas, miembros, archivos */
+.list-item{display:flex;gap:var(--sp-3);align-items:center;padding:var(--sp-3) 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.list-item:first-child{border-top:0}
+.list-item.nt{width:100%;border-left:0;border-right:0;border-bottom:0;background:none;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.member{display:flex;gap:var(--sp-3);align-items:flex-start;padding:var(--sp-3) 0;border-top:1px solid var(--line)}
+.member:first-child{border-top:0;padding-top:0}
+.file{display:flex;gap:var(--sp-3);align-items:center;padding:10px;border-radius:var(--r-md);background:var(--surface-2)}
+.file.open{cursor:pointer}
+.file.open:hover{outline:2px solid var(--line)}
+.file .ico{width:36px;height:36px;border-radius:9px;background:var(--surface);display:grid;place-items:center;flex:none}
+.ico.pdf{width:38px;height:46px;border-radius:6px;background:var(--coral);color:var(--on-color);font:800 10px var(--font-ui);display:grid;place-items:center;flex:none}
+
+/* Formularios */
+.field{display:block}
+.field>span{display:block;font-size:var(--fs-sm);font-weight:700;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-md);padding:10px var(--sp-3)}
+.search{display:flex;align-items:center;gap:var(--sp-2);border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-pill);padding:10px 14px}
+.search input{border:0;outline:0;background:transparent;flex:1;min-width:0}
+.toggle{display:flex;align-items:center;gap:var(--sp-2);font-size:var(--fs-sm);font-weight:600}
+.opt{display:flex;gap:var(--sp-3);align-items:flex-start;border:1.5px solid var(--line);border-radius:var(--r-lg);padding:var(--sp-3);cursor:pointer}
+.opt:has(input:checked),.opt.on{border-color:var(--text);background:var(--surface-2)}
+.opt input{margin-top:3px;accent-color:var(--coral)}
+.roleb{flex-direction:column;align-items:flex-start;gap:6px;width:100%;background:var(--surface);font:inherit;color:inherit;text-align:left}
+input[type=range]{accent-color:var(--coral)}
+
+/* Notas, resúmenes, pasos */
+.note{display:flex;gap:10px;align-items:flex-start;padding:var(--sp-3);border-radius:var(--r-lg);background:color-mix(in srgb,var(--green) 22%,transparent);font-size:var(--fs-sm)}
+.note svg{flex:none;width:20px;height:20px;color:var(--ok)}
+.sum{width:100%;border-collapse:collapse;font-size:14px}
+.sum td{padding:6px 0} .sum td:last-child{text-align:right;font-weight:700}
+.sum tr.total td{border-top:1px solid var(--line);padding-top:10px;font-size:16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:var(--sp-3)}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--coral);width:20px;border-radius:var(--r-pill)}
+.stepper{display:flex;gap:var(--sp-1);margin:14px 0 var(--sp-1)}
+.stepper span{flex:1;height:6px;border-radius:var(--r-pill);background:var(--surface-2)}
+.stepper span.on{background:var(--ink)}
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-1);margin-top:var(--sp-3)}
+.tl span{font-size:var(--fs-xs);font-weight:700;color:var(--muted);text-align:center;border-top:4px solid var(--surface-2);padding-top:6px}
+.tl span.on{color:var(--text);border-color:var(--coral)}
+.rate{display:flex;gap:6px;justify-content:center;margin:var(--sp-2) 0 14px}
+.rate button{border:0;background:none;font-size:34px;line-height:1;color:var(--line);padding:2px}
+.rate button.on{color:var(--star)}
+.success{text-align:center;padding:10px 0}
+.success .big{width:64px;height:64px;border-radius:50%;margin:0 auto var(--sp-3);display:grid;place-items:center;background:color-mix(in srgb,var(--ok) 22%,transparent);color:var(--ok)}
+
+/* Camino: versión compacta (puntos) y mapa (SVG) */
+.path{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--sp-1);margin-top:var(--sp-4);position:relative}
+.path::before{content:'';position:absolute;left:8.33%;right:8.33%;top:6px;border-top:2px dashed color-mix(in srgb,var(--text) 30%,transparent)}
+.path .st{text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);position:relative}
+.path .bar{width:14px;height:14px;border-radius:50%;margin:0 auto 6px;background:var(--surface);border:2px solid color-mix(in srgb,var(--text) 30%,transparent)}
+.path .st.on .bar{background:var(--text);border-color:var(--text)}
+.path .st.now{color:var(--text)}
+.path .st.now .bar{background:var(--coral);border-color:var(--coral);box-shadow:0 0 0 4px color-mix(in srgb,var(--coral) 30%,transparent)}
+.pmap{width:100%;height:auto;display:block}
+.pmap .lab{font:700 13.5px var(--font-ui);fill:var(--text)}
+.pmap .sub{font:500 11.5px var(--font-ui);fill:var(--muted)}
+.pmap .ini{font:800 13px var(--font-ui);fill:var(--on-color)}
+.pmap .plus{font-size:18px;fill:var(--muted)}
+.pmap a:focus-visible circle{stroke:var(--accent);stroke-width:3}
+.pmap .pulse{animation:pulse 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{0%{opacity:.5;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
+
+/* Insignias, estadísticas, portfolio, valoraciones */
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.badge{text-align:center;font-size:11.5px;font-weight:700;padding:var(--sp-3) 6px;border-radius:var(--r-lg);background:color-mix(in srgb,var(--c) 32%,#FFFFFF);color:var(--on-color)}
+.badge:nth-child(1){--c:var(--mint)} .badge:nth-child(2){--c:var(--coral)} .badge:nth-child(3){--c:var(--green)}
+.badge:nth-child(4){--c:var(--pink)} .badge:nth-child(5){--c:var(--apricot)} .badge:nth-child(6){--c:var(--lilac)}
+.badge .b{font-size:22px;display:block;margin-bottom:var(--sp-1)}
+.badge.locked{background:var(--surface-2);color:var(--muted);border:1px dashed var(--line)}
+.badge.locked .b{filter:grayscale(1);opacity:.45}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-2);margin-top:var(--sp-3)}
+.stats>div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:10px;text-align:center}
+.stats b{display:block;font-size:var(--fs-lg)} .stats span{font-size:12px;color:var(--muted)}
+.portfolio{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-2)}
+.portfolio div{aspect-ratio:3/4;border-radius:10px;display:grid;place-items:end start;padding:7px;font-size:10.5px;font-weight:700;color:#FFFFFF;line-height:1.15;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+.portfolio .open{cursor:pointer;position:relative}
+.portfolio .opn{position:absolute;top:6px;right:6px;background:#FFFFFF;color:var(--on-color);font-size:10px;padding:2px 7px;border-radius:var(--r-pill);text-shadow:none}
+.review{padding:var(--sp-3) 0;border-top:1px solid var(--line)}
+.review:first-of-type{border-top:0}
+
+/* Perfil profesional: experiencia y precio justo */
+.exp{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2);margin-top:14px;text-align:left}
+.exp>div{background:var(--surface-2);border-radius:var(--r-md);padding:var(--sp-2) 10px}
+.exp span{display:block} .exp b{display:block;font-size:var(--fs-sm);line-height:1.35}
+.fair .fp{font-size:var(--fs-xl);font-weight:800;letter-spacing:-.02em}
+.fair .okk,.pm-ok{color:var(--ok);font-weight:700}
+.pm-lo,.pm-hi{color:var(--danger);font-weight:700}
+.fair input[type=range]{width:100%;padding:0;border:0}
+.why{margin-top:var(--sp-3);background:var(--surface-2);border-radius:var(--r-md);padding:10px var(--sp-3)}
+.why summary{font-weight:700;cursor:pointer}
+.why ol{margin:var(--sp-2) 0 0;padding-left:18px;font-size:var(--fs-sm);line-height:1.5}
+.why li{margin-bottom:var(--sp-1)}
+.soonlist{display:grid;gap:var(--sp-2);text-align:left;margin:0 0 14px}
+.soonlist div{background:var(--surface-2);border-radius:var(--r-md);padding:10px var(--sp-3)}
+.soonlist b{display:block;font-size:14px} .soonlist span{font-size:var(--fs-sm);color:var(--muted)}
+.cline{font:15px/1.6 var(--font-read);background:var(--surface-2);border-radius:var(--r-md);padding:10px var(--sp-3);margin:10px 0 var(--sp-2)}
+
+/* Inicio */
+.greet{display:flex;align-items:center;gap:14px}
+.uname{font-size:var(--fs-xxl);line-height:1.05;margin-top:2px}
+
+/* Chat */
+.chat{display:flex;flex-direction:column;gap:var(--sp-2)}
+.msg{max-width:82%;padding:9px 13px;border-radius:var(--r-lg);background:var(--surface-2);font-size:14px}
+.msg.me{align-self:flex-end;background:var(--bubble-me);color:var(--on-bubble-me);border-bottom-right-radius:5px}
+.msg.them{border-bottom-left-radius:5px}
+.msg.sys{align-self:center;max-width:94%;background:transparent;border:1px dashed var(--line);color:var(--muted);font-size:12.5px;text-align:center}
+.msg .who{display:block;font-size:var(--fs-xs);font-weight:700;opacity:.7}
+.msg.attach{border:0;cursor:pointer;font:inherit;min-width:0}
+.msg.them.attach{color:var(--text)}
+.msg.attach b{display:block;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.msg.me.attach .ico.pdf{background:#FFFFFF}
+.composer{display:flex;gap:var(--sp-2);margin-top:var(--sp-3)}
+.composer input{flex:1;min-width:0;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-pill);padding:10px 14px}
+
+/* Navegación inferior y botón + */
+.tabs{position:fixed;left:0;right:0;bottom:calc(12px + env(safe-area-inset-bottom));z-index:30;padding:0 var(--sp-3);pointer-events:none}
+.tabs nav{pointer-events:auto;max-width:496px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);background:var(--nav);border-radius:26px;box-shadow:var(--sh-2)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0 9px;font-size:var(--fs-xs);font-weight:700;color:rgba(255,255,255,.62);text-decoration:none}
+.tab svg{width:23px;height:23px}
+.tab[aria-current="page"]{color:#FFFFFF}
+.tab[aria-current="page"]::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--coral)}
+.fab{position:fixed;z-index:31;right:max(16px,calc(50% - 244px));bottom:96px;width:56px;height:56px;border-radius:50%;border:0;background:var(--coral);color:var(--on-color);box-shadow:0 8px 22px color-mix(in srgb,var(--coral) 40%,transparent);display:grid;place-items:center}
+.fab svg{width:26px;height:26px}
+
+/* Diálogos y avisos */
+dialog{border:0;padding:0;border-radius:24px 24px 0 0;background:var(--surface);color:var(--text);width:100%;max-width:520px;margin:auto auto 0;max-height:92vh;box-shadow:var(--sh-3)}
+@media (min-width:560px){dialog{border-radius:24px;margin:auto}}
+dialog::backdrop{background:rgba(20,15,10,.45)}
+.sheet{padding:20px 18px 22px}
+.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.toast{position:fixed;left:50%;bottom:150px;transform:translate(-50%,20px);opacity:0;transition:.25s;z-index:60;background:var(--text);color:var(--bg);padding:11px var(--sp-4);border-radius:var(--r-lg);font-size:14px;font-weight:600;max-width:calc(100% - 32px);text-align:center;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+
+/* ---------- 6. Visor de documentos (papel siempre claro) ---------- */
+dialog.viewer{width:100%;max-width:none;height:100%;max-height:none;margin:0;border-radius:0;background:var(--viewer-bg);color:#FFFFFF;padding:0;overflow:hidden}
+dialog.viewer::backdrop{background:#000}
+.vbar{display:flex;align-items:center;gap:10px;padding:10px var(--sp-3);background:var(--viewer-bar);color:#FFFFFF;height:58px}
+.vbtn{border:0;background:rgba(255,255,255,.1);color:#FFFFFF;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none}
+.vpage{font-size:12px;font-weight:700;background:rgba(255,255,255,.12);padding:var(--sp-1) 9px;border-radius:var(--r-pill);white-space:nowrap}
+.vpages{height:calc(100% - 58px);overflow:auto;padding:18px 14px 110px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.vfoot{position:absolute;left:0;right:0;bottom:0;display:flex;gap:var(--sp-2);padding:var(--sp-3) 14px calc(12px + env(safe-area-inset-bottom));background:var(--viewer-bar)}
+.vfoot .btn{background:#F6F1EC;color:var(--on-color)}
+.vfoot .btn.ghost{background:rgba(255,255,255,.12);color:#FFFFFF}
+.page{background:var(--paper);color:var(--paper-ink);width:100%;max-width:440px;aspect-ratio:1/1.414;padding:30px 26px 40px;box-shadow:0 6px 24px rgba(0,0,0,.4);font:14px/1.65 var(--font-read);position:relative;flex:none}
+.page p{margin:0 0 10px}
+.page .dt{font:600 20px/1.2 var(--font-read);margin:2px 0 var(--sp-1);color:var(--paper-ink)}
+.page .eyebrow{font:700 10px var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--danger);margin:0 0 var(--sp-1)}
+.page .meta{font:500 var(--fs-xs) var(--font-ui);color:var(--paper-muted);margin:0 0 14px}
+.page .cap{font-weight:600;margin-top:14px}
+.page .pnum{position:absolute;bottom:14px;left:0;right:0;text-align:center;font:500 10px var(--font-ui);color:#9A94A5}
+.page del{color:#C0392B;text-decoration:line-through;text-decoration-thickness:1.5px}
+.page ins{color:#1E7B45;text-decoration:underline;text-decoration-color:var(--green);text-decoration-thickness:2px;text-underline-offset:2px}
+.viewer.clean .page del,.viewer.clean .page sup.cm{display:none}
+.viewer.clean .page ins{color:inherit;text-decoration:none}
+.page sup.cm,.page mark[data-c]::after,.cnum{font:800 9px var(--font-ui);background:var(--apricot);color:var(--on-color);border-radius:var(--r-xs);padding:1px var(--sp-1)}
+.page sup.cm{margin-left:2px}
+.page mark{background:#FFE3A3;color:inherit;padding:0 1px}
+.page mark[data-c]::after{content:attr(data-c);margin-left:3px;vertical-align:super}
+.page .score{display:flex;align-items:baseline;gap:6px;background:var(--paper-soft);border-radius:10px;padding:10px var(--sp-3);margin-bottom:var(--sp-3);font-family:var(--font-ui)}
+.page .score b{font-size:28px;color:var(--on-color)} .page .score span{color:var(--paper-muted)} .page .score em{font-style:normal;margin-left:auto;font-size:var(--fs-xs);color:var(--paper-muted)}
+.page table{width:100%;border-collapse:collapse;font:var(--fs-sm)/1.4 var(--font-ui);margin-bottom:var(--sp-3)}
+.page .rt td{padding:5px 0;border-bottom:1px solid var(--paper-line)} .page .rt td:last-child{text-align:right;color:var(--coral);letter-spacing:2px}
+.page .ct th{text-align:left;font-size:var(--fs-xs);color:var(--paper-muted);padding:var(--sp-1) 0;border-bottom:1px solid var(--paper-line)}
+.page .ct td{padding:6px var(--sp-2) 6px 0;border-bottom:1px solid var(--paper-line);vertical-align:top} .page .ct td:first-child{font-weight:800;width:34px}
+.page .seal{margin-top:18px;font:600 var(--fs-xs)/1.5 var(--font-ui);color:#1E7B45;background:#EEF7E3;border-radius:var(--r-sm);padding:var(--sp-2) 10px}
+.cnotes{width:100%;max-width:440px;display:flex;flex-direction:column;gap:var(--sp-2)}
+.cnote{display:flex;gap:10px;align-items:flex-start;background:var(--paper);color:var(--paper-ink);border-radius:14px;padding:10px var(--sp-3);border-left:4px solid var(--apricot)}
+.cnote.done{opacity:.55}
+.cnum{font-size:10px;margin-top:3px}
+.cact{display:flex;gap:var(--sp-3);margin-top:var(--sp-1)}
+/* ---------- 7. Escritorio (web) ---------- */
+.only-d{display:none}
+.side-logo{display:none}
+.prow{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:8px 4px 4px}
+.prow::before{content:'';position:absolute;left:8.33%;right:8.33%;top:36px;border-top:2px dashed color-mix(in srgb,var(--text) 30%,transparent)}
+.pnode{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;text-decoration:none;color:inherit}
+.pnode .pdot{width:56px;height:56px;border-radius:50%;background:var(--f);display:grid;place-items:center;font:800 20px var(--font-ui);color:var(--muted);position:relative}
+.pnode .pdot svg{width:52px;height:52px;display:block}
+.pnode.s-next .pdot{border:2px dashed color-mix(in srgb,var(--text) 35%,transparent)}
+.pnode.s-now .pdot{box-shadow:0 0 0 3px var(--on-color),0 0 0 9px color-mix(in srgb,var(--coral) 35%,transparent)}
+.pnode b{font-size:var(--fs-sm);margin-top:4px}
+.pnode small{font-size:var(--fs-xs);color:var(--muted);line-height:1.3}
+@media (min-width:1024px){
+  .only-m{display:none} .only-d{display:block}
+  .app{max-width:none;margin:0 0 0 240px;padding-bottom:48px}
+  .topbar{padding:14px 40px}
+  .topbar .logo,.topbar .pill{display:none}
+  main{max-width:1120px;margin:0 auto;padding:32px 40px}
+  .tabs{top:0;bottom:0;left:0;right:auto;width:240px;padding:0;pointer-events:auto}
+  .tabs nav{height:100%;max-width:none;display:flex;flex-direction:column;gap:6px;border-radius:0;padding:24px 16px;box-shadow:none}
+  .side-logo{display:flex;color:#FFFFFF;padding:4px 12px 28px}
+  .side-logo .mark circle,.side-logo .mark path{fill:#FFFFFF}
+  .side-logo span{color:#FFFFFF}
+  .tab{flex-direction:row;gap:12px;padding:12px 14px;font-size:15px;border-radius:var(--r-md);justify-content:flex-start}
+  .tab svg{width:22px;height:22px}
+  .tab[aria-current="page"]{background:var(--coral);color:var(--on-color)}
+  .tab[aria-current="page"]::after{display:none}
+  .fab{right:40px;bottom:40px}
+  .toast{bottom:40px}
+  h1{font-size:34px}
+  .uname{font-size:44px}
+  .avatar.lg{width:88px;height:88px}
+  .home{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:start;margin-top:20px}
+  .home .hmain>.card:first-child{margin-top:0!important}
+  .home .hside>.section:first-child{margin-top:0}
+  #results,.pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  #results>*+*,.pgrid>*+*{margin-top:0}
+  .exp{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <a class="logo" href="#/" aria-label="Path6, inicio">
+      <svg class="mark" width="36" height="32" viewBox="0 0 40 36" aria-hidden="true"><circle cx="10" cy="5" r="4"/><circle cx="31" cy="11" r="3.2"/><path d="M3 21c0-4 4-5.5 9-4.5 7 1.4 15 1.8 21 1.6 4-.1 5.5 3 3 6-5 6-17 9-25 7.5C5 30.5 3 26 3 21z"/></svg>
+      <span>Path 6</span>
+    </a>
+    <span class="pill">Demo</span>
+    <span class="spacer"></span>
+    <button class="bell" data-act="notifs" aria-label="Notificaciones, 2 nuevas"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><i>2</i></button>
+    <button class="btn sm" data-act="waitlist" id="signupBtn">Quiero probarla</button>
+  </header>
+  <main id="view" tabindex="-1"></main>
+</div>
+
+<button class="fab" data-act="new-request" aria-label="Nueva solicitud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+
+<div class="tabs"><nav aria-label="Secciones">
+  <a class="tab" href="#/" data-tab="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>Inicio</a>
+  <a class="tab" href="#/buscar" data-tab="buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>Buscar</a>
+  <a class="tab" href="#/proyectos" data-tab="proyectos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8 12h8M8 16h5" stroke-linecap="round"/></svg>Proyectos</a>
+  <a class="tab" href="#/mensajes" data-tab="mensajes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>Mensajes</a>
+  <a class="tab" href="#/yo" data-tab="yo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.8 4-5.5 7.5-5.5s6.3 1.7 7.5 5.5" stroke-linecap="round"/></svg>Perfil</a>
+</nav></div>
+
+<dialog id="viewer" class="viewer" aria-label="Visor de documentos"></dialog>
+<dialog id="dlg" aria-labelledby="dlg-title"><div class="sheet" id="dlg-body"></div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// ===== Configuración =====
+// Enlace de la lista de espera (el Google Form de la encuesta, que ya recoge correos).
+// Formulario de la lista de espera de la beta (nuevo, no la encuesta antigua).
+const WAITLIST_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeCIVnoitdTDLcfwssFzoVd-o4UTNjog-3hryqfkutTYFFuzA/viewform';
+const FEE = 0.10; // comisión de Path6 sobre cada encargo (10 %)
+
+// ===== Datos de ejemplo (inventados) =====
+const ROLES = {
+  lector:     { label:'Lectura beta', c:'var(--p2)' },
+  corrector:  { label:'Corrección',   c:'var(--p1)' },
+  ilustrador: { label:'Ilustración de portada', c:'var(--p3)' },
+  promo:      { label:'Promoción',    c:'var(--p4)' },
+  autor:      { label:'Autoría',      c:'var(--p5)' },
+};
+const GENRES = ['Romance','Fantasía','Thriller','Lírica','Juvenil'];
+const PATHS = [
+  { name:'Explorar',  c:'var(--p1)' }, { name:'Conectar', c:'var(--p2)' }, { name:'Colaborar', c:'var(--p3)' },
+  { name:'Aprender',  c:'var(--p4)' }, { name:'Mostrar',  c:'var(--p5)' }, { name:'Publicar',  c:'var(--p6)' },
+];
+const STAGES = ['Escritura','Lectura beta','Corrección','Portada','Promoción','Publicación'];
+
+const ME = { id:'ana', name:'Ana Ruiz', ini:'AR', color:'var(--apricot)', loc:'Sevilla, España', roles:['autor'], genres:['Romance','Fantasía'],
+  bio:'Escribo romance contemporáneo con un toque de magia. Comparto fragmentos en TikTok (@ana.escribe) y estoy preparando mi primera novela para autopublicarla.',
+  path:2 };
+
+const USERS = [
+  { id:'lucia', name:'Lucía Ferrer', ini:'LF', color:'var(--green)', roles:['lector'], loc:'Valencia, España', genres:['Romance','Juvenil'], rating:4.9, jobs:23, from:5, unit:'por lectura',
+    verified:'Grado en Filología Hispánica', bio:'Lectora beta de romance desde hace 4 años. Te doy un informe por capítulos: ritmo, personajes y momentos en los que me “saliste” de la historia.',
+    packages:[{n:'Lectura beta · 10 capítulos', p:5, d:'Informe por capítulo en 7 días'},{n:'Lectura beta · novela completa', p:14, d:'Informe completo + resumen final en 3 semanas'}],
+    portfolio:['Informe · “Café para dos”','Informe · “Verano en Cádiz”','Reseña · “La hija del eclipse”'],
+    reviews:[{by:'Marta S.', s:5, t:'Súper detallada y cariñosa. Me ayudó a reordenar los primeros capítulos.'},{by:'Daniel P.', s:5, t:'Entregó antes de tiempo y con ejemplos concretos.'}] },
+  { id:'valeria', name:'Valeria Gómez', ini:'VG', color:'var(--apricot)', roles:['promo'], loc:'CDMX, México', genres:['Romance','Fantasía'], rating:4.8, jobs:31, from:15, unit:'por vídeo',
+    verified:'18,4 k seguidores en TikTok', bio:'Booktoker. Hago vídeos de recomendación y “unboxings” de libros autopublicados para que lleguen a lectores reales.',
+    packages:[{n:'Vídeo de recomendación', p:15, d:'1 TikTok de 30–60 s + mención en historias'},{n:'Pack lanzamiento', p:40, d:'3 vídeos durante la semana de lanzamiento'}],
+    portfolio:['TikTok · 92 k vistas','TikTok · 41 k vistas','Reels · 18 k vistas'],
+    reviews:[{by:'Iker M.', s:5, t:'Mi preventa se movió muchísimo después de su vídeo.'},{by:'Sara L.', s:4, t:'Muy profesional, tardó un poco más de lo previsto.'}] },
+  { id:'irene', name:'Irene Castillo', ini:'IC', color:'var(--coral)', roles:['ilustrador'], loc:'Bogotá, Colombia', genres:['Fantasía','Juvenil'], rating:4.8, jobs:12, from:40, unit:'por portada',
+    verified:'Grado en Bellas Artes', bio:'Ilustradora digital. Portadas de fantasía, mapas y personajes. Trabajo con bocetos previos para que elijas.',
+    packages:[{n:'Portada digital (ebook)', p:40, d:'2 bocetos + 2 rondas de cambios'},{n:'Portada + contraportada (papel)', p:75, d:'Archivo listo para Amazon KDP'}],
+    portfolio:['Portada · “Reino de ceniza”','Mapa · “Las islas”','Personaje · Nera'],
+    reviews:[{by:'Tomás R.', s:5, t:'La portada quedó preciosa y los bocetos ayudaron muchísimo.'}] },
+  { id:'pablo', name:'Pablo Martín', ini:'PM', color:'var(--mint)', roles:['corrector'], loc:'Madrid, España', genres:['Thriller','Romance'], rating:4.9, jobs:8, from:2, unit:'por 1.000 palabras',
+    verified:'Máster en Edición', bio:'Corrector ortotipográfico y de estilo. Recién salido del máster y con ganas de proyectos reales.',
+    packages:[{n:'Corrección ortotipográfica · relato', p:20, d:'Hasta 10.000 palabras, con control de cambios'},{n:'Corrección de estilo · 3 capítulos', p:30, d:'Comentarios de estilo + ortotipografía'}],
+    portfolio:['Antes/después · cap. 1','Relato · “El faro”','Guía de estilo propia'],
+    reviews:[{by:'Clara V.', s:5, t:'Explicaba cada cambio. He aprendido un montón.'}] },
+  { id:'clara', name:'Clara Vidal', ini:'CV', color:'var(--apricot)', roles:['corrector'], loc:'Sevilla, España', genres:['Romance','Lírica'], rating:4.8, jobs:14, from:2.5, unit:'por 1.000 palabras',
+    verified:'Grado en Periodismo · Curso de corrección', bio:'Correctora de estilo especializada en romance. Cuido mucho la voz del autor: corrijo sin que se note.',
+    packages:[{n:'Corrección de estilo · 3 capítulos', p:28, d:'Estilo + ortotipografía, con comentarios'}],
+    portfolio:['Antes/después · romance','Relato · “Azahar”','Guía de diálogos'],
+    reviews:[{by:'Nuria P.', s:5, t:'Respetó mi forma de escribir y mejoró muchísimo los diálogos.'}] },  { id:'elena', name:'Elena Robles', ini:'ER', color:'var(--lilac)', roles:['corrector'], loc:'Barcelona, España', genres:['Romance','Thriller'], rating:5.0, jobs:212, from:8, unit:'por 1.000 palabras',
+    verified:'15 años en editoriales', bio:'Correctora profesional. He trabajado para editoriales grandes y pequeñas; ahora también acompaño a autores independientes.',
+    packages:[{n:'Corrección profesional · novela completa', p:650, d:'Estilo y ortotipografía, dos vueltas'}],
+    portfolio:['Antes/después · thriller','40 novelas publicadas','Guía de estilo editorial'],
+    reviews:[{by:'Editorial Faro', s:5, t:'Impecable y siempre a tiempo.'}] },  { id:'mateo', name:'Mateo Rojas', ini:'MR', color:'var(--lilac)', roles:['lector'], loc:'Santiago, Chile', genres:['Fantasía','Thriller'], rating:4.8, jobs:15, from:6, unit:'por lectura',
+    verified:'Club de lectura “Tinta Sur”', bio:'Lector beta de fantasía épica y thriller. Me fijo mucho en la coherencia del mundo y los giros.',
+    packages:[{n:'Lectura beta · 10 capítulos', p:6, d:'Informe en 10 días'}],
+    portfolio:['Informe · “Sangre de dragón”','Informe · “El último tren”','Reseña · “Niebla”'],
+    reviews:[{by:'Lara G.', s:5, t:'Detectó dos agujeros de trama que nadie había visto.'}] },
+  { id:'camila', name:'Camila Herrera', ini:'CH', color:'var(--green)', roles:['lector'], loc:'Buenos Aires, Argentina', genres:['Fantasía','Romance'], rating:4.7, jobs:11, from:5, unit:'por lectura',
+    verified:'', bio:'Estudiante de Letras. Leo rápido y te digo con sinceridad qué me engancha y qué no.',
+    packages:[{n:'Lectura beta · 10 capítulos', p:4, d:'Informe breve en 7 días'}],
+    portfolio:['Informe · “Hadas de ciudad”','Reseña · “Promesa”','Informe · “Ámbar”'],
+    reviews:[{by:'Rocío F.', s:5, t:'Muy maja y muy honesta.'}] },
+  { id:'sofia', name:'Sofía Navarro', ini:'SN', color:'var(--coral)', roles:['lector','corrector'], loc:'Granada, España', genres:['Lírica','Romance'], rating:4.6, jobs:9, from:5, unit:'por lectura',
+    verified:'Grado en Filología', bio:'Poesía y romance. Hago lectura beta y corrección ligera de poemarios.',
+    packages:[{n:'Lectura beta de poemario', p:5, d:'Comentarios poema a poema'},{n:'Corrección ligera de poemario', p:18, d:'Hasta 60 poemas'}],
+    portfolio:['Poemario · “Sal”','Informe · “Cartas”','Corrección · “Raíz”'],
+    reviews:[{by:'Alba T.', s:5, t:'Entendió perfectamente el tono del libro.'}] },
+  { id:'diego', name:'Diego Paredes', ini:'DP', color:'var(--mint)', roles:['promo'], loc:'Lima, Perú', genres:['Thriller','Fantasía'], rating:4.5, jobs:7, from:10, unit:'por reseña',
+    verified:'9,2 k seguidores en Instagram', bio:'Bookstagramer. Reseñas honestas con fotos cuidadas y sorteos para lanzamientos.',
+    packages:[{n:'Reseña + publicación', p:10, d:'Post y 3 historias'}],
+    portfolio:['Post · 1,2 k me gusta','Sorteo · 640 participantes','Reseña · “Ojos de agua”'],
+    reviews:[{by:'Noa B.', s:4, t:'Buenas fotos, la reseña llegó a mucha gente.'}] },
+  { id:'nerea', name:'Nerea Lago', ini:'NL', color:'var(--lilac)', roles:['ilustrador'], loc:'Bilbao, España', genres:['Romance','Juvenil'], rating:0, jobs:0, from:38, unit:'por portada',
+    verified:'', bio:'Ilustradora recién llegada a Path6. Estilo acuarela digital, ideal para romance y juvenil.',
+    packages:[{n:'Portada digital (ebook)', p:35, d:'2 bocetos + 1 ronda de cambios'}],
+    portfolio:['Práctica · “Flores”','Práctica · “Ciudad”','Práctica · “Mar”'],
+    reviews:[] },
+];
+const byId = id => id === 'ana' ? ME : USERS.find(u => u.id === id);
+// Cada profesional ofrece una prueba gratis de un capítulo (o un boceto) para comparar antes de pagar.
+USERS.forEach(u => { if (u.roles.some(r => ['lector','corrector','ilustrador'].includes(r))) u.packages.unshift(u.roles.includes('ilustrador') ? { n:'Boceto gratis', p:0, d:'Un boceto de portada para que veas mi estilo', free:true } : { n:'Prueba gratis · 1 capítulo', p:0, d:'El mismo capítulo que a los demás, para que compares', free:true }); });
+
+const OPEN_REQUESTS = [
+  { by:'Marta S.', loc:'Madrid', role:'lector', genre:'Fantasía', title:'Busco 3 lectores beta para fantasía juvenil', budget:'5 € por lector', deadline:'3 semanas', applicants:4 },
+  { by:'Iker M.', loc:'Monterrey', role:'corrector', genre:'Romance', title:'Corrección de estilo para mi novela romántica', budget:'30–50 €', deadline:'Diciembre', applicants:2 },
+  { by:'Alba T.', loc:'Málaga', role:'ilustrador', genre:'Lírica', title:'Portada para mi primer poemario', budget:'60 €', deadline:'1 mes', applicants:1 },
+  { by:'Rocío F.', loc:'Valencia', role:'lector', genre:'Romance', title:'Lectores beta para romance contemporáneo', budget:'6 € por lector', deadline:'2 semanas', applicants:3 },
+  { by:'Tomás R.', loc:'Bogotá', role:'ilustrador', genre:'Fantasía', title:'Portada para saga de fantasía (libro 2)', budget:'80 €', deadline:'Enero', applicants:5 },
+  { by:'Clara V.', loc:'Sevilla', role:'corrector', genre:'Thriller', title:'Corrección ortotipográfica de un thriller', budget:'2 € / 1.000 palabras', deadline:'1 mes', applicants:1 },
+];
+const COMMUNITY = [
+  { who:'irene', txt:'terminó la portada de <b>“Reino de ceniza”</b> con Tomás R.', when:'hace 2 h' },
+  { who:'lucia', txt:'alcanzó <b>20 lecturas beta completadas</b> 🎉', when:'ayer' },
+  { who:'pablo', txt:'consiguió la insignia <b>Verificado: Máster en Edición</b>', when:'hace 3 días' },
+];
+
+const PROJECTS = [
+  { id:'rio', title:'Lo que el río calla', kind:'Novela · Romance contemporáneo', size:'82.000 palabras', stage:1,
+    cover:'var(--coral)', tint:'var(--p3)',
+    team:[ { uid:'lucia', service:'Lectura beta · 10 capítulos', price:5, status:'delivered' } ],
+    samples:[ { uid:'pablo', status:'delivered', doc:'correccion', changes:9, notes:3, days:1, full:160, line:'—¿Te has perdido? —preguntó él sin levantar la vista.' },
+              { uid:'clara', status:'delivered', doc:'correccion2', changes:5, notes:4, days:2, full:140, line:'—¿Te has perdido? —le preguntó, sin apartar la vista de los lienzos.' },
+              { uid:'sofia', status:'progress' } ],
+    requests:[],
+    files:[ { name:'Manuscrito_v3.docx', meta:'Subido el 03/11/2026, 21:14', hash:'9f2c 41ab 77d0 … e07d a71e', doc:'manuscrito' },
+            { name:'Informe_lectura_cap1-10.pdf', meta:'De Lucía · 05/11/2026 · 3 páginas', hash:'', doc:'informe' },
+            { name:'Capitulo1_prueba_correccion.pdf', meta:'Prueba gratis de Pablo · 04/11/2026', hash:'', doc:'correccion' } ],
+    chat:[
+      { from:'sys', t:'Lucía se unió al proyecto. Pago de 5,00 € retenido por Path6 hasta que apruebes la entrega.' },
+      { from:'lucia', t:'¡Hola, Ana! Ya he terminado los capítulos 1 al 10 😊' },
+      { from:'lucia', t:'Te he subido el informe. El ritmo es muy bueno, pero Leo tarda en aparecer: lo detallo capítulo a capítulo.' },
+      { from:'lucia', file:'informe' },
+      { from:'ana', t:'¡Muchas gracias! Lo leo esta noche.' },
+    ] },
+  { id:'cartas', title:'Cartas a nadie', kind:'Poemario · Lírica', size:'46 poemas', stage:0,
+    cover:'var(--mint)', tint:'var(--p2)',
+    team:[], requests:[],
+    files:[ { name:'Cartas_a_nadie_borrador.docx', meta:'Subido el 28/10/2026, 18:02', hash:'3b10 cc92 5e4f … 81aa 0c3d' } ],
+    chat:[] },
+];
+const projById = id => PROJECTS.find(p => p.id === id);
+
+const REPLIES = ['¡Genial! Cualquier duda me dices.','Por cierto, la escena del puente me encantó 💛','Si quieres, sigo con los capítulos 11 al 20 cuando me digas.'];
+let replyIdx = 0;
+const filters = { q:'', role:'todos', genre:'', verified:false };
+
+// ===== Marca =====
+// Icono de la app: la marca dentro de un cuadrado redondeado.
+const APP_ICON = `<svg viewBox="0 0 64 64" aria-label="Icono de Path 6"><defs><linearGradient id="ig" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB3AB"/><stop offset=".5" stop-color="#FFE2BC"/><stop offset="1" stop-color="#F4FFC4"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="var(--apricot)"/><circle cx="22" cy="20" r="4.5" fill="var(--on-color)"/><circle cx="43" cy="26" r="3.8" fill="var(--on-color)"/><path d="M14 36c0-4 4-5 9-4 7 1.3 14 1.6 19 1.4 4-.1 5 3 2.6 5.6C40 44 30 47 22 46 17 45.4 14 41 14 36z" fill="var(--on-color)"/></svg>`;
+// Logo de Halloween (gato): se activa solo en octubre, o con ?halloween en la dirección.
+const HALLOWEEN_LOGO = `<svg class="mark" width="40" height="34" viewBox="0 0 48 40" aria-hidden="true"><path d="M8.5 12 10 2.5l7.5 6.5M30.5 9 38 2.5l1.5 9.5" fill="none" stroke="var(--text)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><rect x="7" y="8" width="34" height="30" rx="9" fill="none" stroke="var(--text)" stroke-width="2.4"/><path d="M1 24h7M2 30l6-2.5M40 24h7M40 27.5l6 2.5" stroke="var(--text)" stroke-width="1.6" stroke-linecap="round"/><circle cx="18" cy="17" r="2.4" fill="var(--text)"/><circle cx="31" cy="20" r="2" fill="var(--text)"/><path d="M13 27c0-2.5 2.5-3.3 6-2.7 4.5.8 9 1 12.5.9 2.5 0 3.3 2 1.8 3.7C30 32.5 23 34 18 33.2 15 32.7 13 30 13 27z" fill="#F97316"/></svg>`;
+if (new Date().getMonth() === 9 || location.search.includes('halloween')) document.querySelector('.logo .mark').outerHTML = HALLOWEEN_LOGO;
+// ===== Utilidades =====
+const $ = s => document.querySelector(s);
+const view = $('#view');
+const eur = (n, fixed) => n.toLocaleString('es-ES',{minimumFractionDigits:fixed?2:0,maximumFractionDigits:2}) + ' €';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// Personas ilustradas (pelo, piel y ropa) en lugar de iniciales.
+let PID = 0;
+const SKIN = ['#F2C6A5','#C98E6B','#8D5A3C','#F5D3B8'], HAIR = ['#2B1B12','#6B3E1E','#1A1A1A','#C4572E'];
+const LOOK = { ana:[0,3], lucia:[3,0], valeria:[1,2], irene:[0,1], pablo:[2,2], mateo:[1,0], camila:[3,3], sofia:[0,0], diego:[2,1], nerea:[3,1], clara:[1,3], elena:[0,0] };
+function personSVG(x, y, r, u, bg){
+  const [si, hi] = LOOK[u.id] || [0,0], s = SKIN[si], h = HAIR[hi], id = 'pc' + (++PID), f = n => Math.round(n*10)/10;
+  return `<clipPath id="${id}"><circle cx="${x}" cy="${y}" r="${r}"/></clipPath><circle cx="${x}" cy="${y}" r="${r}" fill="${bg || '#FFEDE3'}"/><g clip-path="url(#${id})"><circle cx="${x}" cy="${f(y+r*0.95)}" r="${f(r*0.7)}" fill="${u.color}"/><circle cx="${x}" cy="${f(y-r*0.12)}" r="${f(r*0.38)}" fill="${s}"/><path d="M${f(x-r*0.42)} ${f(y-r*0.12)} q0 ${f(-r*0.55)} ${f(r*0.42)} ${f(-r*0.55)} q${f(r*0.42)} 0 ${f(r*0.42)} ${f(r*0.55)} q${f(-r*0.15)} ${f(-r*0.25)} ${f(-r*0.42)} ${f(-r*0.25)} q${f(-r*0.3)} 0 ${f(-r*0.42)} ${f(r*0.25)}z" fill="${h}"/></g>`;
+}
+const avatar = (u, cls='') => `<span class="avatar ${cls}" aria-hidden="true"><svg viewBox="0 0 44 44" width="100%" height="100%">${personSVG(22,22,22,u)}</svg></span>`;
+// Portadas ilustradas de cada proyecto.
+const COVER_ART = {
+  rio: `<svg viewBox="0 0 60 84" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="skrio" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE2A8"/><stop offset="1" stop-color="var(--coral)"/></linearGradient></defs><rect width="60" height="84" fill="url(#skrio)"/><circle cx="40" cy="28" r="10" fill="#fff" opacity=".85"/><path d="M0 52 q15 -6 30 0 t30 0 v32 h-60z" fill="#B8E07A"/><path d="M0 60 q15 -5 30 0 t30 0" stroke="#fff" stroke-width="1.2" fill="none" opacity=".75"/></svg>`,
+  cartas: `<svg viewBox="0 0 60 84" preserveAspectRatio="xMidYMid slice"><rect width="60" height="84" fill="#DDF0BF"/><g transform="rotate(-10 30 34)"><rect x="12" y="22" width="34" height="22" rx="2" fill="#fff"/><path d="M12 22 l17 13 l17 -13" fill="none" stroke="var(--green)" stroke-width="1.5"/></g><g transform="rotate(8 34 52)"><rect x="18" y="42" width="30" height="19" rx="2" fill="var(--apricot)"/><path d="M18 42 l15 11 l15 -11" fill="none" stroke="#fff" stroke-width="1.5"/></g><path d="M44 16 c-2-3-6-1-4 2l4 4l4-4c2-3-2-5-4-2z" fill="var(--coral)"/></svg>`
+};
+const GENERIC_ART = `<svg viewBox="0 0 60 84" preserveAspectRatio="xMidYMid slice"><rect width="60" height="84" fill="#FFD9C7"/><circle cx="20" cy="26" r="9" fill="var(--apricot)"/><path d="M0 58 q20 -14 36 -4 t24 -6 v36 h-60z" fill="var(--coral)"/><path d="M0 68 q22 -8 60 -2 v18 h-60z" fill="var(--green)"/></svg>`;
+const cover = (p, cls='') => `<div class="cover ${cls}">${COVER_ART[p.id] || GENERIC_ART}<span>${esc(p.title)}</span></div>`;
+const greeting = () => { const h = new Date().getHours(); return h < 13 ? 'Buenos días' : h < 21 ? 'Buenas tardes' : 'Buenas noches'; };
+const roleTag = r => `<span class="tag" style="--c:${ROLES[r].c}">${ROLES[r].label}</span>`;
+const GENRE_C = { Romance:'var(--p3)', Fantasía:'var(--p5)', Thriller:'var(--p1)', Lírica:'var(--p2)', Juvenil:'var(--p4)' };
+const genreTag = g => `<span class="tag" style="--c:${GENRE_C[g]||'var(--muted)'}">${g}</span>`;
+const stars = u => u.jobs ? `<span class="stars"><i>★</i> ${u.rating.toLocaleString('es-ES')}</span> <span class="muted small">(${u.jobs})</span>` : `<span class="tag" style="--c:var(--p4)">Nuevo</span>`;
+const verifiedBadge = u => u.verified ? `<span class="verified" title="Verificado por Path6"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z"/><path d="m8.5 12 2.3 2.3 4.7-4.8" fill="none" stroke="var(--surface)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verificado</span>` : '';
+const icoShield = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8.2 7 10 4-1.8 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4" stroke-linecap="round"/></svg>`;
+const icoBack = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg>`;
+const icoFile = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>`;
+
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),2600); }
+
+function userCard(u){
+  return `<a class="card card-link" href="#/perfil/${u.id}">
+    <div class="row">${avatar(u)}<div style="min-width:0;flex:1">
+      <div class="row" style="gap:6px"><b>${u.name}</b>${verifiedBadge(u)}</div>
+      <div class="muted small">${u.loc}</div></div></div>
+    <div class="row wrap" style="gap:8px;margin-top:10px">${roleTag(u.roles[0])}${levelTag(u)}<span class="muted small">${u.genres.join(' · ')}</span></div>
+    <div class="row" style="margin-top:10px;justify-content:space-between"><span>${stars(u)}</span><span class="small"><b>desde ${eur(u.from)}</b> <span class="muted">${u.unit}</span></span></div>
+  </a>`;
+}
+
+// ===== Mapa de caminos =====
+// Qué servicio corresponde a cada etapa del camino.
+const STAGE_ROLE = { 1:'lector', 2:'corrector', 3:'ilustrador' };
+// Servicios activos en esta primera versión. La promoción llegará más adelante.
+const SOON = ['promo'];
+const NODE_C = ['var(--coral)','var(--apricot)','var(--green)'];
+function stagePerson(p, i){
+  if (i === 0) return p.authorObj || ME;
+  const r = STAGE_ROLE[i]; if (!r) return null;
+  const m = p.team.find(m => byId(m.uid).roles.includes(r));
+  return m ? byId(m.uid) : null;
+}
+// Camino en horizontal (escritorio): las mismas 6 etapas que el mapa.
+function pathRow(p, noLinks){
+  return `<div class="prow" role="list">${STAGES.map((s, i) => {
+    const u = stagePerson(p, i), state = i < p.stage ? 'done' : i === p.stage ? 'now' : 'next';
+    const delivered = u && p.team.some(m => m.uid === u.id && m.status === 'delivered');
+    const sub = i === 5 ? (state === 'done' ? '¡Publicado!' : 'Tu libro') : u ? ((u === ME || (SRC() && u.id === SRC().id)) ? 'Tú' : u.name.split(' ')[0]) + (delivered ? ' · entrega lista' : '') : i === 4 ? 'Próximamente' : 'Busca a alguien';
+    const href = u && u !== ME && u.id !== 'base-ana' ? `#/perfil/${u.id}` : (!u && STAGE_ROLE[i]) ? `#/buscar?r=${STAGE_ROLE[i]}` : '';
+    const fill = state === 'next' ? 'var(--surface)' : NODE_C[i % 3];
+    const inner = u ? `<svg viewBox="0 0 52 52">${personSVG(26, 26, 24, u, fill)}</svg>` : `<span>${i === 5 ? '★' : i === 4 ? '…' : '+'}</span>`;
+    const tag = href && !noLinks ? 'a' : 'div';
+    return `<${tag} role="listitem" class="pnode s-${state}" ${href ? `href="${href}"` : ''}><span class="pdot" style="--f:${fill}">${inner}</span><b>${s}</b><small>${sub}</small></${tag}>`;
+  }).join('')}</div>`;
+}function pathMap(p){
+  const pts = [[62,44],[262,110],[78,184],[262,258],[78,332],[250,402]];
+  const seg = (a,b) => `C ${a[0]} ${a[1]+50}, ${b[0]} ${b[1]-50}, ${b[0]} ${b[1]}`;
+  let d = `M ${pts[0][0]} ${pts[0][1]}`, done = d;
+  for (let i = 1; i < pts.length; i++){ d += ' ' + seg(pts[i-1], pts[i]); if (i <= p.stage) done += ' ' + seg(pts[i-1], pts[i]); }
+  const nodes = pts.map(([x,y], i) => {
+    const u = stagePerson(p, i);
+    const state = i < p.stage ? 'done' : i === p.stage ? 'now' : 'next';
+    const right = x < 170, lx = right ? x+38 : x-38, anchor = right ? 'start' : 'end';
+    const fill = state === 'next' ? 'var(--surface)' : NODE_C[i % 3];
+    const stroke = state === 'next' ? 'stroke="var(--text)" stroke-opacity=".35" stroke-dasharray="4 4" stroke-width="2"'
+                 : state === 'now' ? 'stroke="var(--on-color)" stroke-width="3"' : '';
+    const inner = u ? personSVG(x, y, 22, u, fill)
+                    : `<text class="ini plus" x="${x}" y="${y+6}" text-anchor="middle">${i === 5 ? '★' : i === 4 ? '…' : '+'}</text>`;
+    const delivered = u && p.team.some(m => m.uid === u.id && m.status === 'delivered');
+    const sub = i === 5 ? (state === 'done' ? '¡Publicado!' : 'Tu libro, publicado')
+              : u ? ((u === ME || (SRC() && u.id === SRC().id)) ? 'Tú' : u.name.split(' ')[0]) + (delivered ? ' · entrega lista' : '')
+              : i === 4 ? 'Próximamente' : 'Busca a alguien';
+    const href = u && u !== ME && u.id !== 'base-ana' ? `#/perfil/${u.id}` : (!u && STAGE_ROLE[i]) ? `#/buscar?r=${STAGE_ROLE[i]}` : '';
+    const g = `${state === 'now' ? `<circle class="pulse" cx="${x}" cy="${y}" r="26" fill="var(--coral)"/>` : ''}<circle cx="${x}" cy="${y}" r="26" fill="${fill}" ${stroke}/>${inner}<text class="lab" x="${lx}" y="${y-2}" text-anchor="${anchor}">${STAGES[i]}</text><text class="sub" x="${lx}" y="${y+15}" text-anchor="${anchor}">${sub}</text>`;
+    return href ? `<a href="${href}" aria-label="${STAGES[i]}: ${sub}">${g}</a>` : g;
+  }).join('');
+  return `<svg class="pmap" viewBox="0 0 340 436" role="img" aria-label="Camino del proyecto ${p.title}: etapa ${STAGES[p.stage]}"><path d="${d}" fill="none" stroke="var(--text)" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/><path d="${done}" fill="none" stroke="var(--text)" stroke-width="3" stroke-linecap="round"/>${nodes}</svg>`;
+}
+function nextStep(p){
+  const del = p.team.find(m => m.status === 'delivered');
+  if (del) { const u = byId(del.uid); return `<p class="small" style="margin:0;font-weight:700">Ahora te toca a ti</p><h2 style="margin:4px 0 10px">${u.name.split(' ')[0]} ha entregado su ${del.service.split(' ·')[0].toLowerCase()}</h2><a class="btn sm" href="#/proyecto/${p.id}">Revisar y valorar</a>`; }
+  if (p.stage === 0 && !p.team.length) return `<p class="small" style="margin:0;font-weight:700">Siguiente parada</p><h2 style="margin:4px 0 4px">Lectura beta</h2><p class="small muted" style="margin:0 0 10px">Busca lectores que te digan qué funciona antes de corregir.</p><a class="btn sm" href="#/buscar?r=lector">Buscar lectores beta</a>`;
+  const r = STAGE_ROLE[p.stage], who = stagePerson(p, p.stage);
+  if (r && !who) return `<p class="small" style="margin:0;font-weight:700">Siguiente parada</p><h2 style="margin:4px 0 4px">${STAGES[p.stage]}</h2><p class="small muted" style="margin:0 0 10px">Encuentra a la persona que te acompañe en este tramo.</p><a class="btn sm" href="#/buscar?r=${r}">Buscar ${ROLES[r].label.toLowerCase()}</a>`;
+  if (who && who !== ME) return `<p class="small" style="margin:0;font-weight:700">En marcha</p><h2 style="margin:4px 0 10px">${who.name.split(' ')[0]} está con la ${STAGES[p.stage].toLowerCase()}</h2><a class="btn sm" href="#/proyecto/${p.id}">Ver proyecto</a>`;
+  return `<p class="small" style="margin:0;font-weight:700">Tu camino</p><h2 style="margin:4px 0 10px">Sigue escribiendo</h2><a class="btn sm" href="#/proyecto/${p.id}">Ver proyecto</a>`;
+}
+const rowUser = u => `<a class="list-item" href="#/perfil/${u.id}">${avatar(u)}<div style="flex:1;min-width:0"><b>${u.name}</b> ${verifiedBadge(u)}<div class="small muted">${ROLES[u.roles[0]].label} · ${u.genres.join(' · ')}</div></div><b class="small" style="white-space:nowrap">${eur(u.from)}</b></a>`;
+// ===== Nivel, formación y precio justo =====
+// Path 6 nace para perfiles que empiezan: estudiantes, gente sin experiencia o que quiere hacer portfolio.
+// Por eso recomienda un precio según el nivel y explica de dónde sale.
+const EXTRA = {
+  lucia:  { level:'junior',     studies:'Grado en Filología Hispánica (4.º curso)', motive:'Leo como beta desde hace 2 años y quiero dedicarme a la edición.', years:'2 años como lectora beta' },
+  pablo:  { level:'junior',     studies:'Máster en Edición (terminado en 2026)',      motive:'Busco mis primeros clientes y proyectos para el portfolio.', years:'Recién titulado' },
+  irene:  { level:'junior',     studies:'Grado en Bellas Artes (último curso)',       motive:'Quiero especializarme en portadas de fantasía.', years:'1 año haciendo encargos' },
+  clara:  { level:'junior',     studies:'Grado en Periodismo + curso de corrección',  motive:'Corrijo por las tardes mientras termino mi formación.', years:'1 año' },
+  mateo:  { level:'junior',     studies:'Club de lectura «Tinta Sur»',                motive:'Leo por gusto y quiero ayudar a autores nuevos.', years:'Lector aficionado' },
+  camila: { level:'junior',     studies:'Estudiante de Letras (3.er curso)',          motive:'Practico para mi futuro trabajo en edición.', years:'Estudiante' },
+  sofia:  { level:'junior',     studies:'Grado en Filología (último curso)',          motive:'Quiero hacer portfolio de corrección de poesía.', years:'Estudiante' },
+  nerea:  { level:'junior',     studies:'Ciclo superior de Ilustración',              motive:'Busco mis primeras portadas para el portfolio.', years:'Recién llegada' },
+  elena:  { level:'senior',     studies:'Licenciada en Filología · 15 años en editoriales', motive:'Trabajo como correctora profesional a tiempo completo.', years:'15 años' },
+  valeria:{ level:'intermedio', studies:'Comunicación audiovisual', motive:'Creo contenido literario.', years:'3 años' },
+  diego:  { level:'junior',     studies:'Estudiante de Marketing', motive:'Reseño libros por gusto.', years:'2 años' },
+};
+Object.entries(EXTRA).forEach(([k,v]) => { const u = byId(k); if (u) Object.assign(u, v); });
+const MARKET = {
+  lector:     { v:20,  unit:'por lectura de 10 capítulos', time:'unas 3 horas de lectura y notas', step:1 },
+  corrector:  { v:8,   unit:'por 1.000 palabras',          time:'unos 25 minutos por cada 1.000 palabras', step:0.1 },
+  ilustrador: { v:150, unit:'por portada',                 time:'entre 6 y 10 horas por portada', step:5 },
+};
+const LEVELS = {
+  junior:     { label:'Junior', long:'Junior · en formación', f:[0.25,0.35], why:'Estudias, empiezas o haces proyectos para tu portfolio (menos de 2 años).', next:'Con al menos 2 años de experiencia y 100 valoraciones de 4,5 ★ o más, pasarás a intermedio.' },
+  intermedio: { label:'Intermedio', long:'Intermedio', f:[0.5,0.65], why:'Tienes formación y entre 2 y 5 años de experiencia.', next:'Con más de 5 años o trabajo en editoriales, pasarás a senior.' },
+  senior:     { label:'Senior', long:'Senior · profesional', f:[0.9,1.1], why:'Más de 5 años de experiencia o trabajo profesional en editoriales.', next:'' },
+};
+const roundTo = (n, s) => Math.round(n / s) * s;
+function priceRec(u){
+  const role = u.roles.find(r => MARKET[r]); if (!role) return null;
+  const m = MARKET[role], L = LEVELS[u.level || 'junior'];
+  const lo = roundTo(m.v * L.f[0], m.step), hi = roundTo(m.v * L.f[1], m.step);
+  return { role, m, L, lo, hi };
+}
+const levelTag = u => u.level ? `<span class="tag lvl lvl-${u.level}">${LEVELS[u.level].label}</span>` : '';
+function expBlock(u){
+  if (!u.level) return '';
+  return `<div class="exp"><div><span class="small muted">Nivel</span><b>${LEVELS[u.level].long}</b></div><div><span class="small muted">Formación</span><b>${u.studies}</b></div><div><span class="small muted">Experiencia</span><b>${u.years}</b></div><div><span class="small muted">Por qué está en Path 6</span><b>${u.motive}</b></div></div>`;
+}
+function fairPrice(u, editable){
+  const r = priceRec(u); if (!r) return '';
+  const own = u.from, inRange = own >= r.lo && own <= r.hi;
+  return `<section class="section"><div class="section-head"><h2>${editable ? 'Tu precio recomendado' : 'Precio justo'}</h2></div>
+    <div class="card fair">
+      <div class="row" style="justify-content:space-between;align-items:flex-start"><div><span class="small muted">Path 6 recomienda</span><div class="fp">${eur(r.lo)} – ${eur(r.hi)}</div><span class="small muted">${r.m.unit}</span></div>${levelTag(u)}</div>
+      ${editable ? `<label class="field" style="margin-top:12px"><span>Tu precio: <b id="pval">${eur(own)}</b></span><input type="range" id="pslider" min="${roundTo(r.lo/2, r.m.step)}" max="${roundTo(r.hi*1.6, r.m.step)}" step="${r.m.step}" value="${own}" data-lo="${r.lo}" data-hi="${r.hi}"></label><p class="small" id="pmsg" style="margin:4px 0 0"></p>`
+                 : `<p class="small" style="margin:10px 0 0">${u.name.split(' ')[0]} cobra <b>${eur(own)}</b> ${inRange ? '<span class="okk">· dentro de lo recomendado</span>' : own < r.lo ? '· por debajo de lo recomendado' : '· por encima de lo recomendado'}</p>`}
+      <details class="why"${editable ? ' open' : ''}><summary>¿Por qué este precio?</summary>
+        <ol>
+          <li><b>Precio de mercado</b> de un profesional senior: ${eur(r.m.v)} ${r.m.unit}.</li>
+          <li><b>Nivel ${LEVELS[u.level].label.toLowerCase()}</b>: ${LEVELS[u.level].why} Por eso se aplica entre el ${Math.round(r.L.f[0]*100)} % y el ${Math.round(r.L.f[1]*100)} % del precio de mercado.</li>
+          <li><b>Tiempo de trabajo</b>: ${r.m.time}.</li>
+          <li><b>Resultado</b>: ${eur(r.lo)} – ${eur(r.hi)}. Es un precio reducido porque estás aprendiendo, y el autor lo sabe.</li>
+        </ol>
+        ${LEVELS[u.level].next ? `<p class="small muted" style="margin:6px 0 0">${LEVELS[u.level].next}</p>` : ''}
+      </details>
+    </div></section>`;
+}
+// ===== Camino profesional (lectores, correctores, ilustradores) =====
+const CAREER = ['Perfil', '1.ª prueba', '1.er encargo', '5 reseñas', 'Verificado', 'Senior'];
+const CAREER_SUB = ['Perfil completo', 'Prueba gratis enviada', 'Primer trabajo cobrado', '5 valoraciones', 'Formación comprobada', 'Nivel profesional'];
+const CAREER_CUR = { lucia:4, pablo:2, irene:3 };
+const SRC = () => ME.persona && ME.persona !== 'autor' ? byId(PERSONAS[ME.persona].who) : null;
+const careerCur = () => { const s = SRC(); return s ? (CAREER_CUR[s.id] ?? 1) : 0; };
+function careerMap(){
+  const cur = careerCur();
+  const pts = [[62,44],[262,110],[78,184],[262,258],[78,332],[250,402]];
+  const seg = (a,b) => `C ${a[0]} ${a[1]+50}, ${b[0]} ${b[1]-50}, ${b[0]} ${b[1]}`;
+  let d = `M ${pts[0][0]} ${pts[0][1]}`, done = d;
+  for (let i = 1; i < pts.length; i++){ d += ' ' + seg(pts[i-1], pts[i]); if (i <= cur) done += ' ' + seg(pts[i-1], pts[i]); }
+  const ico = ['✓','✓','✓','✓','✓','★'];
+  const nodes = pts.map(([x,y], i) => {
+    const state = i < cur ? 'done' : i === cur ? 'now' : 'next';
+    const right = x < 170, lx = right ? x+38 : x-38, anchor = right ? 'start' : 'end';
+    const fill = state === 'next' ? 'var(--surface)' : NODE_C[i % 3];
+    const stroke = state === 'next' ? 'stroke="var(--text)" stroke-opacity=".35" stroke-dasharray="4 4" stroke-width="2"' : state === 'now' ? 'stroke="var(--on-color)" stroke-width="3"' : '';
+    const inner = i === cur ? personSVG(x, y, 22, ME, fill) : `<text class="ini" x="${x}" y="${y+5}" text-anchor="middle" ${state === 'next' ? 'style="fill:var(--muted)"' : ''}>${state === 'done' ? '✓' : ico[i] === '★' ? '★' : i+1}</text>`;
+    return `${state === 'now' ? `<circle class="pulse" cx="${x}" cy="${y}" r="26" fill="var(--coral)"/>` : ''}<circle cx="${x}" cy="${y}" r="26" fill="${fill}" ${stroke}/>${inner}<text class="lab" x="${lx}" y="${y-2}" text-anchor="${anchor}">${CAREER[i]}</text><text class="sub" x="${lx}" y="${y+15}" text-anchor="${anchor}">${state === 'now' ? 'Estás aquí' : CAREER_SUB[i]}</text>`;
+  }).join('');
+  return `<svg class="pmap" viewBox="0 0 340 436" role="img" aria-label="Tu camino profesional: ${CAREER[cur]}"><path d="${d}" fill="none" stroke="var(--text)" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/><path d="${done}" fill="none" stroke="var(--text)" stroke-width="3" stroke-linecap="round"/>${nodes}</svg>`;
+}
+// ===== Insignias según el tipo de usuario =====
+function badgesFor(){
+  const s = SRC();
+  if (!s) return [['🌱','Primer proyecto',PROJECTS.length > 0],['🤝','Primera colaboración',PROJECTS.some(p => p.team.length)],['📖','Lectura beta completada',ME.path>=3],['✍️','Corrección completada',0],['🎨','Portada lista',0],['🚀','Libro publicado',0]];
+  const r = s.roles[0], j = s.jobs, v = !!s.verified, sen = s.level === 'senior';
+  if (r === 'lector') return [['📖','Primera lectura',j>=1],['🔍','Ojo crítico',j>=10],['⭐','5 valoraciones',j>=5],['📚','20 lecturas',j>=20],['🎓','Formación verificada',v],['🏆','Senior',sen]];
+  if (r === 'corrector') return [['✏️','Primera prueba gratis',true],['🤝','Primer encargo',j>=1],['🔤','10.000 palabras',j>=3],['🎓','Formación verificada',v],['⭐','10 valoraciones',j>=10],['🏆','Senior',sen]];
+  return [['🎨','Primer boceto',true],['📕','Primera portada',j>=1],['🖼️','Portfolio de 3 obras',s.portfolio.length>=3],['🎓','Formación verificada',v],['⭐','10 valoraciones',j>=10],['🏆','Senior',sen]];
+}
+// ===== Vistas =====
+function vInicio(){
+  if (ME.roles[0] !== 'autor') return vInicioPro();
+  const p = PROJECTS[0];
+  const rec = ['lucia','pablo','irene'].map(byId);
+  return `
+  <section class="greet">${avatar(ME,'lg')}<div><p class="small muted" style="margin:0">${greeting()}</p><h1 class="uname">${ME.name}</h1></div></section>
+  <div class="home"><div class="hmain">
+  <div class="card mapcard" style="margin-top:16px">
+    <a class="row" href="#/proyecto/${p.id}" style="gap:12px;padding:10px 12px 2px;text-decoration:none;align-items:center">${cover(p)}<div><p class="small muted" style="margin:0">Tu novela</p><h2 style="margin:2px 0">${p.title}</h2><p class="small muted" style="margin:0">Etapa ${p.stage+1} de 6 · ${STAGES[p.stage]}</p></div></a>
+    <div class="only-m">${pathMap(p)}</div><div class="only-d">${pathRow(p)}</div>
+  </div>
+  <section class="next">${nextStep(p)}</section>
+  </div><div class="hside">
+
+  <section class="section">
+    <div class="section-head"><h2>Personas para tu camino</h2><a href="#/buscar">Ver todo</a></div>
+    <div class="card">${rec.map(rowUser).join('')}</div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>Solicitudes abiertas</h2></div>
+    <div class="stack">${OPEN_REQUESTS.slice(0,2).map(r=>`
+      <article class="card req">
+        <div class="row wrap" style="gap:6px">${roleTag(r.role)}${genreTag(r.genre)}</div>
+        <h3 style="margin-top:8px">${r.title}</h3>
+        <p class="muted small" style="margin:4px 0 10px">${r.by} · ${r.loc} · ${r.deadline}</p>
+        <div class="row" style="justify-content:space-between"><div class="row" style="gap:8px"><div class="avatars">${USERS.filter(u=>u.roles.includes(r.role)).slice(0,3).map(u=>avatar(u,'xs')).join('')}</div><span class="small muted">${r.applicants} interesados</span></div><span class="price">${r.budget}</span></div>
+      </article>`).join('')}</div>
+  </section>
+
+  ${ME.isNew ? '' : `<section class="section card cta">
+    <div class="appicon">${APP_ICON}</div>
+    <h2>¿Te gustaría usar Path 6 de verdad?</h2>
+    <p class="muted" style="margin:6px 0 14px">Cuéntanos qué te ha parecido la demo y apúntate a la beta. Son 2 minutos.</p>
+    <div class="row wrap" style="justify-content:center"><button class="btn" data-act="waitlist">Quiero probarla</button><button class="btn ghost" data-act="share">Compartir con amigos</button></div>
+  </section>`}
+  </div></div>`;
+}
+
+function vBuscar(){
+  const q = filters.q.trim().toLowerCase();
+  const list = filters.role === 'promo' ? [] : USERS.filter(u => !u.roles.every(r => SOON.includes(r)) &&
+    (filters.role==='todos' || u.roles.includes(filters.role)) &&
+    (!filters.genre || u.genres.includes(filters.genre)) &&
+    (!filters.verified || u.verified) &&
+    (!q || (u.name+' '+u.bio+' '+u.loc+' '+u.genres.join(' ')+' '+u.roles.map(r=>ROLES[r].label).join(' ')).toLowerCase().includes(q))
+  ).sort((a,b)=> b.rating-a.rating);
+  const roleChips = [['todos','Todos'],['lector','Lectura beta'],['corrector','Corrección'],['ilustrador','Ilustración de portada'],['promo','Promoción · pronto']];
+  return `
+  <h1>Buscar</h1>
+  <label class="search" style="margin-top:14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+    <input id="q" type="search" placeholder="Nombre, género, servicio…" value="${esc(filters.q)}" aria-label="Buscar perfiles"></label>
+  <div class="chips" style="margin-top:12px" role="group" aria-label="Servicio">${roleChips.map(([k,l])=>`<button class="chip" data-act="f-role" data-v="${k}" aria-pressed="${filters.role===k}">${l}</button>`).join('')}</div>
+  <div class="chips" style="margin-top:8px" role="group" aria-label="Género">${GENRES.map(g=>`<button class="chip" data-act="f-genre" data-v="${g}" aria-pressed="${filters.genre===g}">${g}</button>`).join('')}</div>
+  <label class="toggle" style="margin-top:12px"><input type="checkbox" id="fver" ${filters.verified?'checked':''} style="accent-color:var(--accent);width:18px;height:18px"> Solo perfiles verificados</label>
+  <p class="muted small" style="margin:14px 0 8px">${filters.role==='promo' ? '' : list.length+' '+(list.length===1?'perfil':'perfiles')}</p>
+  <div class="stack" id="results">${filters.role === 'promo' ? `<div class="card soonbox"><span class="pill">Próximamente</span><h2 style="margin:10px 0 6px">Promoción literaria</h2><p class="muted" style="margin:0 0 12px">Llegará más adelante. De momento Path 6 empieza con lectura beta, corrección e ilustración de portada.</p><div class="soonlist"><div><b>Por redes sociales</b><span>Booktokers y bookstagramers que recomienden tu libro.</span></div><div><b>Desde Path 6</b><span>Tu libro en el boletín que enviamos a los lectores de tu género.</span></div><div><b>Destacados en la app</b><span>Un hueco en el inicio y en las búsquedas durante tu lanzamiento.</span></div></div><button class="btn sm" data-act="notify-soon">Avisarme cuando llegue</button></div>` : list.length ? list.map(userCard).join('') : `<div class="empty">No hay perfiles con esos filtros.<br><button class="btn sm ghost" style="margin-top:10px" data-act="f-clear">Quitar filtros</button></div>`}</div>`;
+}
+
+function vPerfil(id){
+  const u = byId(id);
+  if (!u) return `<div class="empty">Perfil no encontrado.</div>`;
+  if (u === ME) return vYo();
+  const pal = ['var(--coral)','var(--mint)','var(--on-color)'];
+  return `
+  <a class="back" href="javascript:history.back()">${icoBack}Volver</a>
+  <section class="card" style="text-align:center">
+    <div style="display:flex;justify-content:center">${avatar(u,'lg')}</div>
+    <h1 style="margin-top:10px">${u.name}</h1>
+    <div class="muted small">${u.loc}</div>
+    <div class="row wrap" style="justify-content:center;gap:6px;margin-top:10px">${u.roles.map(roleTag).join('')}${u.genres.map(genreTag).join('')}</div>
+    <div style="margin-top:10px">${stars(u)}</div>
+    ${u.verified ? `<div style="margin-top:8px">${verifiedBadge(u)} <span class="muted small">· ${u.verified}</span></div>` : ''}
+    <p style="margin:12px 0 0;text-align:left">${u.bio}</p>
+    ${expBlock(u)}
+    <div class="row" style="margin-top:16px">
+      <button class="btn" style="flex:1" data-act="hire" data-id="${u.id}">Contratar</button>
+      <button class="btn ghost" style="flex:1" data-act="msg" data-id="${u.id}">Mensaje</button>
+    </div>
+  </section>
+
+  <section class="section"><div class="section-head"><h2>Servicios</h2></div>
+    <div class="stack">${u.packages.map(p=>`<div class="card row" style="justify-content:space-between;align-items:flex-start"><div><b>${p.n}</b><div class="muted small">${p.d}</div></div><b style="white-space:nowrap">${eur(p.p)}</b></div>`).join('')}</div>
+    <div class="note" style="margin-top:12px">${icoShield}<span>Pago protegido: Path6 guarda el dinero hasta que apruebas la entrega.</span></div>
+  </section>
+
+  ${fairPrice(u)}
+  <section class="section"><div class="section-head"><h2>Portfolio</h2></div>
+    <div class="portfolio">${u.portfolio.map((t,i)=>{ const d = /^Antes/.test(t) ? 'correccion' : /^Informe/.test(t) ? 'informe' : ''; return `<div ${d?`data-act="doc" data-doc="${d}" role="button" tabindex="0" class="open"`:''} style="background:linear-gradient(160deg,${pal[i%3]},#1E1B3A)">${t}${d?'<span class="opn">Ver</span>':''}</div>`; }).join('')}</div>
+  </section>
+
+  <section class="section"><div class="section-head"><h2>Valoraciones</h2></div>
+    <div class="card">${u.reviews.length ? u.reviews.map(r=>`<div class="review"><div class="row" style="justify-content:space-between"><b>${r.by}</b><span class="stars"><i>${'★'.repeat(r.s)}</i></span></div><div class="small" style="margin-top:2px">${r.t}</div></div>`).join('') : `<p class="muted" style="margin:0">Aún no tiene valoraciones. ¡Puede ser tu oportunidad de darle su primer proyecto!</p>`}</div>
+  </section>`;
+}
+
+function vProyectos(){
+  return `
+  <div class="row" style="justify-content:space-between"><h1>Mis proyectos</h1><button class="btn sm" data-act="new-request">+ Solicitud</button></div>
+  <div class="stack pgrid" style="margin-top:16px">${PROJECTS.length ? '' : `<div class="card empty">${ME.roles[0] === 'autor' ? 'Crea tu primer proyecto con el botón +.' : 'Cuando un autor te elija, su proyecto aparecerá aquí.'}</div>`}${PROJECTS.map(p=>`
+    <a class="card card-link tint" style="--c:${p.tint}" href="#/proyecto/${p.id}"><div class="row" style="align-items:flex-start">
+      ${cover(p)}
+      <div style="flex:1;min-width:0">
+        <h3>${p.title}</h3><div class="muted small">${p.kind} · ${p.size}</div>
+        <div class="stepper" aria-hidden="true">${STAGES.map((s,i)=>`<span class="${i<=p.stage?'on':''}"></span>`).join('')}</div>
+        <div class="small"><b>Etapa:</b> ${STAGES[p.stage]}</div>
+        <div class="row" style="margin-top:8px;justify-content:space-between">
+          <div class="avatars">${p.team.map(m=>avatar(byId(m.uid),'xs')).join('') || '<span class="muted small">Sin equipo todavía</span>'}</div>
+          ${p.team.some(m=>m.status==='delivered') ? '<span class="status delivered">● Entrega pendiente de revisar</span>' : ''}
+          ${p.requests.length ? `<span class="status progress">● ${p.requests.length} solicitud abierta</span>` : ''}
+        </div>
+      </div></div></a>`).join('')}</div>`;
+}
+
+function memberStatus(m){
+  if (m.status==='progress') return `<span class="status progress">● En curso · ${eur(m.price,true)} retenidos</span>`;
+  if (m.status==='delivered') return `<span class="status delivered">● Entrega recibida</span>`;
+  return `<span class="status done">✓ Completado · ${'★'.repeat(m.rating||5)}</span>`;
+}
+
+function vProyecto(id){
+  const p = projById(id);
+  if (!p) return `<div class="empty">Proyecto no encontrado.</div>`;
+  return `
+  <a class="back" href="#/proyectos">${icoBack}Proyectos</a>
+  <section class="card"><div class="row" style="align-items:flex-start">
+    ${cover(p)}
+    <div><h1 style="font-size:22px">${p.title}</h1><div class="muted small">${p.kind} · ${p.size}</div></div></div>
+    <div class="stepper" aria-hidden="true">${STAGES.map((s,i)=>`<span class="${i<=p.stage?'on':''}"></span>`).join('')}</div>
+    <div class="row small" style="justify-content:space-between"><span><b>Etapa ${p.stage+1} de 6:</b> ${STAGES[p.stage]}</span><span class="muted">Siguiente: ${STAGES[p.stage+1]||'—'}</span></div>
+  </section>
+
+  ${(p.samples || []).length ? `<section class="section"><div class="section-head"><h2>Pruebas gratis · cap. 1</h2><a href="#" data-act="compare" data-p="${p.id}">Comparar</a></div>
+    <p class="small muted" style="margin:-4px 0 10px">El mismo capítulo, revisado por varias personas. Compara y elige antes de pagar nada.</p>
+    <div class="card">${p.samples.map(s => { const u = byId(s.uid); return `<div class="member">${avatar(u)}<div style="flex:1;min-width:0"><a href="#/perfil/${u.id}" style="text-decoration:none"><b>${u.name}</b></a> ${verifiedBadge(u)}<div class="small">${stars(u)} <span class="muted">· ${ROLES[u.roles[0]].label}</span></div>${s.status === 'delivered' ? `<span class="status delivered">● Entregada · ${s.changes} cambios · ${s.notes} comentarios</span><div class="row" style="margin-top:8px;gap:8px"><button class="btn sm ghost" data-act="doc" data-doc="${s.doc}">Ver prueba</button><button class="btn sm" data-act="choose" data-id="${u.id}" data-p="${p.id}">Elegir</button></div>` : '<span class="status progress">● Trabajando en su prueba</span>'}</div></div>`; }).join('')}</div>
+  </section>` : ''}
+
+  <section class="section"><div class="section-head"><h2>Equipo</h2><a href="#/buscar">+ Invitar</a></div>
+    <div class="card">${p.team.length ? p.team.map((m,i)=>{const u=byId(m.uid);return `
+      <div class="member">${avatar(u)}<div style="flex:1;min-width:0">
+        <a href="#/perfil/${u.id}" style="text-decoration:none"><b>${u.name}</b></a> ${verifiedBadge(u)}
+        <div class="muted small">${m.service} · ${eur(m.price)}</div>${memberStatus(m)}
+        ${m.status==='delivered' ? `<div style="margin-top:8px"><button class="btn sm" data-act="approve" data-p="${p.id}" data-i="${i}">Aprobar y valorar</button></div>` : ''}
+        ${m.status==='progress' ? `<div style="margin-top:8px"><button class="btn sm ghost" data-act="simulate-delivery" data-p="${p.id}" data-i="${i}">Simular entrega</button></div>` : ''}
+      </div></div>`}).join('') : `<p class="muted" style="margin:0">Aún no hay nadie en el equipo. Publica una solicitud o invita a alguien desde Buscar.</p>`}</div>
+  </section>
+
+  ${p.requests.length ? `<section class="section"><div class="section-head"><h2>Solicitudes abiertas</h2></div><div class="stack">${p.requests.map((r,ri)=>`
+    <div class="card"><div class="row wrap" style="gap:6px">${roleTag(r.role)}${genreTag(r.genre)}</div>
+      <h3 style="margin-top:8px">${ROLES[r.role].label} · ${eur(r.budget)} · ${r.deadline}</h3>
+      ${r.applicants.length ? `<p class="small muted" style="margin:6px 0 4px">${r.applicants.length} postulaciones</p>${r.applicants.map(uid=>{const u=byId(uid);return `
+        <div class="member">${avatar(u)}<div style="flex:1;min-width:0"><a href="#/perfil/${u.id}" style="text-decoration:none"><b>${u.name}</b></a> ${verifiedBadge(u)}<div class="small">${stars(u)}</div></div>
+        <button class="btn sm" data-act="accept" data-p="${p.id}" data-r="${ri}" data-id="${u.id}">Elegir</button></div>`}).join('')}`
+      : `<p class="small muted" style="margin:6px 0 0">Esperando postulaciones…</p>`}
+    </div>`).join('')}</div></section>` : ''}
+
+  <section class="section"><div class="section-head"><h2>Archivos</h2></div>
+    <div class="stack">${p.files.map(f=>`<div class="file${f.doc?' open':''}" ${f.doc?`data-act="doc" data-doc="${f.doc}" role="button" tabindex="0"`:''}><span class="ico">${icoFile}</span><div style="min-width:0"><b class="small">${f.name}</b><div class="muted small">${f.meta}</div>
+      ${f.hash ? `<div class="small" style="color:var(--ok);font-weight:700;margin-top:2px">🔒 Huella de autoría registrada</div><div class="hash muted">SHA-256 · ${f.hash}</div>` : ''}</div></div>`).join('')}</div>
+  </section>
+
+  <section class="section" id="chat"><div class="section-head"><h2>Chat del proyecto</h2></div>
+    <div class="card"><div class="chat" id="chatlog">${p.chat.length ? p.chat.map(chatMsg).join('') : `<p class="muted small" style="margin:0;text-align:center">El chat se abre cuando alguien se une al equipo.</p>`}</div>
+    ${p.team.length ? `<form class="composer" data-p="${p.id}" id="composer"><input name="t" placeholder="Escribe un mensaje…" aria-label="Mensaje" autocomplete="off"><button class="btn" aria-label="Enviar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 12 20 4l-6 16-3-7z"/></svg></button></form>` : ''}</div>
+  </section>`;
+}
+function chatMsg(m){
+  if (m.from==='sys') return `<div class="msg sys">${m.t}</div>`;
+  if (m.file) { const d = DOCS[m.file], u = byId(m.from); return `<button class="msg them attach" data-act="doc" data-doc="${m.file}"><span class="who">${u.name.split(' ')[0]}</span><span class="row" style="gap:10px"><span class="ico pdf">PDF</span><span style="text-align:left"><b class="small">${d.name}</b><br><span class="small muted">${d.pages.length} páginas · toca para abrir</span></span></span></button>`; }
+  if (m.from==='ana') return `<div class="msg me">${esc(m.t)}</div>`;
+  const u = byId(m.from);
+  return `<div class="msg them"><span class="who">${u.name.split(' ')[0]}</span>${esc(m.t)}</div>`;
+}
+
+function vMensajes(){
+  if (JOB) return `<h1>Mensajes</h1><section class="section" style="margin-top:16px"><div class="card"><a class="list-item" href="#/encargo/j1">${avatar(ANA_USER)}<div style="min-width:0;flex:1"><b>Ana Ruiz</b><div class="muted small" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc((JOB.chat[JOB.chat.length-1]||{}).t || 'Archivo enviado')}</div></div>${JOB.state === 'request' ? '<span class="dot"></span>' : ''}</a></div></section>`;
+  const convs = PROJECTS.filter(p=>p.team.length);
+  return `
+  <h1>Mensajes</h1>
+  <section class="section" style="margin-top:16px"><div class="section-head"><h2>Proyectos</h2></div>
+    <div class="card">${convs.length ? convs.map(p=>{const last=p.chat[p.chat.length-1];return `
+      <a class="list-item" href="#/proyecto/${p.id}">${cover(p,'mini')}
+      <div style="min-width:0;flex:1"><b>${p.title}</b><div class="muted small" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${last ? (last.from==='sys'?'Path6':last.from==='ana'?'Tú':byId(last.from).name.split(' ')[0])+': '+last.t.replace(/<[^>]+>/g,'') : ''}</div></div>
+      <div class="avatars">${p.team.map(m=>avatar(byId(m.uid),'xs')).join('')}</div></a>`}).join('') : '<p class="muted">Todavía no tienes conversaciones.</p>'}</div>
+  </section>
+  <section class="section"><div class="section-head"><h2>Comunidades</h2><span class="pill">Próximamente</span></div>
+    <div class="card">${[['Plaza Path6','Todo el mundo'],['Autores','Tu chat de rol'],['Romance','Autores, lectores, ilustradores y promotores']].map(([n,d])=>`
+      <div class="list-item soon"><span class="avatar" style="background:var(--surface-2);color:var(--muted)">#</span><div><b>${n}</b><div class="muted small">${d}</div></div></div>`).join('')}</div>
+    <p class="muted small">En la encuesta, el chat fue lo menos pedido (25 %), así que las comunidades llegan después.</p>
+  </section>`;
+}
+
+function vYo(){
+  const badges = badgesFor();
+  return `
+  <section class="card" style="text-align:center">
+    <div style="display:flex;justify-content:center">${avatar(ME,'lg')}</div>
+    <h1 style="margin-top:10px">${ME.name}</h1>
+    <div class="muted small">${ME.loc}</div>
+    <div class="row wrap" style="justify-content:center;gap:6px;margin-top:10px">${ME.roles.map(roleTag).join('')}${ME.genres.map(genreTag).join('')}</div>
+    <p style="margin:12px 0 0;text-align:left">${ME.bio}</p>
+    ${SRC() ? expBlock(SRC()) : ''}
+    ${SRC() ? `<div class="path" style="text-align:left">${CAREER.map((n,i)=>`<div class="st ${i<=careerCur()?'on':''} ${i===careerCur()?'now':''}"><div class="bar"></div>${n}</div>`).join('')}</div>` : `<div class="path" style="text-align:left">${PATHS.map((p,i)=>`<div class="st ${i<=ME.path?'on':''} ${i===ME.path?'now':''}" style="--c:${p.c}"><div class="bar"></div>${p.name}</div>`).join('')}</div>`}
+  </section>
+  ${SRC() ? `${workSection()}${fairPrice(SRC())}` : ''}
+  <section class="section"${SRC() ? ' hidden' : ''}><div class="section-head"><h2>Proyectos</h2></div>
+    <div class="card">${PROJECTS.length ? '' : '<p class="muted" style="margin:0">Aún no tienes proyectos. Aquí aparecerán tus colaboraciones.</p>'}${PROJECTS.map(p=>`<a class="list-item" href="#/proyecto/${p.id}">${cover(p,'mini')}<div><b>${p.title}</b><div class="muted small">${p.kind} · ${STAGES[p.stage]}</div></div></a>`).join('')}</div>
+  </section>
+  <section class="section"><div class="section-head"><h2>Insignias</h2></div>
+    <div class="badge-grid">${badges.map(([e,n,on])=>`<div class="badge ${on?'':'locked'}"><span class="b">${e}</span>${n}</div>`).join('')}</div>
+  </section>
+  <section class="section"><div class="section-head"><h2>Redes</h2></div>
+    <div class="row wrap">${SRC() ? `<span class="chip">Instagram · @${SRC().id}.${ME.roles[0] === 'ilustrador' ? 'dibuja' : 'lee'}</span><span class="chip">${ME.roles[0] === 'ilustrador' ? 'Behance' : 'LinkedIn'} · ${SRC().id}</span>` : '<span class="chip">TikTok · @ana.escribe</span><span class="chip">Wattpad · anaruiz</span>'}</div>
+  </section>
+  <section class="section card" style="background:var(--surface-2);box-shadow:none">
+    <p class="small" style="margin:0"><b>Esto es una demo.</b> Los perfiles, proyectos y pagos son inventados: no se cobra nada ni se guarda ningún dato. Si recargas la página, todo vuelve a empezar.</p>
+    <div class="row wrap" style="margin-top:10px"><button class="btn sm ghost" data-act="share">Compartir la demo</button><button class="btn sm ghost" data-act="persona-open">Cambiar tipo de usuario</button></div>
+  </section>`;
+}
+
+// ===== Documentos (visor tipo PDF) =====
+const DOCS = {
+  informe: { name:'Informe_lectura_cap1-10.pdf', by:'lucia', type:'report', pages:[
+`<p class="eyebrow">Informe de lectura beta</p><h3 class="dt">Lo que el río calla</h3><p class="meta">Capítulos 1–10 · Lectora: Lucía Ferrer · 5 de noviembre de 2026</p>
+<div class="score"><b>4,4</b><span>/ 5</span><em>Valoración general</em></div>
+<table class="rt"><tr><td>Gancho inicial</td><td>●●●●●</td></tr><tr><td>Ritmo</td><td>●●●●○</td></tr><tr><td>Personajes</td><td>●●●●●</td></tr><tr><td>Diálogos</td><td>●●●●○</td></tr><tr><td>Ambientación</td><td>●●●●●</td></tr><tr><td>Coherencia</td><td>●●●●○</td></tr></table>
+<p><b>Lo que más me ha gustado.</b> La voz de Inés es muy reconocible desde la primera página y Sevilla se siente viva: el olor del río, el calor de la tarde, Triana. La escena del puente (cap. 6) es preciosa.</p>
+<p><b>Lo que mejoraría.</b> Leo tarda demasiado en tener peso en la historia (cap. 4) y los capítulos 7 y 8 se hacen algo lentos.</p>`,
+`<p class="eyebrow">Capítulo a capítulo</p>
+<table class="ct"><tr><th>Cap.</th><th>Notas</th></tr>
+<tr><td>1</td><td>Engancha. El primer párrafo es largo: lo partiría en dos.</td></tr>
+<tr><td>2</td><td>Me encanta la abuela. Muy buen diálogo en la cocina.</td></tr>
+<tr><td>3</td><td>La carta es el gran misterio, pero se explica demasiado pronto.</td></tr>
+<tr><td>4</td><td>Aquí Leo debería tener más presencia. Ahora solo aparece de pasada.</td></tr>
+<tr><td>5</td><td>Buen giro final. No lo vi venir.</td></tr>
+<tr><td>6</td><td>La escena del puente: mi favorita. No toques nada.</td></tr>
+<tr><td>7</td><td>Se hace lento. ¿Se podría unir con el 8?</td></tr>
+<tr><td>8</td><td>Repite información del 7 sobre el taller.</td></tr>
+<tr><td>9</td><td>Recupera el ritmo. Gran discusión entre Inés y su madre.</td></tr>
+<tr><td>10</td><td>Final de bloque muy potente. Quiero seguir leyendo.</td></tr></table>`,
+`<p class="eyebrow">Fragmentos comentados</p>
+<p>El río bajaba lento, como si no tuviera prisa por llegar a ninguna parte. <mark data-c="1">Inés pensó que, por primera vez en mucho tiempo, ella tampoco la tenía.</mark></p>
+<p>Leo dejó los pinceles en el suelo y la miró como se mira a alguien que ya conoces. <mark data-c="2">Ella apartó la vista hacia el agua, hacia cualquier sitio que no fueran esos ojos.</mark></p>
+<p>Esa noche, la abuela no preguntó nada. Puso dos platos, un vaso de más y <mark data-c="3">la carta, todavía cerrada, junto al pan.</mark></p>`],
+    notes:{1:'Esta frase resume todo el libro. ¡Precioso!',2:'Aquí empieza de verdad la historia de Leo. Yo la adelantaría al capítulo 2.',3:'Imagen muy potente. Mantén el misterio de la carta un poco más.'} },
+  correccion: { name:'Capitulo1_prueba_correccion.pdf', by:'pablo', type:'track', pages:[
+`<p class="eyebrow">Corrección ortotipográfica y de estilo · Prueba</p><h3 class="dt">Capítulo 1. El río</h3><p class="meta">Corrector: Pablo Martín · 412 palabras · 9 cambios · 3 comentarios</p>
+<p>Inés llegó a Triana cuando el sol ya se <del>escondia</del><ins>escondía</ins> detrás de los tejados. Traía una maleta pequeña<del> ,</del><ins>,</ins> la carta de su abuela y la sensación de que alguien la estaba esperando<del>...</del><ins>…</ins></p>
+<p>El río bajaba lento, <del>como si no tuviera prisa por llegar a ninguna parte</del><ins>sin prisa por llegar a ninguna parte</ins><sup class="cm" data-c="1">1</sup>. En la orilla, un chico con una camiseta manchada de pintura recogía unos lienzos.</p>
+<p>—<ins>¿</ins>Te has perdido? —<del>P</del><ins>p</ins>reguntó él sin levantar la vista.<sup class="cm" data-c="2">2</sup></p>
+<p>—No. Bueno, un poco<del>.</del><ins>…</ins> Busco la calle Pureza.</p>
+<p>Leo —<del>que asi</del><ins>que así</ins> se llamaba, aunque ella aún no lo sabía— señaló hacia el puente<sup class="cm" data-c="3">3</sup>. <del>Y entonces</del><ins>Entonces</ins> Inés lo entendió todo.</p>`],
+    notes:{1:'Estilo: «sin prisa» es más directo. Es una sugerencia, decides tú.',2:'Ortotipografía: la pregunta necesita signo de apertura y el inciso del narrador va en minúscula.',3:'Lucía comentó que Leo aparece tarde: aquí ya lo presentas, quizá baste con reforzar esta escena.'} },
+  correccion2: { name:'Capitulo1_prueba_correccion_Clara.pdf', by:'clara', type:'track', pages:[
+`<p class="eyebrow">Corrección de estilo · Prueba gratis</p><h3 class="dt">Capítulo 1. El río</h3><p class="meta">Correctora: Clara Vidal · 412 palabras · 5 cambios · 4 comentarios</p>
+<p>Inés llegó a Triana cuando el sol ya se <del>escondia</del><ins>escondía</ins> detrás de los tejados. Traía una maleta pequeña<del> ,</del><ins>,</ins> la carta de su abuela y la sensación de que alguien la estaba esperando.<sup class="cm" data-c="1">1</sup></p>
+<p>El río bajaba lento, como si no tuviera prisa por llegar a ninguna parte. En la orilla, un chico con una camiseta manchada de pintura recogía unos lienzos.<sup class="cm" data-c="2">2</sup></p>
+<p>—<ins>¿</ins>Te has perdido? —<del>Preguntó él sin levantar la vista</del><ins>le preguntó, sin apartar la vista de los lienzos</ins>.<sup class="cm" data-c="3">3</sup></p>
+<p>—No. Bueno, un poco. Busco la calle Pureza.</p>
+<p>Leo —que así se llamaba, aunque ella aún no lo sabía— señaló hacia el puente. Y entonces Inés lo entendió todo.<sup class="cm" data-c="4">4</sup></p>`],
+    notes:{1:'Quité los puntos suspensivos: la frase gana fuerza con un punto final.',2:'Me encanta esta imagen del río. No la tocaría.',3:'Así conectamos la mirada de Leo con los lienzos y se entiende mejor quién es.',4:'«Y entonces» funciona bien aquí: le da un tono de cuento. Lo mantengo.'} },  boceto: { name:'Boceto_portada_rio.pdf', by:'irene', type:'plain', pages:[
+`<p class="eyebrow">Boceto de portada · versión 1</p><h3 class="dt">Lo que el río calla</h3><p class="meta">Ilustradora: Irene Castillo · Formato ebook 1600 × 2560 px</p>
+<svg viewBox="0 0 120 170" style="display:block;width:62%;margin:6px auto 12px;background:#FBF8F4;border:1px solid #E4DCD2"><g fill="none" stroke="#5A5560" stroke-width=".8" stroke-linecap="round"><circle cx="78" cy="48" r="14" stroke-dasharray="2 1.5"/><path d="M0 100 q30 -10 60 0 t60 0"/><path d="M0 110 q30 -8 60 0 t60 0" stroke-opacity=".6"/><path d="M0 122 q30 -6 60 0 t60 0" stroke-opacity=".4"/><path d="M18 100 l10 -34 l8 34" /><path d="M28 66 l0 -10"/><path d="M60 98 c4 -10 10 -10 14 0"/><circle cx="64" cy="90" r="3"/><circle cx="72" cy="91" r="2.6"/></g><text x="60" y="146" text-anchor="middle" font-family="Georgia" font-size="9" fill="#5A5560">LO QUE EL RÍO CALLA</text><text x="60" y="158" text-anchor="middle" font-family="Georgia" font-size="5.5" fill="#5A5560">Ana Ruiz</text></svg>
+<p><b>Idea:</b> la Torre del Oro al fondo, el río en primer plano y dos figuras pequeñas en la orilla, mirándose.</p>
+<p><b>Colores previstos:</b> atardecer coral y albaricoque, río en verdes suaves.</p>`] },  manuscrito: { name:'Manuscrito_v3.docx', by:'ana', type:'plain', pages:[
+`<h3 class="dt">Lo que el río calla</h3><p class="meta">Ana Ruiz · Versión 3 · 82.000 palabras</p>
+<p class="cap">Capítulo 1. El río</p>
+<p>Inés llegó a Triana cuando el sol ya se escondia detrás de los tejados. Traía una maleta pequeña , la carta de su abuela y la sensación de que alguien la estaba esperando...</p>
+<p>El río bajaba lento, como si no tuviera prisa por llegar a ninguna parte. En la orilla, un chico con una camiseta manchada de pintura recogía unos lienzos.</p>
+<p>—Te has perdido? —Preguntó él sin levantar la vista.</p>
+<p>—No. Bueno, un poco. Busco la calle Pureza.</p>
+<div class="seal">🔒 Huella de autoría registrada en Path6 · SHA-256 9f2c 41ab 77d0 … e07d a71e · 03/11/2026 21:14</div>`] }
+};
+let viewerDoc = null, viewerClean = false;
+function openDoc(key){
+  const d = DOCS[key]; if (!d) return; viewerDoc = key; viewerClean = false;
+  const u = byId(d.by), track = d.type === 'track', changes = d.pages.join('').split('<ins>').length - 1;
+  const notes = (html) => [...html.matchAll(/data-c="(\d+)"/g)].map(m => m[1]).map(n => `<div class="cnote" id="cn-${n}"><span class="cnum">${n}</span>${avatar(u,'xs')}<div><b class="small">${u.name}</b><div class="small">${d.notes[n]}</div><div class="cact"><button class="lnk" data-act="note-ok" data-n="${n}">Resolver</button><button class="lnk" data-act="note-reply">Responder</button></div></div></div>`).join('');
+  $('#viewer').innerHTML = `<div class="vbar"><button class="vbtn" data-act="viewer-close" aria-label="Cerrar">${icoBack}</button><div style="flex:1;min-width:0"><b class="small" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${d.name}</b><span class="small" style="opacity:.75">${u === ME ? 'Tu archivo' : 'De ' + u.name}</span></div><span class="vpage" id="vpage">1 / ${d.pages.length}</span><button class="vbtn" data-act="viewer-dl" aria-label="Descargar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14"/></svg></button></div>
+  <div class="vpages" id="vpages">${d.pages.map((pg,i) => `<article class="page">${pg}<span class="pnum">${i+1}</span></article>${d.notes ? `<div class="cnotes">${notes(pg)}</div>` : ''}`).join('')}</div>
+  ${track ? `<div class="vfoot"><button class="btn ghost sm" data-act="viewer-clean" id="vclean">Ver limpio</button><button class="btn sm" style="flex:1" data-act="viewer-accept" id="vacc">Aceptar los ${changes} cambios</button></div>`
+          : d.type === 'report' ? `<div class="vfoot"><button class="btn sm" style="flex:1" data-act="viewer-reply">Responder a ${u.name.split(' ')[0]}</button></div>` : ''}`;
+  $('#viewer').showModal();
+  const box = $('#vpages'); box.scrollTop = 0;
+  box.addEventListener('scroll', () => { const pages = [...box.querySelectorAll('.page')]; let n = 1; pages.forEach((p,i) => { if (p.offsetTop - box.scrollTop < box.clientHeight/2) n = i+1; }); $('#vpage').textContent = `${n} / ${pages.length}`; });
+}
+function viewerAct(a, el){
+  const v = $('#viewer');
+  if (a === 'viewer-close') { v.close(); return; }
+  if (a === 'viewer-dl') { toast('En la demo no se descarga nada, pero aquí bajarías el PDF.'); return; }
+  if (a === 'viewer-clean') { viewerClean = !viewerClean; v.classList.toggle('clean', viewerClean); $('#vclean').textContent = viewerClean ? 'Ver cambios' : 'Ver limpio'; return; }
+  if (a === 'viewer-accept') { v.querySelectorAll('del').forEach(x => x.remove()); v.querySelectorAll('ins').forEach(x => x.replaceWith(document.createTextNode(x.textContent))); $('#vacc').textContent = 'Cambios aceptados ✓'; $('#vacc').disabled = true; toast('Cambios aceptados. Tu manuscrito se actualizaría con ellos.'); return; }
+  if (a === 'viewer-reply' || a === 'note-reply') { v.close(); location.hash = '#/proyecto/rio'; setTimeout(() => { const i = $('#composer input'); if (i) { i.focus(); i.scrollIntoView({block:'center'}); } }, 120); return; }
+  if (a === 'note-ok') { const n = $('#cn-' + el.dataset.n); n.classList.add('done'); el.textContent = 'Resuelto ✓'; return; }
+}
+function openNotifs(){
+  if (ME.persona && ME.persona !== 'autor') { openDlg(`${head('Notificaciones')}<div class="card" style="box-shadow:none"><a class="list-item nt" href="#/encargo/j1" data-act="close">${avatar(ANA_USER)}<div><b>Ana Ruiz</b> te ha escrito: quiere que trabajes en «Lo que el río calla»<div class="muted small">hace 1 h</div></div><span class="dot"></span></a><a class="list-item nt" href="#/yo" data-act="close"><span class="avatar" style="display:grid;place-items:center">${APP_ICON}</span><div><b>Ana Ruiz</b> ha visto tu perfil<div class="muted small">ayer</div></div><span class="dot"></span></a></div>`); const b = $('.bell i'); if (b) b.remove(); return; }
+  if (ME.isNew) { openDlg(`${head('Notificaciones')}<div class="card" style="box-shadow:none"><a class="list-item nt" href="#/yo" data-act="close"><span class="avatar" style="display:grid;place-items:center">${APP_ICON}</span><div><b>Te damos la bienvenida a Path 6.</b> Completa tu perfil para que te encuentren mejor.<div class="muted small">ahora</div></div><span class="dot"></span></a></div>`); const b = $('.bell i'); if (b) b.remove(); return; }
+  openDlg(`${head('Notificaciones')}
+    <div class="card" style="box-shadow:none">
+      <button class="list-item nt" data-act="doc" data-doc="informe">${avatar(byId('lucia'))}<div style="text-align:left"><b>Lucía</b> ha subido <b>Informe_lectura_cap1-10.pdf</b><div class="muted small">hace 2 h</div></div><span class="dot"></span></button>
+      <button class="list-item nt" data-act="doc" data-doc="correccion">${avatar(byId('pablo'))}<div style="text-align:left"><b>Pablo</b> te ha enviado una prueba de corrección gratis del capítulo 1<div class="muted small">ayer</div></div><span class="dot"></span></button>
+      <a class="list-item nt" href="#/perfil/irene" data-act="close">${avatar(byId('irene'))}<div><b>Irene</b> ha visto tu proyecto y está disponible para portadas<div class="muted small">hace 3 días</div></div></a>
+    </div>`);
+  const b = $('.bell i'); if (b) b.remove();
+}
+// ===== Compartir la demo =====
+const DEMO_URL = 'https://frlmrn13-png.github.io/path6-demo/';
+async function shareDemo(){
+  const data = { title:'Path 6', text:'Mira esta demo de Path 6: una app para encontrar lectores beta, correctores e ilustradores para tu libro.', url: DEMO_URL };
+  try { if (navigator.share) { await navigator.share(data); return; } } catch(e) { if (e && e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(`${data.text} ${data.url}`); toast('Enlace copiado. Pégalo en WhatsApp o donde quieras.'); }
+  catch(e) { toast('Comparte este enlace: ' + DEMO_URL); }
+}
+// ===== Pruebas gratis =====
+function hireFreeDone(){
+  const { u } = hire, p = projById(hire.project);
+  p.samples = p.samples || [];
+  if (!p.samples.some(s => s.uid === u.id)) p.samples.push({ uid:u.id, status:'progress' });
+  p.chat.push({ from:'sys', t:`Has pedido una prueba gratis a ${u.name.split(' ')[0]}. No se cobra nada.` });
+  hire.free = true; hire.step = 3; hireStep(); rerender();
+}
+function openCompare(pid){
+  const p = projById(pid), done = p.samples.filter(s => s.status === 'delivered');
+  openDlg(`${head('Comparar pruebas')}
+    <p class="small muted" style="margin:-6px 0 12px">La misma frase del capítulo 1, en cada versión:</p>
+    <div class="stack">${done.map(s => { const u = byId(s.uid); return `<div class="card cmp">
+      <div class="row">${avatar(u)}<div style="flex:1"><b>${u.name}</b><div class="small">${stars(u)}</div></div><b class="small" style="white-space:nowrap">≈ ${eur(s.full)}</b></div>
+      <p class="cline">${s.line}</p>
+      <div class="row wrap small muted" style="gap:10px"><span>${s.changes} cambios</span><span>${s.notes} comentarios</span><span>Entregó en ${s.days} ${s.days === 1 ? 'día' : 'días'}</span></div>
+      <div class="row" style="margin-top:10px;gap:8px"><button class="btn sm ghost" data-act="doc" data-doc="${s.doc}">Ver prueba</button><button class="btn sm" style="flex:1" data-act="choose" data-id="${u.id}" data-p="${p.id}">Elegir a ${u.name.split(' ')[0]}</button></div></div>`; }).join('')}</div>
+    <p class="small muted" style="margin:12px 0 0">El precio es orientativo para la novela completa (82.000 palabras).</p>`);
+}
+// ===== Router =====
+function route(){
+  const [pathPart, qs=''] = location.hash.replace(/^#\/?/,'').split('?');
+  const rq = new URLSearchParams(qs).get('r'); if (rq && ROLES[rq]) { filters.role = rq; history.replaceState(null, '', '#/' + pathPart); }
+  const [page='', id=''] = pathPart.split('/');
+  const map = { '':vInicio, buscar:vBuscar, perfil:()=>vPerfil(id), proyectos:vProyectos, proyecto:()=>vProyecto(id), mensajes:vMensajes, yo:vYo, encargo:vEncargo };
+  view.innerHTML = (map[page] || vInicio)();
+  const tab = {'' :'inicio', perfil:'buscar', proyecto:'proyectos', encargo:'inicio'}[page] ?? page;
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.dataset.tab === tab) t.setAttribute('aria-current','page'); else t.removeAttribute('aria-current');
+  });
+  const keep = route._keepScroll; route._keepScroll = false;
+  if (!keep) window.scrollTo(0,0);
+  bindView();
+  const fab = document.querySelector('.fab'); if (fab) fab.style.display = ME.roles[0] === 'autor' ? '' : 'none';
+  const sb = $('#signupBtn'); if (sb) sb.style.display = ME.isNew ? 'none' : '';
+}
+function rerender(){ const y = scrollY; route._keepScroll = true; route(); scrollTo(0,y); }
+
+function bindView(){
+  const q = $('#q');
+  if (q) q.addEventListener('input', e => { filters.q = e.target.value; const pos=e.target.selectionStart; rerender(); const n=$('#q'); n.focus(); n.setSelectionRange(pos,pos); });
+  const fv = $('#fver');
+  if (fv) fv.addEventListener('change', e => { filters.verified = e.target.checked; rerender(); });
+  const ps = $('#pslider');
+  if (ps) { const upd = () => { const v = +ps.value, lo = +ps.dataset.lo, hi = +ps.dataset.hi; $('#pval').textContent = eur(v); const m = $('#pmsg'); m.className = 'small ' + (v < lo ? 'pm-lo' : v > hi ? 'pm-hi' : 'pm-ok'); m.textContent = v < lo ? 'Por debajo de lo recomendado: no regales tu trabajo.' : v > hi ? 'Por encima de lo recomendado: puede costarte conseguir los primeros encargos.' : '✓ Precio justo para tu nivel. Los autores verán que está justificado.'; }; ps.addEventListener('input', upd); upd(); }
+  const jc = $('#jcomposer');
+  if (jc) jc.addEventListener('submit', e => { e.preventDefault(); const t = jc.t.value.trim(); if (!t) return; JOB.chat.push({ from:'pro', t }); rerender(); scrollJobChat(); anaSays(ANA_REPLIES[anaIdx++ % ANA_REPLIES.length]); });
+  const comp = $('#composer');
+  if (comp) comp.addEventListener('submit', e => {
+    e.preventDefault();
+    const t = comp.t.value.trim(); if (!t) return;
+    const p = projById(comp.dataset.p);
+    p.chat.push({from:'ana', t}); rerender(); scrollChat();
+    const other = p.team[0] && p.team[0].uid;
+    if (other) setTimeout(()=>{ p.chat.push({from:other, t:REPLIES[replyIdx++ % REPLIES.length]}); if (location.hash==='#/proyecto/'+p.id){ rerender(); scrollChat(); } }, 1300);
+    setTimeout(()=>{ const n=$('#composer input'); n && n.focus(); },0);
+  });
+}
+function scrollChat(){ const c=$('#composer'); c && c.scrollIntoView({block:'end'}); }
+
+// ===== Diálogos =====
+const dlg = $('#dlg'), body = $('#dlg-body');
+function openDlg(html){ body.innerHTML = html; if (!dlg.open) dlg.showModal(); const f = body.querySelector('[autofocus],input,select,button:not(.x)'); f && f.focus(); }
+function closeDlg(){ dlg.close(); }
+dlg.addEventListener('click', e => { if (e.target === dlg) closeDlg(); });
+const head = (t, step, total) => `${total?`<div class="dots" aria-hidden="true">${Array.from({length:total},(_,i)=>`<i class="${i===step?'on':''}"></i>`).join('')}</div>`:''}
+  <div class="sheet-head"><h2 id="dlg-title" style="flex:1">${t}</h2><button class="x" data-act="close" aria-label="Cerrar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>`;
+
+// Contratar: 4 pasos
+let hire = null;
+function openHire(uid, opts={}){
+  const u = byId(uid);
+  hire = { u, step:0, pkg: opts.pkg ?? 0, project: opts.project || (PROJECTS[0] && PROJECTS[0].id), price: opts.price, request: opts.request };
+  hireStep();
+}
+function hireStep(){
+  const { u, step } = hire;
+  const pkg = u.packages[hire.pkg];
+  const price = hire.price ?? pkg.p;
+  const fee = Math.round(price*FEE*100)/100;
+  if (step===0) openDlg(`${head('Contratar a '+u.name.split(' ')[0],0,4)}
+    <div class="row" style="margin-bottom:14px">${avatar(u)}<div><b>${u.name}</b> ${verifiedBadge(u)}<div class="small">${stars(u)}</div></div></div>
+    <div class="stack" role="radiogroup" aria-label="Servicio">${u.packages.map((p,i)=>`<label class="opt"><input type="radio" name="pkg" value="${i}" ${i===hire.pkg?'checked':''}><div style="flex:1"><b>${p.n}</b><div class="muted small">${p.d}</div></div><b>${eur(hire.price ?? p.p)}</b></label>`).join('')}</div>
+    <label class="field" style="margin-top:14px"><span>Proyecto</span><select id="hproj">${PROJECTS.map(p=>`<option value="${p.id}" ${p.id===hire.project?'selected':''}>${p.title}</option>`).join('')}</select></label>
+    <button class="btn block" style="margin-top:18px" data-act="hire-next">Continuar</button>`);
+  if (step===1) openDlg(`${head('Condiciones',1,4)}
+    <div class="card" style="box-shadow:none;background:var(--surface-2);border:0">
+      <p class="small" style="margin:0 0 8px"><b>Contrato de colaboración</b> (se genera automáticamente)</p>
+      <table class="sum small"><tr><td>Servicio</td><td>${pkg.n}</td></tr><tr><td>Proyecto</td><td>${projById(hire.project).title}</td></tr><tr><td>Entrega</td><td>${pkg.d}</td></tr><tr><td>Importe</td><td>${eur(price,true)}</td></tr><tr><td>Revisiones</td><td>1 incluida</td></tr></table>
+      <ul class="small muted" style="margin:10px 0 0;padding-left:18px"><li>${u.name.split(' ')[0]} se compromete a no compartir tu manuscrito (confidencialidad).</li><li>Si no hay entrega en plazo, se te devuelve el dinero.</li><li>Los desacuerdos los media el equipo de Path6.</li></ul>
+    </div>
+    <label class="toggle" style="margin-top:14px"><input type="checkbox" id="hok" style="accent-color:var(--accent);width:18px;height:18px"> Acepto las condiciones</label>
+    <div class="row" style="margin-top:18px"><button class="btn ghost" data-act="hire-prev">Atrás</button><button class="btn" style="flex:1" id="hnext" data-act="hire-next" disabled>Continuar</button></div>`);
+  if (step===2) openDlg(`${head('Pago protegido',2,4)}
+    <table class="sum"><tr><td>${pkg.n}</td><td>${eur(price,true)}</td></tr><tr><td class="muted">Gestión y protección Path6 (${Math.round(FEE*100)} %)</td><td>${eur(fee,true)}</td></tr><tr class="total"><td>Total</td><td>${eur(price+fee,true)}</td></tr></table>
+    <div class="note" style="margin-top:14px">${icoShield}<span><b>Path6 guarda el dinero</b> hasta que apruebes la entrega. ${u.name.split(' ')[0]} sabe que el pago está garantizado; tú, que solo pagas si recibes el trabajo.</span></div>
+    <p class="small muted" style="margin:12px 0 0;text-align:center">Demo: no se cobra nada.</p>
+    <div class="row" style="margin-top:14px"><button class="btn ghost" data-act="hire-prev">Atrás</button><button class="btn" style="flex:1" data-act="hire-pay">Pagar ${eur(price+fee,true)}</button></div>`);
+  if (step===3) openDlg(`${head('',3,4)}
+    <div class="success"><div class="big"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
+      <h2>${hire.free ? `Prueba pedida a ${u.name.split(' ')[0]}` : `¡${u.name.split(' ')[0]} ya está en tu equipo!`}</h2>
+      <p class="muted">${hire.free ? 'Es gratis. Cuando la entregue podrás compararla con las demás pruebas antes de decidir.' : `Los ${eur(price,true)} quedan retenidos hasta que apruebes la entrega. Podéis hablar en el chat del proyecto.`}</p></div>
+    <a class="btn block" href="#/proyecto/${hire.project}" data-act="close">Ir al proyecto</a>`);
+}
+
+function openApprove(pid, i){
+  const p = projById(pid), m = p.team[i], u = byId(m.uid);
+  let s = 5;
+  openDlg(`${head('Aprobar la entrega')}
+    <div class="row">${avatar(u)}<div><b>${u.name}</b><div class="muted small">${m.service}</div></div></div>
+    <p class="small" style="margin:14px 0 0;text-align:center">¿Qué tal ha ido?</p>
+    <div class="rate" role="radiogroup" aria-label="Valoración">${[1,2,3,4,5].map(n=>`<button type="button" role="radio" aria-checked="${n===5}" aria-label="${n} estrellas" data-s="${n}" class="on">★</button>`).join('')}</div>
+    <label class="field"><span>Comentario (opcional)</span><textarea id="rv" rows="3" placeholder="Ej.: informe muy claro y entregado a tiempo"></textarea></label>
+    <div class="note" style="margin-top:12px">${icoShield}<span>Al aprobar, Path6 libera <b>${eur(m.price,true)}</b> a ${u.name.split(' ')[0]}.</span></div>
+    <button class="btn block" style="margin-top:16px" id="doApprove">Aprobar y liberar el pago</button>`);
+  body.querySelectorAll('.rate button').forEach(b => b.addEventListener('click', () => {
+    s = +b.dataset.s;
+    body.querySelectorAll('.rate button').forEach(x => { const on = +x.dataset.s <= s; x.classList.toggle('on', on); x.setAttribute('aria-checked', +x.dataset.s===s); });
+  }));
+  $('#doApprove').addEventListener('click', () => {
+    m.status='done'; m.rating=s;
+    p.chat.push({from:'sys', t:`Entrega aprobada con ${s} ★. Path6 ha liberado ${eur(m.price,true)} a ${u.name.split(' ')[0]}.`});
+    if (pid==='rio' && p.stage<2){ p.stage=2; ME.path=3; }
+    closeDlg(); rerender(); toast('Pago liberado. ¡Gracias por valorar!');
+  });
+}
+
+function openNewRequest(){
+  openDlg(`${head('Nueva solicitud')}
+    <p class="muted small" style="margin:-6px 0 14px">Cuenta qué necesitas y recibe postulaciones de perfiles afines.</p>
+    <form id="nrf" class="stack">
+      <label class="field"><span>Proyecto</span><select name="p">${PROJECTS.map(p=>`<option value="${p.id}">${p.title}</option>`).join('')}</select></label>
+      <label class="field"><span>¿Qué buscas?</span><select name="role">${['lector','corrector','ilustrador'].map(r=>`<option value="${r}">${ROLES[r].label}</option>`).join('')}</select></label>
+      <label class="field"><span>Género</span><select name="genre">${GENRES.map(g=>`<option>${g}</option>`).join('')}</select></label>
+      <div class="row"><label class="field" style="flex:1"><span>Presupuesto (€)</span><input name="budget" type="number" min="1" step="1" value="5" inputmode="numeric"></label>
+      <label class="field" style="flex:1"><span>Plazo</span><select name="deadline"><option>1 semana</option><option selected>3 semanas</option><option>1 mes</option></select></label></div>
+      <button class="btn block">Publicar solicitud</button>
+    </form>`);
+  $('#nrf').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = e.target, p = projById(f.p.value);
+    const r = { role:f.role.value, genre:f.genre.value, budget:Math.max(1, +f.budget.value || 5), deadline:f.deadline.value, applicants:[] };
+    p.requests.push(r);
+    closeDlg(); location.hash = '#/proyecto/'+p.id; toast('Solicitud publicada');
+    setTimeout(()=>{
+      const inTeam = new Set(p.team.map(m=>m.uid));
+      let match = USERS.filter(u => u.roles.includes(r.role) && !inTeam.has(u.id));
+      match.sort((a,b)=> (b.genres.includes(r.genre)) - (a.genres.includes(r.genre)) || b.rating-a.rating);
+      r.applicants = match.slice(0,3).map(u=>u.id);
+      if (location.hash==='#/proyecto/'+p.id) rerender();
+      toast(r.applicants.length ? `¡${r.applicants.length} ${r.applicants.length===1?'persona se ha postulado':'personas se han postulado'}!` : 'Aún no hay perfiles para esto en la demo');
+    }, 2500);
+  });
+}
+
+// ===== Acciones =====
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const a = el.dataset.act;
+  if (a==='close') { closeDlg(); return; }
+  if (a==='doc') { if (dlg.open) closeDlg(); openDoc(el.dataset.doc); return; }
+  if (a==='notifs') { openNotifs(); return; }
+  if (a.startsWith('viewer-') || a.startsWith('note-')) { viewerAct(a, el); return; }
+  if (a==='waitlist') { if (WAITLIST_URL) window.open(WAITLIST_URL, '_blank', 'noopener'); else toast('El formulario de la beta estará disponible muy pronto.'); return; }
+  if (a==='share') { shareDemo(); return; }
+  if (a.startsWith('job-')) { jobAct(a); return; }
+  if (a==='persona-open') { openPersona(); return; }
+  if (a==='persona') { setPersona(el.dataset.v); closeDlg(); location.hash = '#/'; route(); toast(`Estás viendo Path 6 como ${PERSONAS[el.dataset.v].label.toLowerCase()}`); return; }
+  if (a==='compare') { e.preventDefault(); openCompare(el.dataset.p); return; }
+  if (a==='choose') { if (dlg.open) closeDlg(); openHire(el.dataset.id, { project: el.dataset.p, pkg: 1 }); return; }
+  if (a==='notify-soon') { toast('Apuntado. Te avisaríamos cuando llegue la promoción.'); return; }
+  if (a==='apply-req') { const r = OPEN_REQUESTS[+el.dataset.i]; r.applied = true; r.applicants++; rerender(); toast(`Postulación enviada. ${r.by.split(' ')[0]} verá tu perfil.`); return; }
+  if (a==='apply') { toast('En esta demo eres autora. Los lectores beta y profesionales se postulan desde aquí.'); return; }
+  if (a==='f-role') { filters.role = el.dataset.v; rerender(); return; }
+  if (a==='f-genre') { filters.genre = filters.genre===el.dataset.v ? '' : el.dataset.v; rerender(); return; }
+  if (a==='f-clear') { Object.assign(filters,{q:'',role:'todos',genre:'',verified:false}); rerender(); return; }
+  if (a==='hire') { if (!PROJECTS.length) { toast('Para contratar, crea primero un proyecto como autor/a.'); return; } openHire(el.dataset.id); return; }
+  if (a==='msg') { const p = PROJECTS.find(p=>p.team.some(m=>m.uid===el.dataset.id)); if (p) location.hash='#/proyecto/'+p.id; else toast('Para abrir un chat, contrátala o invítala a un proyecto.'); return; }
+  if (a==='approve') { openApprove(el.dataset.p, +el.dataset.i); return; }
+  if (a==='simulate-delivery') { const p=projById(el.dataset.p), m=p.team[+el.dataset.i]; m.status='delivered'; p.chat.push({from:m.uid, t:'¡Listo! Te he subido la entrega 📎'}); rerender(); toast('Entrega recibida'); return; }
+  if (a==='new-request') { openNewRequest(); return; }
+  if (a==='accept') { const p=projById(el.dataset.p), r=p.requests[+el.dataset.r]; openHire(el.dataset.id,{project:p.id, price:r.budget, request:{p:p.id, ri:+el.dataset.r}}); return; }
+  if (a==='hire-next') {
+    if (hire.step===0){ const c = body.querySelector('input[name=pkg]:checked'); hire.pkg = c ? +c.value : 0; hire.project = $('#hproj').value; }
+    hire.step++; if (hire.step === 2 && (hire.price ?? hire.u.packages[hire.pkg].p) === 0) { hireFreeDone(); return; } hireStep(); return;
+  }
+  if (a==='hire-prev') { hire.step--; hireStep(); return; }
+  if (a==='hire-pay') {
+    const { u } = hire, p = projById(hire.project), pkg = u.packages[hire.pkg], price = hire.price ?? pkg.p;
+    p.team.push({ uid:u.id, service:pkg.n, price, status:'progress' });
+    const st = +Object.keys(STAGE_ROLE).find(k => u.roles.includes(STAGE_ROLE[k])); if (p.stage === 0 && st) p.stage = st;
+    p.chat.push({ from:'sys', t:`${u.name.split(' ')[0]} se unió al proyecto. Pago de ${eur(price,true)} retenido por Path6 hasta que apruebes la entrega.` });
+    p.chat.push({ from:u.id, t:`¡Hola, ${ME.name.split(' ')[0]}! Gracias por elegirme. Empiezo esta semana 😊` });
+    if (hire.request) p.requests.splice(hire.request.ri, 1);
+    hire.step = 3; hireStep(); rerender(); return;
+  }
+});
+document.addEventListener('keydown', e => { const el = e.target.closest('[role=button][data-act]'); if (el && (e.key==='Enter' || e.key===' ')) { e.preventDefault(); el.click(); } });
+document.addEventListener('change', e => { if (e.target.id==='hok') $('#hnext').disabled = !e.target.checked; });
+
+function vInicioPro(){
+  const role = ME.roles[0], s = SRC(), reqs = OPEN_REQUESTS.map((r,i) => ({...r, i})).filter(r => r.role === role);
+  const earned = { lector:'45 €', corrector:'0 €', ilustrador:'120 €' }[role];
+  return `
+  <section class="greet">${avatar(ME,'lg')}<div><p class="small muted" style="margin:0">${greeting()}</p><h1 class="uname">${esc(ME.name)}</h1><div class="row" style="gap:6px;margin-top:6px">${roleTag(role)}${levelTag(s)}</div></div></section>
+  <div class="home"><div class="hmain">
+  ${jobCard()}
+  <div class="stats"><div><b>${s.jobs}</b><span>trabajos</span></div><div><b>${s.jobs ? '★ ' + s.rating.toLocaleString('es-ES') : '—'}</b><span>valoración</span></div><div><b>${earned}</b><span>este mes</span></div></div>
+  ${workSection()}
+  </div><div class="hside">
+  ${fairPrice(s, true)}
+  <section class="section"><div class="section-head"><h2>Solicitudes para ti</h2></div>
+    <div class="stack">${reqs.length ? reqs.map(r => `
+      <article class="card req">
+        <div class="row wrap" style="gap:6px">${roleTag(r.role)}${genreTag(r.genre)}</div>
+        <h3 style="margin-top:8px">${r.title}</h3>
+        <p class="muted small" style="margin:4px 0 10px">${r.by} · ${r.loc} · ${r.deadline}</p>
+        <div class="row" style="justify-content:space-between"><span class="price">${r.budget}</span>
+        ${r.applied ? '<span class="status done">✓ Postulación enviada</span>' : `<button class="btn sm" data-act="apply-req" data-i="${r.i}">Postularme</button>`}</div>
+      </article>`).join('') : '<div class="card empty">Pronto habrá solicitudes para tu servicio.</div>'}</div>
+  </section>
+  </div></div>`;
+}// Si ya se creó un usuario en este navegador, se carga al abrir.
+try { localStorage.removeItem('path6-user'); } catch(e) {}
+// ===== Tipo de usuario: ver la demo como autor/a, lector/a beta, corrector/a o ilustrador/a =====
+const BASE = { me: JSON.parse(JSON.stringify(ME)), projects: JSON.parse(JSON.stringify(PROJECTS)), look: LOOK.ana.slice() };
+const PERSONAS = {
+  autor:      { label:'Autor/a',                 who:'ana',   desc:'Sigue el camino de tu libro y forma tu equipo.' },
+  lector:     { label:'Lector/a beta',           who:'lucia', desc:'Lee manuscritos y consigue tus primeras valoraciones.' },
+  corrector:  { label:'Corrector/a',             who:'pablo', desc:'Envía pruebas gratis y gana clientes.' },
+  ilustrador: { label:'Ilustrador/a de portada', who:'irene', desc:'Enseña tu portfolio y diseña portadas.' },
+};
+const WORK = {
+  lector:     [{ title:'Café para dos', by:'Marta S.', what:'Lectura beta · novela completa', status:'Completado · valoración ★★★★★', money:'14,00 € cobrados', pill:'14 €', doc:'', st:'done' }],
+  corrector:  [{ title:'El faro (relato)', by:'Daniel P.', what:'Corrección ortotipográfica', status:'Completado · valoración ★★★★★', money:'20,00 € cobrados', pill:'20 €', doc:'', st:'done' }],
+  ilustrador: [{ title:'Reino de ceniza', by:'Tomás R.', what:'Portada digital', status:'Completado · valoración ★★★★★', money:'40,00 € cobrados', pill:'40 €', doc:'', st:'done' }],
+};function setPersona(v){
+  if (!PERSONAS[v]) v = 'autor';
+  try { localStorage.setItem('path6-persona', v); } catch(e) {}
+  Object.keys(ME).forEach(k => delete ME[k]);
+  Object.assign(ME, JSON.parse(JSON.stringify(BASE.me)), { persona: v });
+  PROJECTS.length = 0; JSON.parse(JSON.stringify(BASE.projects)).forEach(p => PROJECTS.push(p));
+  LOOK.ana = BASE.look.slice();
+  if (v !== 'autor') {
+    const u = byId(PERSONAS[v].who);
+    Object.assign(ME, { name:u.name, ini:u.ini, color:u.color, loc:u.loc, roles:[v], genres:u.genres.slice(), bio:u.bio, path:2 });
+    LOOK.ana = LOOK[u.id].slice();
+    PROJECTS.length = 0;
+  }
+  JOB = v !== 'autor' ? makeJob(v) : null;
+}
+function openPersona(){
+  openDlg(`${head('¿Cómo quieres ver Path 6?')}
+    <p class="small muted" style="margin:-6px 0 14px">Elige un tipo de usuario para ver cómo funciona la app para cada uno. Puedes cambiarlo cuando quieras desde tu perfil.</p>
+    <div class="stack">${Object.entries(PERSONAS).map(([k,p]) => { const u = k === 'autor' ? Object.assign({}, BASE.me, { id:'ana' }) : byId(p.who); return `<button type="button" class="opt roleb persona ${ME.persona === k ? 'on' : ''}" data-act="persona" data-v="${k}"><span class="row" style="gap:12px;width:100%"><span class="avatar" style="width:52px;height:52px"><svg viewBox="0 0 44 44" width="100%" height="100%">${personSVG(22,22,22, k === 'autor' ? { id:'base-ana', color:BASE.me.color } : u)}</svg></span><span style="flex:1;text-align:left"><b>${p.label}</b><br><span class="small muted">${p.desc}</span><br><span class="small" style="font-weight:700">Como ${u.name}</span></span></span></button>`; }).join('')}</div>`);
+}
+LOOK['base-ana'] = BASE.look.slice();
+function workSection(){
+  const w = WORK[ME.roles[0]] || [];
+  if (!w.length) return '';
+  return `<section class="section"><div class="section-head"><h2>Trabajos anteriores</h2></div><div class="stack">${w.map(j => `
+    <article class="card"><div class="row" style="justify-content:space-between;align-items:flex-start"><div><p class="small muted" style="margin:0">${j.by}</p><h3 style="margin:2px 0 4px">${j.title}</h3><p class="small" style="margin:0">${j.what}</p></div><span class="price">${j.pill}</span></div>
+      <p class="status ${j.st}" style="margin:8px 0 0">● ${j.status}</p></article>`).join('')}</div></section>`;
+}
+// ===== Encargos del profesional (simulación completa con Ana) =====
+let JOB = null;
+const ANA_USER = { id:'base-ana', name:'Ana Ruiz', ini:'AR', color:'var(--apricot)', roles:['autor'], genres:['Romance','Fantasía'] };
+const ROLE_STAGE = { lector:1, corrector:2, ilustrador:3 };
+function makeJob(role){
+  const first = ME.name.split(' ')[0];
+  const base = { id:'j1', state:'request', chat:[] };
+  let j;
+  if (role === 'lector') j = { ...base, service:'Lectura beta · 10 capítulos', price:5, deadline:'7 días', doc:'informe', fileName:'Informe_lectura_cap1-10.pdf',
+      ask:`Hola, ${first}. He visto tu perfil y me encanta cómo trabajas el romance. ¿Podrías leer los 10 primeros capítulos de «Lo que el río calla»? Te pagaría los 5 € por Path 6.` };
+  else if (role === 'corrector') j = { ...base, service:'Prueba gratis · capítulo 1', price:0, deadline:'3 días', doc:'correccion', fileName:'Capitulo1_prueba_correccion.pdf',
+      ask:`Hola, ${first}. Estoy comparando correctores para mi novela. ¿Me harías la prueba gratis del capítulo 1? Si me convence, te encargo la novela completa.`, next:{ service:'Corrección completa · 82.000 palabras', price:160, fileName:'Lo_que_el_rio_calla_corregido.pdf' } };
+  else j = { ...base, service:'Boceto gratis de portada', price:0, deadline:'5 días', doc:'boceto', fileName:'Boceto_portada_rio.pdf',
+      ask:`Hola, ${first}. Me encantan tus portadas de fantasía. ¿Podrías hacerme un boceto para «Lo que el río calla»? Es romance con un toque de magia, en Sevilla, junto al río.`, next:{ service:'Portada digital (ebook)', price:40, fileName:'Portada_final_rio.pdf' } };
+  j.chat.push({ from:'base-ana', t:j.ask });
+  return j;
+}
+// El proyecto de Ana visto por el profesional: su etapa resaltada dentro del camino del libro.
+function jobProject(j){
+  const role = ME.roles[0], src = SRC(), st = ROLE_STAGE[role];
+  const team = [{ uid:'lucia', status:'done' }];
+  if (role === 'ilustrador') team.push({ uid:'pablo', status:'done' });
+  const mine = { request:'progress', accepted:'progress', delivered:'delivered', approved:'done' }[j.state];
+  if (role === 'lector') team.length = 0;
+  team.push({ uid:src.id, status:mine });
+  return { id:'rio', title:'Lo que el río calla', stage:st, team, authorObj:ANA_USER };
+}
+const JOB_STATES = ['Solicitud','Aceptado','Entregado','Aprobado'];
+const jobIdx = j => ({ request:0, accepted:1, delivered:2, approved:3 })[j.state];
+function jobCard(){
+  const j = JOB; if (!j) return '';
+  const p = BASE.projects[0];
+  return `<a class="card card-link mapcard jobc" href="#/encargo/${j.id}" style="margin-top:16px">
+    <div class="row" style="gap:12px;padding:10px 12px 2px;align-items:center">${cover(p)}<div style="min-width:0"><p class="small muted" style="margin:0">Tu encargo actual · de Ana Ruiz</p><h2 style="margin:2px 0">${p.title}</h2><p class="small" style="margin:0">${j.service} · ${j.price ? eur(j.price) : 'Gratis'}</p></div></div>
+    <div class="tl" style="padding:0 12px">${JOB_STATES.map((s,i) => `<span class="${i <= jobIdx(j) ? 'on' : ''}">${s}</span>`).join('')}</div>
+    <p class="small muted" style="margin:10px 12px 0">Tu tramo en el camino del libro:</p>
+    <div class="only-m">${pathMap(jobProject(j))}</div><div class="only-d" style="padding:0 12px">${pathRow(jobProject(j), true)}</div>
+    <div style="padding:0 12px 12px"><span class="btn sm block">${j.state === 'request' ? 'Ver la solicitud de Ana' : 'Abrir encargo'}</span></div></a>`;
+}
+function jobAction(j){
+  const pay = j.price ? `${eur(j.price,true)} · pago protegido por Path 6` : 'Gratis · es una prueba para que Ana te conozca';
+  if (j.state === 'request') return `<p class="small" style="margin:0;font-weight:700">Ana Ruiz te ha escrito</p><h2 style="margin:4px 0 4px">${j.service}</h2><p class="small muted" style="margin:0 0 10px">${pay} · plazo ${j.deadline}</p><div class="row" style="gap:8px"><button class="btn sm" data-act="job-accept">Aceptar encargo</button><button class="btn sm ghost" data-act="job-decline">Ahora no</button></div>`;
+  if (j.state === 'accepted') return `<p class="small" style="margin:0;font-weight:700">Manos a la obra</p><h2 style="margin:4px 0 4px">${j.service}</h2><p class="small muted" style="margin:0 0 10px">Entrega antes de ${j.deadline}. ${j.price ? `Ana ya ha pagado: Path 6 guarda los ${eur(j.price,true)} hasta que apruebe.` : ''}</p><button class="btn sm" data-act="job-deliver">Entregar trabajo</button>`;
+  if (j.state === 'delivered') return `<p class="small" style="margin:0;font-weight:700">Entregado</p><h2 style="margin:4px 0 4px">Ana lo está revisando</h2><p class="small muted" style="margin:0 0 10px">${j.price ? `Cuando lo apruebe, Path 6 te liberará ${eur(j.price,true)}.` : 'Está comparando tu prueba con las de otras personas.'}</p><button class="btn sm" data-act="job-sim">Simular respuesta de Ana</button>`;
+  if (j.next) return `<p class="small" style="margin:0;font-weight:700">¡Ana te ha elegido!</p><h2 style="margin:4px 0 4px">${j.next.service}</h2><p class="small muted" style="margin:0 0 10px">${eur(j.next.price,true)} · pago protegido por Path 6</p><button class="btn sm" data-act="job-next">Aceptar el encargo</button>`;
+  return `<p class="small" style="margin:0;font-weight:700">Trabajo terminado</p><h2 style="margin:4px 0 4px">Has cobrado ${eur(j.price,true)}</h2><p class="small muted" style="margin:0">Ana te ha valorado con ★★★★★. Tu perfil sube un paso en tu camino.</p>`;
+}
+function jobMsg(m){
+  if (m.from === 'sys') return `<div class="msg sys">${m.t}</div>`;
+  const mine = m.from === 'pro';
+  if (m.file) return `<button class="msg ${mine ? 'me' : 'them'} attach" data-act="doc" data-doc="${m.file}">${mine ? '' : '<span class="who">Ana</span>'}<span class="row" style="gap:10px"><span class="ico pdf">PDF</span><span style="text-align:left"><b class="small">${esc(m.name)}</b><br><span class="small" style="opacity:.8">Toca para abrir</span></span></span></button>`;
+  return mine ? `<div class="msg me">${esc(m.t)}</div>` : `<div class="msg them"><span class="who">Ana</span>${esc(m.t)}</div>`;
+}
+function vEncargo(){
+  const j = JOB; if (!j) return `<div class="empty">No hay encargos.</div>`;
+  const p = BASE.projects[0];
+  return `
+  <a class="back" href="#/">${icoBack}Inicio</a>
+  <section class="card"><div class="row" style="align-items:flex-start;gap:12px">${cover(p)}<div><p class="small muted" style="margin:0">de Ana Ruiz · Novela · Romance</p><h1 style="font-size:22px">${p.title}</h1><p class="small" style="margin:4px 0 0">${j.service}</p><p class="small muted" style="margin:0">${j.price ? eur(j.price,true) : 'Gratis'} · plazo ${j.deadline}</p></div></div>
+    <div class="tl">${JOB_STATES.map((s,i) => `<span class="${i <= jobIdx(j) ? 'on' : ''}">${s}</span>`).join('')}</div></section>
+  <section class="next">${jobAction(j)}</section>
+  <section class="section"><div class="section-head"><h2>Tu tramo en su camino</h2></div><div class="card mapcard"><div class="only-m">${pathMap(jobProject(j))}</div><div class="only-d">${pathRow(jobProject(j), true)}</div></div></section>
+  <section class="section" id="chat"><div class="section-head"><h2>Chat con Ana</h2></div>
+    <div class="card"><div class="chat">${j.chat.map(jobMsg).join('')}</div>
+    <form class="composer" id="jcomposer"><input name="t" placeholder="Escribe a Ana…" aria-label="Mensaje" autocomplete="off"><button class="btn" aria-label="Enviar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 12 20 4l-6 16-3-7z"/></svg></button></form></div>
+  </section>`;
+}
+const ANA_REPLIES = ['¡Genial, muchas gracias!', 'Perfecto, me viene muy bien.', 'Qué ganas de verlo 😊'];
+let anaIdx = 0;
+function anaSays(t, delay=1200){ setTimeout(() => { JOB.chat.push({ from:'base-ana', t }); if (location.hash.startsWith('#/encargo')) { rerender(); scrollJobChat(); } else toast('Ana te ha respondido'); }, delay); }
+function scrollJobChat(){ const c = $('#jcomposer'); c && c.scrollIntoView({ block:'end' }); }
+function openDeliver(){
+  const j = JOB;
+  openDlg(`${head('Entregar trabajo')}
+    <p class="small muted" style="margin:-6px 0 12px">Adjunta tu entrega. En la demo puedes usar un PDF de ejemplo o elegir un archivo tuyo (no se sube a ningún sitio).</p>
+    <div class="file open" style="margin-bottom:10px"><span class="ico pdf">PDF</span><div style="flex:1;min-width:0"><b class="small" id="dname">${j.fileName}</b><div class="muted small">PDF de ejemplo · generado para la demo</div></div><button type="button" class="btn sm ghost" data-act="doc" data-doc="${j.doc}">Vista previa</button></div>
+    <label class="field"><span>O elige un archivo de tu dispositivo</span><input type="file" id="dfile" accept=".pdf,.doc,.docx,.png,.jpg"></label>
+    <label class="field" style="margin-top:10px"><span>Mensaje para Ana</span><textarea id="dmsg" rows="3">¡Hola, Ana! Te dejo la entrega. Cualquier duda, me dices.</textarea></label>
+    <button class="btn block" style="margin-top:14px" data-act="job-send">Enviar entrega</button>`);
+  $('#dfile').addEventListener('change', e => { const f = e.target.files[0]; if (f) $('#dname').textContent = f.name; });
+}
+function jobAct(a){
+  const j = JOB;
+  if (a === 'job-accept') { j.state = 'accepted'; j.chat.push({ from:'pro', t:'¡Hola, Ana! Me encanta tu historia. Acepto, me pongo con ello esta semana.' }); j.chat.push({ from:'sys', t: j.price ? `Ana ha pagado ${eur(j.price,true)}. Path 6 lo guarda hasta que apruebe la entrega.` : 'Prueba gratis aceptada. No hay pago.' }); anaSays('¡Qué bien! Muchas gracias 💛'); rerender(); toast('Encargo aceptado'); return; }
+  if (a === 'job-decline') { toast('En la demo, acéptalo para ver todo el proceso.'); return; }
+  if (a === 'job-deliver') { openDeliver(); return; }
+  if (a === 'job-send') { const name = $('#dname').textContent, msg = $('#dmsg').value.trim(); if (msg) j.chat.push({ from:'pro', t:msg }); j.chat.push({ from:'pro', file:j.doc, name }); j.state = 'delivered'; closeDlg(); rerender(); scrollJobChat(); toast('Entrega enviada a Ana'); anaSays('¡Recibido! Lo reviso esta noche 😊'); return; }
+  if (a === 'job-sim') { j.state = 'approved';
+    if (j.next) { j.chat.push({ from:'base-ana', t:'He comparado las pruebas y la tuya es la que más me gusta. ¿Te encargo el trabajo completo?' }); j.chat.push({ from:'sys', t:`Ana te ha elegido para: ${j.next.service} · ${eur(j.next.price,true)}.` }); }
+    else { j.chat.push({ from:'base-ana', t:'¡Me ha encantado! Muy claro y útil. Lo apruebo ✨' }); j.chat.push({ from:'sys', t:`Ana ha aprobado la entrega. Path 6 te ha liberado ${eur(j.price,true)}. Valoración: ★★★★★` }); }
+    rerender(); scrollJobChat(); return; }
+  if (a === 'job-next') { Object.assign(j, { service:j.next.service, price:j.next.price, fileName:j.next.fileName, state:'accepted', deadline:'3 semanas', next:null }); j.chat.push({ from:'pro', t:'¡Claro que sí! Empiezo con la novela completa.' }); j.chat.push({ from:'sys', t:`Ana ha pagado ${eur(j.price,true)}. Path 6 lo guarda hasta que apruebe la entrega.` }); rerender(); toast('Nuevo encargo aceptado'); return; }
+}{ const nav = document.querySelector('.tabs nav'), lg = document.querySelector('.topbar .logo').cloneNode(true); lg.classList.add('side-logo'); lg.setAttribute('aria-label','Path 6, inicio'); nav.prepend(lg); }
+let savedPersona = null;
+try { savedPersona = localStorage.getItem('path6-persona'); } catch(e) {}
+if (savedPersona && PERSONAS[savedPersona]) setPersona(savedPersona); else ME.persona = 'autor';
+window.addEventListener('hashchange', route);
+route();
+if (!savedPersona) openPersona();
+</script>
+</body>
+</html>

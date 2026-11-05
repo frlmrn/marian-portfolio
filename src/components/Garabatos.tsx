@@ -209,6 +209,68 @@ const dibujos: Record<string, { vb: string; d: ReactNode }> = {
       </>
     ),
   },
+  // ——— Path 6 (app móvil y web) ———
+  'p6-camino': {
+    vb: '0 0 120 170',
+    d: (
+      <>
+        <rect x={22} y={6} width={76} height={158} rx={10} />
+        <path d="M36 22 H84" />
+        <path className={s.discontinuo} d="M42 46 C80 52 82 70 76 76 C56 88 40 92 44 106 C48 120 80 118 78 136" />
+        <circle cx={42} cy={46} r={7} className={s.relleno} />
+        <circle className={s.rojo} cx={76} cy={76} r={8} />
+        <circle cx={44} cy={106} r={6} />
+        <path className={s.fino} d="M41 106 h6 M44 103 v6" />
+        <circle cx={78} cy={136} r={6} />
+        <path className={s.fino} d="M52 44 H66 M54 76 H66 M54 104 H68" />
+      </>
+    ),
+  },
+  'p6-precio': {
+    vb: '0 0 170 120',
+    d: (
+      <>
+        {marco(170, 120)}
+        <path d="M14 20 H70" />
+        <path className={s.relleno} d="M14 32 H54 V44 H14 Z" />
+        <path d="M14 66 H156" />
+        <path className={s.rojo} d="M58 66 H104" />
+        <circle className={s.rojo} cx={80} cy={66} r={6} />
+        <path className={s.fino} d="M58 58 V74 M104 58 V74" />
+        <path className={s.fino} d="M14 88 H120 M14 98 H100 M14 108 H110" />
+      </>
+    ),
+  },
+  'p6-visor': {
+    vb: '0 0 120 170',
+    d: (
+      <>
+        <rect x={18} y={8} width={84} height={150} rx={4} />
+        <path d="M28 26 H70" />
+        <path className={s.fino} d="M28 42 H92 M28 52 H60 M28 62 H92 M28 82 H90 M28 92 H70 M28 112 H92 M28 122 H80" />
+        <path className={s.rojo} d="M62 50 L84 54 M28 72 H56" />
+        <path className={s.rojo} d="M74 90 C80 84 88 86 90 92" />
+        <circle className={s.rojo} cx={94} cy={62} r={4} />
+        <rect x={28} y={136} width={64} height={12} rx={6} />
+      </>
+    ),
+  },
+  'p6-perfiles': {
+    vb: '0 0 120 170',
+    d: (
+      <>
+        <rect x={22} y={6} width={76} height={158} rx={10} />
+        <path d="M34 22 H76" />
+        {[40, 70, 100, 130].map((y, i) => (
+          <g key={y}>
+            <rect x={30} y={y - 10} width={60} height={24} rx={5} className={i === 0 ? s.rojo : undefined} />
+            <circle cx={40} cy={y + 2} r={5} />
+            <path className={s.fino} d={`M50 ${y - 1} H${80 - i * 3} M50 ${y + 6} H70`} />
+          </g>
+        ))}
+      </>
+    ),
+  },
 }
 
 /** Dónde va cada papel: arriba (en % de la página), lado, giro y ancho. */

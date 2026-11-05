@@ -5,12 +5,14 @@ import fotoCecotec from '../assets/img/polaroid-cecotec.webp'
 import fotoOhmycat from '../assets/img/polaroid-ohmycat.webp'
 import fotoSobreMi from '../assets/img/polaroid-sobre-mi.webp'
 import fotoMassolis from '../assets/img/polaroid-massolis.webp'
+import fotoPath6 from '../assets/img/polaroid-path6.webp'
 
 /** Foto de cada tarjeta (los textos alternativos están en textos/es.ts y en.ts). */
 export const fotos: Partial<Record<CardItem['id'], string>> = {
   cecotec: fotoCecotec,
   ohmycat: fotoOhmycat,
   massolis: fotoMassolis,
+  path6: fotoPath6,
   'sobre-mi': fotoSobreMi,
 }
 import { Link } from '../lib/router'

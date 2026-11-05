@@ -97,6 +97,13 @@ portatil(im, ms + 'pant-web-inicio.webp', 540, 500, 920)
 movil(im, ms + 'pant-inicio.webp', 975, 650, 200, -4)
 guarda(im, 'polaroid-massolis')
 
+# Path 6: la web en el portátil y la app en el móvil
+im = lienzo().convert('RGBA')
+p6 = 'src/assets/casos/path6/'
+portatil(im, p6 + 'pant-web-inicio.webp', 540, 500, 920)
+movil(im, p6 + 'pant-inicio.webp', 975, 650, 200, -4)
+guarda(im, 'polaroid-path6')
+
 # Sobre mí: el retrato, recortado a la proporción de la foto
 r = Image.open('src/assets/img/retrato-bn.webp').convert('RGB')
 rw, rh = r.size

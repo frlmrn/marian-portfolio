@@ -147,7 +147,7 @@ export const pistas = {
 
 /** Tarjetas polaroid: son la navegación principal de la portada. */
 export type CardItem = {
-  id: 'cecotec' | 'ohmycat' | 'massolis' | 'sobre-mi'
+  id: 'cecotec' | 'ohmycat' | 'massolis' | 'path6' | 'sobre-mi'
   /** Número de caso (las tarjetas que no son casos no lo llevan). */
   numero?: string
   nombre: string
@@ -187,6 +187,15 @@ export const cards: Record<CardItem['id'], CardItem> = {
     descripcion: 'Plataforma de gestión de servicios',
     to: `${paths.casos}/massolis`,
     nota: ['Todo el equipo,', 'en una pantalla.'],
+  },
+  path6: {
+    id: 'path6',
+    alt: 'La web de Path 6 en un portátil y la app en un móvil, con el camino del libro de Ana',
+    numero: '04',
+    nombre: 'Path 6',
+    descripcion: 'App propia para autores que empiezan',
+    to: `${paths.casos}/path6`,
+    nota: ['Cada libro,', 'su camino.'],
   },
   'sobre-mi': {
     id: 'sobre-mi',
@@ -319,7 +328,7 @@ export const sobreMi = {
 }
 
 export type Caso = {
-  id: 'cecotec' | 'ohmycat' | 'massolis'
+  id: 'cecotec' | 'ohmycat' | 'massolis' | 'path6'
   categoria: string
   descripcion: string
   claves: string[]
@@ -350,6 +359,14 @@ export const casos: Caso[] = [
       'UX/UI de la web del cat café de la Asociación Ghato Verde en Sevilla: reserva de visitas en tres pasos, fichas de los gatos en adopción y un formulario para colaborar como voluntaria, casa de acogida o con donaciones.',
     claves: ['Auditoría del diseño', 'Flujo de reserva', 'Web responsive'],
     nota: ['Marcas que', 'dejan huella.'],
+  },
+  {
+    id: 'path6',
+    categoria: 'Proyecto propio · App móvil y web',
+    descripcion:
+      'Mi propia idea, de principio a fin: una red y un mercado que conecta a autores que empiezan con lectores beta, correctores e ilustradores en formación, a precios reducidos y justificados. Diseñé desde cero el logo, la paleta, la tipografía, los flujos y las pantallas, y programé una demo funcional.',
+    claves: ['Encuesta a 60 personas', 'Marca y sistema de diseño propios', 'Demo funcional con agentes de IA'],
+    nota: ['Cada libro,', 'su camino.'],
   },
 ]
 
@@ -1538,6 +1555,271 @@ export const expedientes: Record<string, Expediente> = {
       'cliente-valorar': 'Portal del cliente: valorar el servicio con estrellas y etiquetas',
       'cliente-servicios': 'Portal del cliente: lista de próximos servicios con su estado',
       'cliente-mensajes': 'Portal del cliente: conversación con atención al cliente',
+    },
+  },
+  path6: {
+    categoria: 'Proyecto propio · App móvil y web',
+    lead: 'Path 6 es una idea mía: una app que conecta a autores que empiezan con lectores beta, correctores e ilustradores de portada que también empiezan, a precios reducidos y justificados. La hice entera desde cero: la investigación, el logo, la paleta, la tipografía, los flujos, las pantallas y la demo, con todo su código.',
+    ficha: [
+      { k: 'Tipo', v: 'Proyecto propio · la idea y el producto son míos' },
+      { k: 'Mi rol', v: 'Todo: research, marca, UX/UI, sistema de diseño y el código de la demo' },
+      { k: 'Equipo', v: 'Solo yo' },
+      { k: 'Contexto', v: 'Proyecto propio · sept. 2025 – nov. 2026 · en curso' },
+      { k: 'Herramientas', v: 'Figma · Google Forms · Agentes de IA · HTML, CSS y JavaScript' },
+    ],
+    prototipo: '/prototipos/path6/index.html',
+    resumen: {
+      problema: 'Quien empieza a escribir no sabe dónde encontrar lectores beta, correctores o ilustradores, ni si puede fiarse. Y quien empieza a corregir o a ilustrar no consigue sus primeros encargos ni sabe cuánto cobrar.',
+      papel: 'Todo es mío: la idea, la encuesta, el logo, la paleta, la tipografía, los flujos, las pantallas, el sistema de diseño en Figma y la demo programada.',
+      decision: 'El libro como un camino de seis etapas: cada persona del equipo ocupa su tramo, y Path 6 recomienda un precio según el nivel y explica por qué.',
+    },
+    resultado: 'Una demo bastante funcional, en móvil y en web: cuatro perfiles para probar, contratación con pago protegido, pruebas gratis para comparar, correcciones con control de cambios y un encargo completo de principio a fin. Tiene además un formulario para validar el diseño con las 36 personas de la encuesta que quieren probarla.',
+    reto: {
+      titulo: 'Contexto y reto',
+      texto: [
+        'Path 6 es mi propia idea: una red y un mercado para quien empieza en el mundo del libro.',
+        'Los autores noveles necesitan lectores beta, corrección y portada, pero los servicios profesionales son caros, y no saben dónde buscar ni en quién confiar.',
+        'Al otro lado hay estudiantes y recién titulados en corrección, edición o ilustración que necesitan sus primeros encargos y un portfolio. Path 6 los junta a precios reducidos y explica por qué cuesta lo que cuesta cada trabajo.',
+      ],
+      objetivo: 'Que un autor que empieza forme el equipo de su libro con personas en formación, a un precio justo que entiende y con el pago protegido.',
+      cita: { texto: 'No sé dónde buscar a alguien que lea o corrija mi libro, ni si puedo fiarme.', autor: 'Resumen de las respuestas de la encuesta' },
+    },
+    investigacion: {
+      titulo: 'Investigación',
+      nota: 'Escribí la propuesta de la app y lancé una encuesta en Google Forms que respondieron 60 personas: autores, lectores beta, correctores e ilustradores. Sus respuestas decidieron qué servicios salen primero, qué se queda para después y qué tenía que dar confianza.',
+      metodos: ['Encuesta: 60 respuestas', 'Propuesta de producto', 'Customer journey map', 'Service blueprint', 'Arquitectura de la información', 'Formulario para validar la demo'],
+      diagramas: [
+        {
+          tipo: 'journey',
+          titulo: 'Journey de un autor que empieza, sin Path 6',
+          pie: 'Los puntos de dolor aparecen al buscar a alguien, al decidir cuánto pagar y al dar a conocer el libro.',
+          etapas: [
+            { nombre: 'Terminar el borrador', nivel: 1 },
+            { nombre: 'Buscar lectores beta', nivel: -1.5, dolor: true },
+            { nombre: 'Pedir una corrección', nivel: -1 },
+            { nombre: 'Saber cuánto pagar', nivel: -1.5, dolor: true },
+            { nombre: 'Encargar la portada', nivel: -0.5 },
+            { nombre: 'Dar a conocer el libro', nivel: -2, dolor: true },
+          ],
+          filas: [
+            {
+              nombre: 'Qué hace',
+              celdas: [
+                'Escribe sin nadie que lo lea antes.',
+                'Pregunta en redes y en grupos de escritura.',
+                'Busca correctores por internet.',
+                'Compara tarifas que no entiende.',
+                'Busca ilustradores en redes.',
+                'Lo comparte en sus propias redes.',
+              ],
+            },
+            {
+              nombre: 'Debilidades',
+              celdas: [
+                '—',
+                'El 45 % no sabe dónde buscar.',
+                'Los precios profesionales son altos para quien empieza.',
+                'El 40 % teme pagar a un desconocido.',
+                'No sabe si el estilo encaja hasta que paga.',
+                'Es lo que más se pide (43 %) y lo más difícil.',
+              ],
+            },
+            {
+              nombre: 'Oportunidades',
+              celdas: [
+                'El camino del libro, en seis etapas.',
+                'Perfiles verificados por servicio y género.',
+                'Pruebas gratis de un capítulo para comparar.',
+                'Precio recomendado por nivel, con su porqué.',
+                'Un boceto gratis antes de encargar.',
+                'Promoción de Path 6: próximamente.',
+              ],
+            },
+          ],
+          curva: 'Experiencia',
+          curvaTras: 1,
+          leyenda: 'Punto de dolor',
+        },
+        {
+          tipo: 'blueprint',
+          titulo: 'Un encargo de principio a fin',
+          pie: 'El mismo encargo visto desde el autor, desde el profesional y desde lo que Path 6 hace por detrás.',
+          fases: ['Pedir', 'Aceptar', 'Pagar', 'Trabajar', 'Entregar', 'Aprobar'],
+          carriles: [
+            { nombre: 'Evidencia', celdas: ['La solicitud en el chat', 'El encargo aceptado', 'El contrato y el pago', 'El plazo y el chat', 'El PDF con los cambios', 'La valoración'] },
+            { nombre: 'Autor/a', celdas: ['Escribe al profesional', '—', 'Acepta las condiciones y paga', 'Pregunta por el chat', 'Revisa la entrega en el visor', 'Aprueba y valora'] },
+            {
+              nombre: 'Profesional',
+              linea: 'Línea de interacción',
+              celdas: ['Recibe la solicitud', 'Acepta o rechaza', '—', 'Trabaja en su tramo', 'Entrega el PDF', 'Cobra o le encargan más'],
+            },
+            {
+              nombre: 'Path 6',
+              linea: 'Línea de visibilidad',
+              celdas: ['Recomienda un precio justo', 'Genera el contrato', 'Guarda el dinero', 'Avisa del plazo', 'Avisa al autor', 'Libera el pago y suma la valoración'],
+            },
+          ],
+          mejora: { fila: 'Path 6', col: 2, texto: 'Pago protegido: el dinero no llega al profesional hasta que el autor aprueba la entrega.' },
+        },
+        {
+          tipo: 'arbol',
+          titulo: 'Arquitectura',
+          pie: 'La misma app para los cuatro perfiles: cambia el inicio y el tramo del camino que ve cada uno.',
+          raiz: 'Path 6',
+          ramas: [
+            { nombre: 'Inicio', hijos: ['El camino del libro', 'Siguiente paso', 'Personas para tu camino', 'Solicitudes abiertas'] },
+            { nombre: 'Buscar', hijos: ['Por servicio', 'Por género', 'Solo verificados', 'Perfiles'] },
+            { nombre: 'Proyectos', hijos: ['Etapas', 'Pruebas gratis', 'Comparar', 'Equipo', 'Archivos'] },
+            { nombre: 'Mensajes', hijos: ['Chats de proyecto', 'Comunidades (próximamente)'] },
+            { nombre: 'Perfil', hijos: ['Nivel y formación', 'Precio recomendado', 'Insignias', 'Cambiar de perfil'] },
+          ],
+          aparte: [
+            { nombre: 'Contratar', hijos: ['Servicio', 'Condiciones', 'Pago protegido', 'Listo'] },
+            { nombre: 'Un encargo (profesional)', hijos: ['Solicitud', 'Aceptado', 'Entregado', 'Aprobado'] },
+            { nombre: 'Visor de documentos', hijos: ['Control de cambios', 'Comentarios', 'Aceptar cambios'] },
+          ],
+        },
+      ],
+      hallazgos: [
+        'Respondieron 60 personas: el 62 % escribe y el 67 % está empezando. El 87 % tiene menos de 30 años.',
+        'La mitad nunca ha colaborado con nadie para su libro, y el 45 % no sabe dónde buscar.',
+        'El 40 % desconfía de pagar a un desconocido: el 60 % pide pagos seguros y el 53 %, perfiles verificados.',
+        'La promoción es el servicio más pedido (43 %).',
+        'El chat fue lo menos pedido (25 %): las comunidades pueden esperar.',
+        'El 88 % la usaría, el modelo freemium es el preferido (40 %) y 36 personas dejaron su correo para probarla.',
+        'Romance y fantasía son los géneros más escritos (53 % cada uno).',
+      ],
+    },
+    solucion: {
+      titulo: 'La solución',
+      aviso: 'Es una demo: los datos son de ejemplo, no se cobra nada y no se sube ningún archivo. Pero funciona de verdad: se puede navegar, contratar, comparar y hacer un encargo entero.',
+      nota: 'El logo marca el concepto: dos puntos son dos personas y la huella es el camino que las une. Cada libro avanza por seis etapas (escritura, lectura beta, corrección, portada, promoción y publicación) y en cada una hay una persona. Todos ven el mismo camino: el autor, el libro entero; cada profesional, su tramo.',
+      mockup: { portatil: 'web-inicio', moviles: ['inicio'] },
+      pasosTitulo: 'Para el autor: el camino de su libro',
+      pasos: [
+        { img: 'elegir', titulo: 'Elige cómo verla', texto: 'Antes de entrar se elige un perfil: autora, lector beta, corrector o ilustradora. Se puede cambiar desde Perfil.' },
+        { img: 'inicio', titulo: 'Su libro, en seis etapas', texto: 'El nombre de quien entra, grande, y el camino del libro con la persona de cada etapa.' },
+        { img: 'buscar', titulo: 'Buscar a su equipo', texto: 'Por servicio y por género, con nivel, valoraciones y precio desde.' },
+        { img: 'perfil', titulo: 'Perfiles con contexto', texto: 'Nivel, formación, experiencia y por qué está en Path 6. Así se entiende el precio.' },
+        { img: 'contratar', titulo: 'Contratar', texto: 'Servicios con precio cerrado, desde un boceto gratis.' },
+        { img: 'proyecto', titulo: 'El proyecto', texto: 'La etapa en la que está, las pruebas gratis recibidas y el equipo.' },
+      ],
+      manual: {
+        titulo: 'Probar antes de pagar',
+        nota: 'Varias personas pueden corregir gratis el mismo capítulo. El autor compara las pruebas, las abre en un visor realista y elige con quién seguir. El contrato y el pago protegido se generan solos.',
+        pasos: [
+          { img: 'comparar', titulo: 'Comparar pruebas', texto: 'La misma frase del capítulo 1 en cada versión, con sus cambios y su precio.' },
+          { img: 'visor', titulo: 'Correcciones de verdad', texto: 'Control de cambios, comentarios numerados y «Aceptar los cambios», como en un documento real.' },
+          { img: 'contratar-2', titulo: 'Condiciones claras', texto: 'Un contrato de colaboración con confidencialidad, devolución si no hay entrega y mediación.' },
+        ],
+      },
+      cliente: {
+        titulo: 'Y para los profesionales: su tramo del camino',
+        nota: 'Lectores beta, correctores e ilustradores ven el mismo camino del libro de Ana con su etapa marcada como «Tú», y un encargo simulado de principio a fin.',
+        pasos: [
+          { img: 'pro-inicio', titulo: 'Su encargo actual', texto: 'Su nivel, su encargo y su tramo en el camino del libro.' },
+          { img: 'encargo', titulo: 'Ana te ha escrito', texto: 'Aceptar o rechazar una prueba gratis de un capítulo.' },
+          { img: 'encargo-entregar', titulo: 'Entregar', texto: 'Un PDF de ejemplo o un archivo propio (no se sube), con un mensaje para Ana.' },
+          { img: 'precio', titulo: 'Precio justo', texto: 'Path 6 recomienda un rango según su nivel y explica por qué, paso a paso.' },
+        ],
+      },
+      probarTitulo: 'Pruébala aquí',
+      probarNota: 'Es la demo de verdad, la que programé. Elige un perfil al entrar y cámbialo cuando quieras desde Perfil. Como autora puedes contratar, comparar pruebas gratis y abrir las correcciones; como profesional, aceptar un encargo, entregarlo y cobrar.',
+      web: {
+        titulo: 'También en el ordenador',
+        pasos: [
+          { img: 'web-inicio', titulo: 'Inicio', texto: 'Menú lateral, el camino en horizontal y, al lado, personas y solicitudes.' },
+          { img: 'web-buscar', titulo: 'Buscar', texto: 'Los perfiles en dos columnas, con los filtros arriba.' },
+          { img: 'web-perfil', titulo: 'Perfil', texto: 'Nivel, formación y servicios de un vistazo.' },
+          { img: 'web-proyecto', titulo: 'Proyecto', texto: 'Pruebas gratis, equipo y archivos del libro.' },
+          { img: 'web-encargo', titulo: 'Encargo', texto: 'El estado, el tramo del profesional y el chat con Ana.' },
+          { img: 'web-visor', titulo: 'Visor', texto: 'La corrección a página completa, con los comentarios debajo.' },
+        ],
+      },
+      probarEn: 'movil',
+    },
+    cambios: {
+      titulo: 'Decisiones de diseño',
+      nota: 'Hice muchas versiones hasta dar con la definitiva. Estas son las decisiones más importantes; pasa las pestañas.',
+      items: [
+        { tab: 'Paleta', antes: 'Una paleta beige y marrón, acogedora pero con poco contraste.', despues: 'Atardecer vivo: fondo claro, coral, albaricoque y verde, y texto en tinta casi negra con mucho contraste.' },
+        { tab: 'Estilo', antes: 'Una versión que parecía un videojuego: letra redonda, degradados grandes y emojis.', despues: 'Una interfaz limpia, con Plus Jakarta Sans y el color solo en acentos, etiquetas y el camino.' },
+        { tab: 'Logo', antes: 'Formas que se leían como una cara o como bocadillos de chat.', despues: 'El logo guía el diseño: dos personas y la huella que las une. De ahí sale el camino de seis etapas.' },
+        { tab: 'Camino', antes: 'Cada perfil profesional tenía su propio mapa, sin relación con el del autor.', despues: 'Todos ven el camino del mismo libro; cada profesional, con su tramo marcado como «Tú».' },
+        { tab: 'Precio', antes: 'Precios sueltos, sin explicación: ¿por qué 4 €?', despues: 'Un rango recomendado según el nivel, como parte del precio de mercado, con el porqué a la vista.' },
+        { tab: 'Confianza', antes: 'Pagar a un desconocido sin garantías, lo que temía el 40 %.', despues: 'Pago protegido hasta aprobar la entrega, perfiles verificados y pruebas gratis de un capítulo.' },
+        { tab: 'Servicios', antes: 'Todos los servicios a la vez, también la promoción.', despues: 'Se lanza con lectura beta, corrección y portada. La promoción (redes, boletín de Path 6 a lectores y destacados) queda como «Próximamente».' },
+        { tab: 'Web', antes: 'Solo la app: abierta en un ordenador se veía estirada.', despues: 'Una versión web con menú lateral, dos columnas y el camino en horizontal.' },
+      ],
+    },
+    estilo: {
+      titulo: 'Sistema de diseño Atardecer vivo',
+      nota: 'Lo diseñé desde cero a partir del logo y lo llevé a Figma: 31 variables, estilos de texto para móvil y web, sombras y componentes (botón, filtro, etiqueta, insignia, paso del camino y tarjeta), además de todas las pantallas y flujos. En la demo es una sola hoja de estilos con los mismos tokens.',
+      colores: [
+        { nombre: 'Fondo', hex: '#FFF8F4' },
+        { nombre: 'Coral', hex: '#FF7F6E' },
+        { nombre: 'Albaricoque', hex: '#FFB86B' },
+        { nombre: 'Verde', hex: '#8BC34A' },
+        { nombre: 'Lila', hex: '#C9A7EB' },
+        { nombre: 'Tinta', hex: '#16142B' },
+      ],
+      tipografia: 'Plus Jakarta Sans',
+      tipografiaNota: 'Para toda la interfaz. Los manuscritos y las correcciones van en Literata, una letra pensada para leer.',
+      contrastes: [
+        { texto: 'Texto sobre el fondo', fondo: '#FFF8F4', tinta: '#16142B', ratio: '17,10:1' },
+        { texto: 'Tinta sobre coral', fondo: '#FF7F6E', tinta: '#16142B', ratio: '7,28:1' },
+        { texto: 'Texto secundario', fondo: '#FFFFFF', tinta: '#5A5873', ratio: '6,82:1' },
+        { texto: 'Enlaces', fondo: '#FFFFFF', tinta: '#C2412D', ratio: '5,14:1' },
+      ],
+    },
+    garabatos: [
+      { dibujo: 'p6-camino', nota: 'Seis etapas, un camino' },
+      { dibujo: 'p6-precio', nota: 'Precio justo, explicado' },
+      { dibujo: 'p6-visor', nota: 'Cambios a la vista' },
+      { dibujo: 'p6-perfiles', nota: 'Cuatro formas de verla' },
+    ],
+    probado: [],
+    resuelve: [
+      'El autor sabe dónde buscar: perfiles por servicio y por género.',
+      'Puede fiarse: perfiles verificados y el pago guardado hasta aprobar la entrega.',
+      'Prueba antes de pagar: correcciones gratis de un capítulo para comparar.',
+      'Entiende el precio: Path 6 lo recomienda según el nivel y explica por qué.',
+      'Los profesionales que empiezan consiguen sus primeros encargos y su portfolio.',
+      'Cada persona ve qué le toca dentro del camino del libro.',
+      'Se lanza con lo más necesario y deja la promoción preparada para después.',
+      'Funciona en el móvil y en el ordenador.',
+    ],
+    ia: {
+      intro: 'Todo el diseño es mío, y la demo también: la programé yo, con agentes de IA como herramienta. Yo decidí qué construir, cómo debía comportarse cada flujo y qué había que corregir.',
+      etiquetas: ['Agentes de IA', 'LLM', 'Contexto', 'Reglas de negocio', 'Revisión humana', 'Figma'],
+      pasos: [
+        { titulo: 'Preparar el contexto', texto: 'Les di mi propuesta, los resultados de la encuesta y mi marca: el logo, la paleta y la tipografía.' },
+        { titulo: 'Definir las reglas', texto: 'Fijé cómo funciona el producto: niveles, precio recomendado, pago protegido, pruebas gratis y los estados de un encargo.' },
+        { titulo: 'Construir por partes', texto: 'Cada perfil y cada flujo por separado, revisando pantalla a pantalla antes de seguir.' },
+        { titulo: 'Iterar el diseño', texto: 'Probé muchas versiones de color, forma y estilo hasta dar con Atardecer vivo, y añadí la versión web.' },
+        { titulo: 'Llevarlo a Figma', texto: 'El sistema de diseño y todas las pantallas, 28 de móvil y 10 de web, ordenadas por flujos.' },
+      ],
+    },
+    alt: {
+      elegir: 'App: elegir cómo ver Path 6, como autora, lector beta, corrector o ilustradora',
+      inicio: 'App: inicio de Ana Ruiz con el camino de su novela en seis etapas',
+      buscar: 'App: buscar profesionales con filtros por servicio y por género',
+      perfil: 'App: perfil de Irene Castillo, ilustradora junior, con su formación y experiencia',
+      contratar: 'App: contratar a Irene, con un boceto gratis y dos portadas de pago',
+      proyecto: 'App: el proyecto «Lo que el río calla» con las pruebas gratis del capítulo 1',
+      comparar: 'App: comparar las pruebas de corrección de Pablo y Clara',
+      visor: 'App: visor del PDF de corrección con control de cambios y comentarios',
+      'contratar-2': 'App: condiciones del contrato de colaboración',
+      'pro-inicio': 'App del corrector: inicio de Pablo Martín con su encargo y su tramo del camino',
+      encargo: 'App del corrector: Ana le pide una prueba gratis del capítulo 1',
+      'encargo-entregar': 'App del corrector: entregar el trabajo con un PDF y un mensaje para Ana',
+      precio: 'App del corrector: precio recomendado para su nivel y por qué',
+      'web-inicio': 'Web: inicio de Ana con el camino en horizontal, personas y solicitudes',
+      'web-buscar': 'Web: buscar profesionales en dos columnas',
+      'web-perfil': 'Web: perfil de Irene Castillo con sus servicios',
+      'web-proyecto': 'Web: proyecto con las pruebas gratis y el equipo',
+      'web-encargo': 'Web: encargo del corrector con su tramo del camino y el chat con Ana',
+      'web-visor': 'Web: visor de la corrección a página completa',
     },
   },
 }
