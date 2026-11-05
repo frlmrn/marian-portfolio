@@ -1622,12 +1622,12 @@ export const en: Textos = {
         titulo: 'Design decisions',
         nota: 'The key decisions that came out of the research and the design iterations. Flip through the tabs.',
         items: [
-          { tab: 'Identity', antes: 'The proposal suggested a “cosy” look of warm neutrals (beige, sand and ivory); on screen it lacked contrast, and a later version came too close to a video game.', despues: 'The Atardecer vivo palette on a light background, high-contrast ink text and a restrained interface that keeps colour for accents.' },
-          { tab: 'Concept', antes: 'Early versions in which the logo read as a face.', despues: 'The logo expresses connection and steps: two people and the footprint that joins them, consistent with the six degrees of separation.' },
-          { tab: 'Journey', antes: 'Professionals saw the author’s book path, with the other profiles, instead of their own.', despues: 'Each profile has its own career path, made of experience: from the first job to professional.' },
-          { tab: 'Rates', antes: 'Prices with no context, hard to justify to the author.', despues: 'A recommended range by level, based on the market price and explained to the user.' },
+          { tab: 'Identity', antes: 'The proposal suggested warm “cosy” neutrals (beige and sand), with little contrast on screen.', despues: 'The Atardecer vivo palette: a light background, high-contrast ink and colour only for accents.' },
+          { tab: 'Concept', antes: 'Early versions in which the logo read as a face.', despues: 'The logo expresses connection and steps: two people and the footprint that joins them.' },
+          { tab: 'Journey', antes: 'Professionals saw the author’s book path, not their own.', despues: 'Each profile has its own career path, from the first job to professional.' },
+          { tab: 'Rates', antes: 'Prices with no context, hard to justify to the author.', despues: 'A range by level, based on the market price and explained to the user.' },
           { tab: 'Trust', antes: '40 % distrusted paying a stranger.', despues: 'Payment protected until the delivery is approved, verified profiles and free samples.' },
-          { tab: 'Scope', antes: 'Every service from launch.', despues: 'Launch with beta reading, proofreading and covers; promotion (social media, newsletter and featured spots) moves to a second phase.' },
+          { tab: 'Scope', antes: 'Every service from launch.', despues: 'Launch with beta reading, proofreading and covers; promotion moves to a second phase.' },
         ],
       },
       estilo: {

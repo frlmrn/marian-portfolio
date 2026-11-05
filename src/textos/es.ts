@@ -1810,12 +1810,12 @@ export const expedientes: Record<string, Expediente> = {
       titulo: 'Decisiones de diseño',
       nota: 'Las decisiones clave que surgieron de la investigación y de las iteraciones de diseño. Pasa las pestañas.',
       items: [
-        { tab: 'Identidad', antes: 'La propuesta planteaba una estética «cozy» de neutros cálidos (beige, arena y marfil); en pantalla resultó de bajo contraste, y una versión posterior quedó demasiado próxima a un videojuego.', despues: 'Paleta Atardecer vivo sobre fondo claro, texto en tinta de alto contraste y una interfaz sobria que reserva el color para los acentos.' },
-        { tab: 'Concepto', antes: 'Primeras versiones en las que el logotipo se leía como una cara.', despues: 'El logotipo expresa conexión y pasos: dos personas y la huella que las une, en coherencia con los seis grados de separación.' },
-        { tab: 'Recorrido', antes: 'Los profesionales veían el camino del libro del autor, con los demás perfiles, en lugar del suyo.', despues: 'Cada perfil tiene su propio camino profesional, hecho de experiencia: del primer encargo a profesional.' },
-        { tab: 'Tarifas', antes: 'Precios sin contexto, difíciles de justificar ante el autor.', despues: 'Rango recomendado según el nivel, calculado sobre el precio de mercado y explicado al usuario.' },
+        { tab: 'Identidad', antes: 'La propuesta planteaba neutros cálidos «cozy» (beige y arena), con poco contraste en pantalla.', despues: 'Paleta Atardecer vivo: fondo claro, tinta de alto contraste y color solo en los acentos.' },
+        { tab: 'Concepto', antes: 'Primeras versiones en las que el logotipo se leía como una cara.', despues: 'El logotipo expresa conexión y pasos: dos personas y la huella que las une.' },
+        { tab: 'Recorrido', antes: 'Los profesionales veían el camino del libro del autor, no el suyo.', despues: 'Cada perfil tiene su propio camino profesional, del primer encargo a profesional.' },
+        { tab: 'Tarifas', antes: 'Precios sin contexto, difíciles de justificar ante el autor.', despues: 'Un rango según el nivel, calculado sobre el precio de mercado y explicado al usuario.' },
         { tab: 'Confianza', antes: 'El 40 % desconfiaba de pagar a un desconocido.', despues: 'Pago protegido hasta aprobar la entrega, perfiles verificados y pruebas gratuitas.' },
-        { tab: 'Alcance', antes: 'Todos los servicios desde el lanzamiento.', despues: 'Lanzamiento con lectura beta, corrección y portada; la promoción (redes, boletín y destacados) pasa a una segunda fase.' },
+        { tab: 'Alcance', antes: 'Todos los servicios desde el lanzamiento.', despues: 'Lanzamiento con lectura beta, corrección y portada; la promoción pasa a una segunda fase.' },
       ],
     },
     estilo: {

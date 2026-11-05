@@ -450,6 +450,9 @@ export function Expediente({ id }: { id: string }) {
     ),
   }))
 
+  // Con textos largos (tres líneas) la ficha crece para que el frente de la carpeta no los tape
+  const largo = Math.max(...e.cambios.items.map(it => Math.max(it.antes.length, it.despues.length)))
+  const altoCambios = largo > 85 ? '15em' : '13.5em'
   const cambios: Ficha[] = e.cambios.items.map(it => ({
     id: it.tab,
     label: it.tab,
@@ -794,7 +797,7 @@ export function Expediente({ id }: { id: string }) {
           ) : (
             <div className={s.conNota}>
               <div className={`${s.carpeta} ${s.carpetaCambios}`} data-revela>
-                <Fichas variante="carpeta" fichas={cambios} alto="13.5em">
+                <Fichas variante="carpeta" fichas={cambios} alto={altoCambios}>
                   <span className={a.etiqueta}>
                     <span className={a.etiquetaTit}>{t.carpetaCambios}</span>
                   </span>
