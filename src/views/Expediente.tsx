@@ -4,7 +4,8 @@ import { cards, casos, expedientes, pages, ui } from '../content'
 import { PageShell } from '../components/PageShell'
 import { Fichas, Huellas, type Ficha } from '../components/Archivo'
 import { CatPaw } from '../components/CatPaw'
-import { Contrastes, Lamina } from '../components/Diagramas'
+import { Contrastes, Lamina, LaminaPestanas } from '../components/Diagramas'
+import type { Diagrama } from '../textos/es'
 import { Garabatos } from '../components/Garabatos'
 import { MarcoMovil, MarcoPortatil } from '../components/Marcos'
 import { Threads, type Pt, type ThreadDef } from '../components/Threads'
@@ -359,6 +360,18 @@ function Objetos({ id }: { id: string }) {
   )
 }
 
+/** Junta en una sola lámina los diagramas consecutivos del mismo grupo (sitemaps por perfil). */
+function laminas(ds: Diagrama[]) {
+  const out: { titulo: string; ds: Diagrama[] }[] = []
+  for (const d of ds) {
+    const g = d.tipo === 'arbol' ? d.grupo : undefined
+    const ultima = out[out.length - 1]
+    if (g && ultima && ultima.titulo === g) ultima.ds.push(d)
+    else out.push({ titulo: g ?? d.titulo, ds: [d] })
+  }
+  return out
+}
+
 /**
  * Expediente completo de un caso, con el orden de los portfolios de UX:
  * cabecera, contexto y reto, investigación, solución (cómo funciona, el
@@ -628,9 +641,13 @@ export function Expediente({ id }: { id: string }) {
             ))}
           </ul>
           <div className={s.diagramas}>
-            {inv.diagramas.map((d, i) => (
-              <Lamina key={d.titulo} d={d} giro={[-0.5, 0.6, -0.4][i % 3]} />
-            ))}
+            {laminas(inv.diagramas).map((l, i) =>
+              l.ds.length > 1 ? (
+                <LaminaPestanas key={l.titulo} titulo={l.titulo} ds={l.ds} giro={[-0.5, 0.6, -0.4][i % 3]} />
+              ) : (
+                <Lamina key={l.titulo} d={l.ds[0]} giro={[-0.5, 0.6, -0.4][i % 3]} />
+              ),
+            )}
           </div>
         </section>
 

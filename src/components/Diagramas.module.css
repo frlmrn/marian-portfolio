@@ -693,3 +693,41 @@ tr[data-linea] th:first-child::before {
   line-height: 1.6;
   color: var(--texto);
 }
+
+/* Pestañas de una lámina con varios diagramas (sitemap por perfil) */
+.pestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.pestana {
+  composes: rotulo from global;
+  padding: 8px 14px;
+  border: 1.5px solid rgb(60 40 20 / 0.35);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tinta);
+  font-size: 11.5px;
+  cursor: pointer;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.pestana:hover {
+  border-color: var(--granate);
+}
+
+.pestana:focus-visible {
+  outline: 2px solid var(--granate);
+  outline-offset: 2px;
+}
+
+.pestanaOn,
+.pestanaOn:hover {
+  border-color: var(--granate);
+  background: var(--granate);
+  color: #fff;
+}

@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import { useId, useState, type CSSProperties } from 'react'
 import type { Diagrama } from '../textos/es'
 import s from './Diagramas.module.css'
 
@@ -30,6 +30,53 @@ export function Lamina({ d, giro = 0 }: { d: Diagrama; giro?: number }) {
         </div>
       )}
       <figcaption className={s.pie}>{d.pie}</figcaption>
+    </figure>
+  )
+}
+
+/**
+ * Varios diagramas del mismo tipo en una sola lámina, con pestañas para pasar
+ * de uno a otro (los sitemaps de cada perfil). Patrón de pestañas accesible:
+ * flechas para moverse y una sola pestaña en el orden de tabulación.
+ */
+export function LaminaPestanas({ titulo, ds, giro = 0 }: { titulo: string; ds: Diagrama[]; giro?: number }) {
+  const [activa, setActiva] = useState(0)
+  const uid = useId()
+  const d = ds[activa]
+  const nombre = (x: Diagrama) => (x.tipo === 'arbol' && x.pestana) || x.titulo
+  return (
+    <figure className={`${s.lamina} ${s.ancho}`} style={{ rotate: `${giro}deg` }} data-revela>
+      <p className={s.titulo}>{titulo}</p>
+      <div className={s.pestanas} role="tablist" aria-label={titulo}>
+        {ds.map((x, i) => (
+          <button
+            key={x.titulo}
+            type="button"
+            role="tab"
+            id={`${uid}-t${i}`}
+            aria-selected={i === activa}
+            aria-controls={`${uid}-p`}
+            tabIndex={i === activa ? 0 : -1}
+            className={`${s.pestana} ${i === activa ? s.pestanaOn : ''}`}
+            onClick={() => setActiva(i)}
+            onKeyDown={e => {
+              const paso = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
+              if (!paso) return
+              e.preventDefault()
+              const j = (i + paso + ds.length) % ds.length
+              setActiva(j)
+              document.getElementById(`${uid}-t${j}`)?.focus()
+            }}
+          >
+            {nombre(x)}
+          </button>
+        ))}
+      </div>
+      <div id={`${uid}-p`} role="tabpanel" aria-labelledby={`${uid}-t${activa}`}>
+        <div className={`${s.scroll} ${s.soloAncho}`}>{d.tipo === 'arbol' && <Arbol d={d} />}</div>
+        <div className={s.soloEstrecho}>{d.tipo === 'arbol' && <ArbolMovil d={d} />}</div>
+        <p className={s.pie}>{d.pie}</p>
+      </div>
     </figure>
   )
 }

@@ -602,6 +602,10 @@ export type Diagrama =
       tipo: 'arbol'
       titulo: string
       pie: string
+      /** Árboles del mismo grupo se muestran en una sola lámina con pestañas */
+      grupo?: string
+      /** Nombre corto de la pestaña dentro del grupo */
+      pestana?: string
       raiz: string
       ramas: { nombre: string; hijos?: string[]; nuevo?: boolean }[]
       aparte?: { nombre: string; hijos?: string[]; nuevo?: boolean }[]
@@ -1666,6 +1670,8 @@ export const expedientes: Record<string, Expediente> = {
         {
           tipo: 'arbol',
           titulo: 'Sitemap · Autor',
+          grupo: 'Sitemap por perfil',
+          pestana: 'Autor',
           pie: 'Arriba, las cinco pestañas de la barra de navegación; debajo, los flujos que se abren desde ellas. El autor gestiona el camino de su libro: busca profesionales, compara pruebas gratuitas, contrata y aprueba entregas.',
           raiz: 'Path 6 · Autor',
           ramas: [
@@ -1685,6 +1691,8 @@ export const expedientes: Record<string, Expediente> = {
         {
           tipo: 'arbol',
           titulo: 'Sitemap · Lector beta',
+          grupo: 'Sitemap por perfil',
+          pestana: 'Lector beta',
           pie: 'Lee manuscritos por capítulos y entrega un informe de lectura.',
           raiz: 'Path 6 · Lector beta',
           ramas: [
@@ -1703,6 +1711,8 @@ export const expedientes: Record<string, Expediente> = {
         {
           tipo: 'arbol',
           titulo: 'Sitemap · Corrector',
+          grupo: 'Sitemap por perfil',
+          pestana: 'Corrector',
           pie: 'Empieza con una prueba gratuita de un capítulo y, si el autor le elige, recibe la corrección completa.',
           raiz: 'Path 6 · Corrector',
           ramas: [
@@ -1721,6 +1731,8 @@ export const expedientes: Record<string, Expediente> = {
         {
           tipo: 'arbol',
           titulo: 'Sitemap · Ilustrador de portada',
+          grupo: 'Sitemap por perfil',
+          pestana: 'Ilustrador',
           pie: 'Empieza con un boceto gratuito y, si el autor le elige, diseña la portada.',
           raiz: 'Path 6 · Ilustrador',
           ramas: [

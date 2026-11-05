@@ -1482,6 +1482,8 @@ export const en: Textos = {
           {
             tipo: 'arbol',
             titulo: 'Sitemap · Author',
+            grupo: 'Sitemap by profile',
+            pestana: 'Author',
             pie: 'Top: the five tabs of the navigation bar; below: the flows that open from them. The author manages their book’s path: finds professionals, compares free samples, hires and approves deliveries.',
             raiz: 'Path 6 · Author',
             ramas: [
@@ -1501,6 +1503,8 @@ export const en: Textos = {
           {
             tipo: 'arbol',
             titulo: 'Sitemap · Beta reader',
+            grupo: 'Sitemap by profile',
+            pestana: 'Beta reader',
             pie: 'Reads manuscripts chapter by chapter and delivers a reading report.',
             raiz: 'Path 6 · Beta reader',
             ramas: [
@@ -1519,6 +1523,8 @@ export const en: Textos = {
           {
             tipo: 'arbol',
             titulo: 'Sitemap · Proofreader',
+            grupo: 'Sitemap by profile',
+            pestana: 'Proofreader',
             pie: 'Starts with a free one-chapter sample and, if the author chooses them, gets the full proofreading job.',
             raiz: 'Path 6 · Proofreader',
             ramas: [
@@ -1537,6 +1543,8 @@ export const en: Textos = {
           {
             tipo: 'arbol',
             titulo: 'Sitemap · Cover illustrator',
+            grupo: 'Sitemap by profile',
+            pestana: 'Illustrator',
             pie: 'Starts with a free sketch and, if the author chooses them, designs the cover.',
             raiz: 'Path 6 · Illustrator',
             ramas: [
