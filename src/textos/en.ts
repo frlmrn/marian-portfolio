@@ -1389,12 +1389,13 @@ export const en: Textos = {
       resumen: {
         problema: 'First-time authors can’t find affordable, trustworthy beta readers, proofreaders or illustrators, and professionals in training can’t land their first jobs or know how to set their rates.',
         papel: 'I designed the whole product on my own (research, logo, palette, typography, flows, interface and the design system in Figma) and developed the functional prototype.',
-        decision: 'Present each book as a six-stage journey in which each professional owns a stage, with a recommended rate for their level and the reasoning in view.',
+        decision: 'Bring the idea behind the name, six degrees of separation, into the interface: each project is a path that shows who takes part in each phase, and each rate is recommended by level and justified.',
       },
       resultado: 'A functional prototype for mobile and web with four user profiles, hiring with protected payment, comparison of free samples, review of corrections with tracked changes and the full cycle of a job. The next phase is validating it with the 36 survey respondents who asked to try it.',
       reto: {
         titulo: 'Context and challenge',
         texto: [
+          'Spanish-language publishing is growing: 89,347 books were registered with an ISBN in Spain in 2024 (+2.6 %), and self-publishing has grown 264 % in five years worldwide. Yet there is no system that professionally connects new authors with the people who can help them.',
           'Publishing a first book takes beta reading, proofreading and a cover, but professional rates are often out of reach for beginners, and the offer is scattered across social media and forums.',
           'Meanwhile, students and recent graduates in proofreading, editing and illustration need real jobs to learn and build their portfolio.',
           'Path 6 brings both groups into one space, with reduced rates explained by each professional’s experience.',
@@ -1403,8 +1404,8 @@ export const en: Textos = {
       },
       investigacion: {
         titulo: 'Research',
-        nota: 'I wrote the product proposal and designed a Google Forms survey that 60 people answered: authors, beta readers, proofreaders and illustrators. The results defined which services launch first, which are postponed and which trust mechanisms are essential.',
-        metodos: ['Survey · 60', 'Product proposal', 'Customer journey', 'Service blueprint', 'Information architecture'],
+        nota: 'I started from my product proposal, which includes an analysis of Spanish-language publishing (FGEE, the Ministry of Culture and Bowker) and of platforms such as Fiverr, Upwork, Wattpad and Panodyssey. I then tested it with a Google Forms survey that 60 people answered: authors, beta readers, proofreaders and illustrators. The results defined which services launch first, which are postponed and which trust mechanisms are essential.',
+        metodos: ['Sector analysis', 'Competitor analysis', 'Survey · 60', 'Customer journey', 'Service blueprint', 'Information architecture'],
         diagramas: [
           {
             tipo: 'journey',
@@ -1444,7 +1445,7 @@ export const en: Textos = {
               {
                 nombre: 'Opportunities',
                 celdas: [
-                  'The book’s journey in six stages.',
+                  'The project’s path, phase by phase.',
                   'Verified profiles by service and genre.',
                   'Free one-chapter samples.',
                   'A recommended, justified rate by level.',
@@ -1509,12 +1510,12 @@ export const en: Textos = {
       solucion: {
         titulo: 'The solution',
         aviso: 'Prototype with sample data: no payments are made and no files are uploaded. The main flows are fully navigable.',
-        nota: 'The concept comes from the logo: two dots representing two people and a footprint tracing the path between them. Each book moves through six stages (writing, beta reading, proofreading, cover, promotion and publishing), each with its professional. Every profile shares the same journey: the author sees the whole book and each professional, their stage.',
+        nota: 'The name comes from the six degrees of separation theory (Karinthy, 1929; popularised by Stanley Milgram in the 1960s): any creative person is at most six connections away from whoever they need to move their project forward. The logo sums it up with two dots, two people, and a footprint, the steps that join them. The interface carries that path metaphor into each project, which shows the person behind each phase of the book, and into the profile, with the user’s six paths in the network: explore, connect, collaborate, learn, showcase and publish.',
         mockup: { portatil: 'web-inicio', moviles: ['inicio'] },
         pasosTitulo: 'Author profile: the book’s journey',
         pasos: [
           { img: 'elegir', titulo: 'Profile selection', texto: 'On entry you pick a profile: author, beta reader, proofreader or illustrator. It can be switched at any time.' },
-          { img: 'inicio', titulo: 'Home', texto: 'A personal greeting and the book’s journey, with the professional at each stage.' },
+          { img: 'inicio', titulo: 'Home', texto: 'A personal greeting and the project’s path, with the professional for each phase.' },
           { img: 'buscar', titulo: 'Search', texto: 'Filters by service and genre, with level, ratings and starting rate.' },
           { img: 'perfil', titulo: 'Professional profile', texto: 'Level, training, experience and motivation: the context that justifies the rate.' },
           { img: 'contratar', titulo: 'Hiring', texto: 'Fixed-price services, starting with a free sketch.' },
@@ -1557,8 +1558,8 @@ export const en: Textos = {
         titulo: 'Design decisions',
         nota: 'The key decisions that came out of the research and the design iterations. Flip through the tabs.',
         items: [
-          { tab: 'Identity', antes: 'Early proposals with a low-contrast beige and brown palette and a style close to a video game.', despues: 'The Atardecer vivo palette on a light background, high-contrast ink text and a restrained interface that keeps colour for accents.' },
-          { tab: 'Concept', antes: 'Generic shapes, unrelated to the brand.', despues: 'The logo defines the system: two people joined by a footprint become the six-stage journey.' },
+          { tab: 'Identity', antes: 'The proposal suggested a “cosy” look of warm neutrals (beige, sand and ivory); on screen it lacked contrast, and a later version came too close to a video game.', despues: 'The Atardecer vivo palette on a light background, high-contrast ink text and a restrained interface that keeps colour for accents.' },
+          { tab: 'Concept', antes: 'Early versions in which the logo read as a face.', despues: 'The logo expresses connection and steps: two people and the footprint that joins them, consistent with the six degrees of separation.' },
           { tab: 'Journey', antes: 'Each professional profile had its own map, disconnected from the book.', despues: 'A single shared journey in which each professional sees their stage highlighted.' },
           { tab: 'Rates', antes: 'Prices with no context, hard to justify to the author.', despues: 'A recommended range by level, based on the market price and explained to the user.' },
           { tab: 'Trust', antes: '40 % distrusted paying a stranger.', despues: 'Payment protected until the delivery is approved, verified profiles and free samples.' },
@@ -1567,7 +1568,7 @@ export const en: Textos = {
       },
       estilo: {
         titulo: 'Atardecer vivo design system',
-        nota: 'A custom system built from the logo and documented in Figma: 31 variables, text styles for mobile and web, shadows and six components (button, filter, tag, badge, journey step and card), plus every screen organised by flow. The prototype uses the same tokens.',
+        nota: 'A custom system built from the logo and the proposal’s principles (functional clarity, personalisation and visual connectivity), documented in Figma: 31 variables, text styles for mobile and web, shadows and six components (button, filter, tag, badge, journey step and card), plus every screen organised by flow. The prototype uses the same tokens.',
         colores: [
           { nombre: 'Background', hex: '#FFF8F4' },
           { nombre: 'Coral', hex: '#FF7F6E' },
@@ -1586,7 +1587,7 @@ export const en: Textos = {
         ],
       },
       garabatos: [
-        { dibujo: 'p6-camino', nota: 'Six stages', top: '9%', lado: 'der' },
+        { dibujo: 'p6-camino', nota: 'Step by step', top: '9%', lado: 'der' },
         { dibujo: 'p6-precio', nota: 'A justified rate', top: '35%', lado: 'der' },
         { dibujo: 'p6-visor', nota: 'Tracked changes', top: '78%', lado: 'der' },
       ],
@@ -1612,7 +1613,7 @@ export const en: Textos = {
       },
       alt: {
         elegir: 'App: profile selection between author, beta reader, proofreader and illustrator',
-        inicio: 'App: author home with the novel’s journey in six stages',
+        inicio: 'App: author home with the novel’s path, phase by phase',
         buscar: 'App: search for professionals with filters by service and genre',
         perfil: 'App: profile of a junior illustrator with her training and experience',
         contratar: 'App: hiring with a free sketch and two paid covers',

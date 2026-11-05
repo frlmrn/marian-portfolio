@@ -1573,12 +1573,13 @@ export const expedientes: Record<string, Expediente> = {
     resumen: {
       problema: 'Los autores noveles no encuentran lectores beta, correctores ni ilustradores asequibles y de confianza, y los profesionales en formación no consiguen sus primeros encargos ni saben cómo fijar sus tarifas.',
       papel: 'Diseñé el producto completo en solitario (investigación, logotipo, paleta, tipografía, flujos, interfaz y sistema de diseño en Figma) y desarrollé el prototipo funcional.',
-      decision: 'Representar cada libro como un recorrido de seis etapas en el que cada profesional ocupa la suya, con una tarifa recomendada según su nivel y su justificación visible.',
+      decision: 'Trasladar a la interfaz la idea que da nombre al producto, los seis grados de separación: cada proyecto es un camino que muestra quién interviene en cada fase, y cada tarifa se recomienda según el nivel y se justifica.',
     },
     resultado: 'Un prototipo funcional en móvil y web con cuatro perfiles de usuario, contratación con pago protegido, comparación de pruebas gratuitas, revisión de correcciones con control de cambios y el ciclo completo de un encargo. La siguiente fase es validarlo con las 36 personas de la encuesta que pidieron probarlo.',
     reto: {
       titulo: 'Contexto y reto',
       texto: [
+        'El sector editorial en español crece: en 2024 se registraron en España 89.347 libros con ISBN (+2,6 %), y la autopublicación ha aumentado un 264 % en cinco años a escala global. Sin embargo, no existe un sistema que conecte de forma profesional a los nuevos autores con los perfiles que pueden ayudarles.',
         'Publicar un primer libro exige lectura beta, corrección y portada, pero las tarifas profesionales suelen estar fuera del alcance de quien empieza, y la oferta está dispersa entre redes sociales y foros.',
         'Al mismo tiempo, estudiantes y recién titulados en corrección, edición e ilustración necesitan encargos reales para formarse y construir su portfolio.',
         'Path 6 reúne a ambos perfiles en un mismo espacio, con tarifas reducidas que se explican según la experiencia de cada profesional.',
@@ -1587,8 +1588,8 @@ export const expedientes: Record<string, Expediente> = {
     },
     investigacion: {
       titulo: 'Investigación',
-      nota: 'Redacté la propuesta de producto y diseñé una encuesta en Google Forms que respondieron 60 personas: autores, lectores beta, correctores e ilustradores. Los resultados definieron qué servicios se lanzan primero, cuáles se aplazan y qué mecanismos de confianza son imprescindibles.',
-      metodos: ['Encuesta · 60', 'Propuesta de producto', 'Customer journey', 'Service blueprint', 'Arquitectura de la información'],
+      nota: 'Partí de mi propuesta de producto, que incluye un análisis del sector editorial en español (FGEE, Ministerio de Cultura y Bowker) y de plataformas como Fiverr, Upwork, Wattpad y Panodyssey. Después la contrasté con una encuesta en Google Forms que respondieron 60 personas: autores, lectores beta, correctores e ilustradores. Los resultados definieron qué servicios se lanzan primero, cuáles se aplazan y qué mecanismos de confianza son imprescindibles.',
+      metodos: ['Análisis del sector', 'Análisis de competidores', 'Encuesta · 60', 'Customer journey', 'Service blueprint', 'Arquitectura de la información'],
       diagramas: [
         {
           tipo: 'journey',
@@ -1628,7 +1629,7 @@ export const expedientes: Record<string, Expediente> = {
             {
               nombre: 'Oportunidades',
               celdas: [
-                'El recorrido del libro en seis etapas.',
+                'El camino del proyecto, fase a fase.',
                 'Perfiles verificados por servicio y género.',
                 'Pruebas gratuitas de un capítulo.',
                 'Tarifa recomendada por nivel y justificada.',
@@ -1693,12 +1694,12 @@ export const expedientes: Record<string, Expediente> = {
     solucion: {
       titulo: 'La solución',
       aviso: 'Prototipo con datos de ejemplo: no se realizan pagos ni se suben archivos. Los flujos principales son completamente navegables.',
-      nota: 'El concepto nace del logotipo: dos puntos que representan a dos personas y una huella que traza el camino entre ellas. Cada libro avanza por seis etapas (escritura, lectura beta, corrección, portada, promoción y publicación), cada una con su profesional. Todos los perfiles comparten el mismo recorrido: el autor ve el libro completo y cada profesional, su etapa.',
+      nota: 'El nombre parte de la teoría de los seis grados de separación (Karinthy, 1929; popularizada por Stanley Milgram en los años sesenta): cualquier persona creativa está, como máximo, a seis conexiones de quien necesita para sacar adelante su proyecto. El logotipo lo resume con dos puntos, dos personas, y una huella, los pasos que las unen. La interfaz lleva esa metáfora del camino a cada proyecto, que muestra la persona de cada fase del libro, y al perfil, con los seis caminos del usuario en la red: explorar, conectar, colaborar, aprender, mostrar y publicar.',
       mockup: { portatil: 'web-inicio', moviles: ['inicio'] },
       pasosTitulo: 'Perfil autor: el recorrido del libro',
       pasos: [
         { img: 'elegir', titulo: 'Selección de perfil', texto: 'Al entrar se elige perfil: autor, lector beta, corrector o ilustrador. Se puede cambiar en cualquier momento.' },
-        { img: 'inicio', titulo: 'Inicio', texto: 'Saludo personalizado y el recorrido del libro, con el profesional de cada etapa.' },
+        { img: 'inicio', titulo: 'Inicio', texto: 'Saludo personalizado y el camino del proyecto, con el profesional de cada fase.' },
         { img: 'buscar', titulo: 'Búsqueda', texto: 'Filtros por servicio y género, con nivel, valoraciones y tarifa de partida.' },
         { img: 'perfil', titulo: 'Perfil profesional', texto: 'Nivel, formación, experiencia y motivación: el contexto que justifica la tarifa.' },
         { img: 'contratar', titulo: 'Contratación', texto: 'Servicios con precio cerrado, empezando por un boceto gratuito.' },
@@ -1741,8 +1742,8 @@ export const expedientes: Record<string, Expediente> = {
       titulo: 'Decisiones de diseño',
       nota: 'Las decisiones clave que surgieron de la investigación y de las iteraciones de diseño. Pasa las pestañas.',
       items: [
-        { tab: 'Identidad', antes: 'Primeras propuestas con una paleta beige y marrón de bajo contraste y un estilo próximo al de un videojuego.', despues: 'Paleta Atardecer vivo sobre fondo claro, texto en tinta de alto contraste y una interfaz sobria que reserva el color para los acentos.' },
-        { tab: 'Concepto', antes: 'Formas genéricas, sin relación con la marca.', despues: 'El logotipo define el sistema: dos personas unidas por una huella dan lugar al recorrido de seis etapas.' },
+        { tab: 'Identidad', antes: 'La propuesta planteaba una estética «cozy» de neutros cálidos (beige, arena y marfil); en pantalla resultó de bajo contraste, y una versión posterior quedó demasiado próxima a un videojuego.', despues: 'Paleta Atardecer vivo sobre fondo claro, texto en tinta de alto contraste y una interfaz sobria que reserva el color para los acentos.' },
+        { tab: 'Concepto', antes: 'Primeras versiones en las que el logotipo se leía como una cara.', despues: 'El logotipo expresa conexión y pasos: dos personas y la huella que las une, en coherencia con los seis grados de separación.' },
         { tab: 'Recorrido', antes: 'Cada perfil profesional tenía su propio mapa, desconectado del libro.', despues: 'Un único recorrido compartido en el que cada profesional ve su etapa destacada.' },
         { tab: 'Tarifas', antes: 'Precios sin contexto, difíciles de justificar ante el autor.', despues: 'Rango recomendado según el nivel, calculado sobre el precio de mercado y explicado al usuario.' },
         { tab: 'Confianza', antes: 'El 40 % desconfiaba de pagar a un desconocido.', despues: 'Pago protegido hasta aprobar la entrega, perfiles verificados y pruebas gratuitas.' },
@@ -1751,7 +1752,7 @@ export const expedientes: Record<string, Expediente> = {
     },
     estilo: {
       titulo: 'Sistema de diseño Atardecer vivo',
-      nota: 'Sistema propio construido a partir del logotipo y documentado en Figma: 31 variables, estilos de texto para móvil y web, sombras y seis componentes (botón, filtro, etiqueta, insignia, paso del recorrido y tarjeta), además de todas las pantallas organizadas por flujos. El prototipo usa los mismos tokens.',
+      nota: 'Sistema propio construido a partir del logotipo y de los principios de la propuesta (claridad funcional, personalización y conectividad visual), documentado en Figma: 31 variables, estilos de texto para móvil y web, sombras y seis componentes (botón, filtro, etiqueta, insignia, paso del recorrido y tarjeta), además de todas las pantallas organizadas por flujos. El prototipo usa los mismos tokens.',
       colores: [
         { nombre: 'Fondo', hex: '#FFF8F4' },
         { nombre: 'Coral', hex: '#FF7F6E' },
@@ -1770,7 +1771,7 @@ export const expedientes: Record<string, Expediente> = {
       ],
     },
     garabatos: [
-      { dibujo: 'p6-camino', nota: 'Seis etapas', top: '9%', lado: 'der' },
+      { dibujo: 'p6-camino', nota: 'Paso a paso', top: '9%', lado: 'der' },
       { dibujo: 'p6-precio', nota: 'Tarifa justificada', top: '35%', lado: 'der' },
       { dibujo: 'p6-visor', nota: 'Control de cambios', top: '78%', lado: 'der' },
     ],
@@ -1796,7 +1797,7 @@ export const expedientes: Record<string, Expediente> = {
     },
     alt: {
       elegir: 'App: selección de perfil entre autor, lector beta, corrector e ilustrador',
-      inicio: 'App: inicio del perfil autor con el recorrido de la novela en seis etapas',
+      inicio: 'App: inicio del perfil autor con el camino de la novela por fases',
       buscar: 'App: búsqueda de profesionales con filtros por servicio y género',
       perfil: 'App: perfil de una ilustradora junior con su formación y experiencia',
       contratar: 'App: contratación con un boceto gratuito y dos portadas de pago',
